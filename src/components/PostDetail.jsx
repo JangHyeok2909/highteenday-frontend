@@ -43,20 +43,8 @@ function PostDetail({ postId}) {
         dangerouslySetInnerHTML={{ __html: post.content }}
         style={{ marginTop: '20px' }}
       />
-<<<<<<< HEAD
-
-      {/* 🔽 댓글 섹션 렌더링 */}
-      <div style={{ marginTop: '40px' }}>
-        <CommentSection postId={postId} />
-      </div>
-=======
->>>>>>> b7163ebce2d69bad88bceac2c1f6ec1441a8e420
     </div>
   );
 }
 
-<<<<<<< HEAD
 export default PostDetail;
-=======
-export default PostDetail;
->>>>>>> b7163ebce2d69bad88bceac2c1f6ec1441a8e420
