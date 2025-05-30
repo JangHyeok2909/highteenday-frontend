@@ -1,0 +1,13 @@
+# 자동 줄바꿈 통일: checkout 시는 OS 스타일, commit 시는 LF로
+* text=auto
+
+# 특정 파일 확장자에 대해 LF 사용 강제
+*.js     text eol=lf
+*.jsx    text eol=lf
+*.css    text eol=lf
+*.html   text eol=lf
+*.json   text eol=lf
+*.md     text eol=lf
+*.sh     text eol=lf
+*.yml    text eol=lf
+.gitignore text eol=lf
