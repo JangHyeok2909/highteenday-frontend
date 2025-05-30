@@ -15,7 +15,7 @@ function PostDetail({ postId}) {
     
     const fetchPost = async () => {
       try {
-        const res = await axios.get(`/api/posts/${postId}`);
+        const res = await axios.get(`https://highteenday.duckdns.org/api/posts/${postId}`);
         setPost(res.data);
       } catch (err) {
         setError('게시글을 불러오는 데 실패했습니다.');
