@@ -1,0 +1,42 @@
+name: React CI/CD with Port 80
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy-react:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Upload React App to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "./*"
+          target: "~/react-app"
+
+      - name: Install & Start React App on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/react-app
+            npm install
+
+            # .env가 이미 포트 80을 설정하고 있다고 가정
+            pm2 delete react-app || true
+            pm2 start npm --name "react-app" -- run start
+            pm2 save

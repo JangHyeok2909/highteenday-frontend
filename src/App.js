@@ -1,16 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import WritePostPage from './pages/WritePostPage.jsx';
-import PostPage from './pages/PostPage.jsx';
+import WritePostPage from './pages/WritePostPage';
+import PostPage from './pages/PostPage';
+import LoginButton from './components/LoginButton/LoginButton';
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* 기본 경로 추가 */}
-        <Route path="/" element={<PostPage />} />
-
-        {/* 기존 라우트 */}
+        <Route path="/" element={<LoginButton />}/>
         <Route path="/post/write" element={<WritePostPage />} />
         <Route path="/post/view" element={<PostPage />} />
       </Routes>
