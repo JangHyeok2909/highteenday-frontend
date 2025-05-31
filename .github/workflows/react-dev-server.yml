@@ -25,6 +25,9 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "./*"
           target: "~/highteenday-front-server"
+          rm: false
+          overwrite: true
+          strip_components: 0
 
       - name: Install & Start React App on EC2
         uses: appleboy/ssh-action@master
@@ -33,14 +36,13 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 디렉토리가 없으면 생성
             mkdir -p ~/highteenday-front-server
             cd ~/highteenday-front-server
 
-            # 의존성 설치 (peerDeps 오류 방지)
+            # 의존성 설치
             npm install --legacy-peer-deps
 
-            # PM2로 실행
+            # 앱 실행
             pm2 delete react-app || true
             pm2 start npm --name "react-app" -- run start
             pm2 save
