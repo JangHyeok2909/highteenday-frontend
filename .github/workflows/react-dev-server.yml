@@ -28,6 +28,7 @@ jobs:
           rm: false
           overwrite: true
           strip_components: 0
+          exclude: ".git"
 
       - name: Install & Start React App on EC2
         uses: appleboy/ssh-action@master
