@@ -3,7 +3,7 @@ import React from "react";
 function LoginButton() {
 
     return(<div>
-        <a href="http://3.39.231.161:8080/oauth2/authorization/kakao">
+        <a href="http://15.164.102.185:8080/oauth2/authorization/kakao">
             <button>카카오 로그인</button>
         </a> 
 
@@ -11,7 +11,7 @@ function LoginButton() {
 
         ======================================================<br></br>
 
-        <a href="http://3.39.231.161:8080/oauth2/authorization/naver">
+        <a href="http://15.164.102.185:8080/oauth2/authorization/naver">
             <button>네이버 로그인</button>
         </a>
 
@@ -19,7 +19,7 @@ function LoginButton() {
 
         ======================================================<br></br>
 
-        <a href="http://3.39.231.161:8080/oauth2/authorization/google">
+        <a href="http://15.164.102.185:8080/oauth2/authorization/google">
             <button>구글 로그인</button>
         </a>
     </div>);
