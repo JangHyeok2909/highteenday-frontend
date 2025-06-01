@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import CommentSection from './CommentSection';
 
-function PostDetail({ postId}) {
-  const [post, setPost] = useState(null); // 게시글 데이터
+function PostDetail({ postId }) {
+  const [post, setPost] = useState(null);      // 게시글 데이터
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState(null);     // 에러 상태
 
-  /*페이지가 다 렌더링 된 후에 postId가 변경될 때마다 
-  서버로 postId에 해당하는 게시글을 가져와 화면에 보여줌*/
   useEffect(() => {
-    setLoading(true);       
+    setLoading(true);
     setError(null);
-    setPost(null); 
-    
+    setPost(null);
+
     const fetchPost = async () => {
       try {
         const res = await axios.get(`/api/posts/${postId}`);
@@ -43,6 +42,9 @@ function PostDetail({ postId}) {
         dangerouslySetInnerHTML={{ __html: post.content }}
         style={{ marginTop: '20px' }}
       />
+
+      {/* 댓글 컴포넌트 렌더링 */}
+      <CommentSection postId={postId} />
     </div>
   );
 }
