@@ -10,6 +10,11 @@ function CommentSection({ postId }) {
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
 
+  const [editMode, setEditMode] = useState(null);
+  const [editComment, setEditComment] = useState('');
+  const [editImageFile, setEditImageFile] = useState(null);
+  const [editPreviewUrl, setEditPreviewUrl] = useState(null);
+
   const userId = localStorage.getItem('loginUserId');
 
   const fetchComments = async () => {
@@ -25,45 +30,40 @@ function CommentSection({ postId }) {
     fetchComments();
   }, [postId]);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e, isEdit = false) => {
     const file = e.target.files[0];
-    setImageFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
+    if (isEdit) {
+      setEditImageFile(file);
+      setEditPreviewUrl(URL.createObjectURL(file));
+    } else {
+      setImageFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
   };
 
-  const uploadImageAsBase64 = async () => {
-    if (!imageFile) return null;
-
-    if (!userId || isNaN(parseInt(userId))) {
-      console.warn('이미지 업로드 실패: 유효하지 않은 userId', userId);
-      return null;
-    }
-
+  // ✅ 헤더에서 Location 추출하는 방식으로 수정
+  const uploadImageAsBase64 = async (file) => {
+    if (!file || !userId) return null;
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
       reader.onloadend = async () => {
         try {
           const base64String = reader.result.split(',')[1];
-          console.log('base64 변환 완료:', base64String.substring(0, 30)); // 앞 일부만 출력
-
           const res = await axios.post(`/api/media?userId=${userId}`, {
             file: base64String,
           });
-
-          console.log('이미지 업로드 성공:', res.data);
-          resolve(res.data); // 서버에서 반환하는 이미지 URL
+          const imageUrl = res.headers.location; // ✅ 헤더에서 URL 받음
+          resolve(imageUrl);
         } catch (e) {
-          console.error('이미지 업로드 실패:', e);
           reject(e);
         }
       };
-      reader.readAsDataURL(imageFile);
+      reader.readAsDataURL(file);
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const parsedUserId = parseInt(userId);
     if (!parsedUserId || !newComment.trim()) {
       setError('로그인 정보 또는 댓글 내용이 잘못되었습니다.');
@@ -73,14 +73,14 @@ function CommentSection({ postId }) {
     try {
       let uploadedImageUrl = null;
       if (imageFile) {
-        uploadedImageUrl = await uploadImageAsBase64();
+        uploadedImageUrl = await uploadImageAsBase64(imageFile);
       }
 
       await axios.post(`/api/posts/${postId}/comments`, {
         userId: parsedUserId,
         parentId: replyTo || 0,
-        content: newComment,          
-        url: uploadedImageUrl || "",  
+        content: newComment,
+        url: uploadedImageUrl || "",
         anonymous,
       });
 
@@ -90,9 +90,57 @@ function CommentSection({ postId }) {
       setPreviewUrl(null);
       setError(null);
       await fetchComments();
-    } catch (err) {
-      console.error(err);
+    } catch {
       setError('댓글 작성에 실패했습니다.');
+    }
+  };
+
+  const enterEditMode = (comment) => {
+    setEditMode(comment.id);
+    setEditComment(comment.content);
+    setEditPreviewUrl(comment.url || null);
+    setEditImageFile(null);
+  };
+
+  const cancelEdit = () => {
+    setEditMode(null);
+    setEditComment('');
+    setEditImageFile(null);
+    setEditPreviewUrl(null);
+  };
+
+  const handleUpdate = async (comment) => {
+    const parsedUserId = parseInt(userId);
+    try {
+      let uploadedImageUrl = null;
+      if (editImageFile) {
+        uploadedImageUrl = await uploadImageAsBase64(editImageFile);
+      }
+
+      await axios.put(`/api/posts/${postId}/comments/${comment.id}`, {
+        userId: parsedUserId,
+        parentId: comment.parentId,
+        content: editComment,
+        url: uploadedImageUrl || editPreviewUrl || "",
+        anonymous: comment.anonymous,
+      });
+
+      cancelEdit();
+      await fetchComments();
+    } catch {
+      setError('댓글 수정에 실패했습니다.');
+    }
+  };
+
+  const handleDelete = async (commentId) => {
+    const parsedUserId = parseInt(userId);
+    try {
+      await axios.delete(`/api/posts/${postId}/comments/${commentId}`, {
+        data: parsedUserId,
+      });
+      await fetchComments();
+    } catch {
+      setError('댓글 삭제에 실패했습니다.');
     }
   };
 
@@ -100,11 +148,42 @@ function CommentSection({ postId }) {
     <div style={{ marginTop: '30px' }}>
       <h3>댓글</h3>
 
-      {comments.map(comment => (
+      {comments.map((comment) => (
         <div key={comment.id} style={{ paddingBottom: '10px' }}>
           <p><strong>{comment.anonymous ? '익명' : comment.author}</strong></p>
-          <p>{comment.content}</p>
-          <button onClick={() => setReplyTo(comment.id)}>답글</button>
+
+          {editMode === comment.id ? (
+            <>
+              <textarea
+                value={editComment}
+                onChange={(e) => setEditComment(e.target.value)}
+                rows="3"
+                style={{ width: '100%' }}
+              />
+              <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, true)} />
+              {editPreviewUrl && (
+                <img src={editPreviewUrl} alt="미리보기" style={{ maxWidth: '200px' }} />
+              )}
+              <div>
+                <button onClick={() => handleUpdate(comment)}>저장</button>
+                <button onClick={cancelEdit}>취소</button>
+              </div>
+            </>
+          ) : (
+            <>
+              <p>{comment.content}</p>
+              {comment.url && (
+                <img src={comment.url} alt="첨부 이미지" style={{ maxWidth: '200px' }} />
+              )}
+              <button onClick={() => setReplyTo(comment.id)}>답글</button>
+              {parseInt(userId) === comment.userId && (
+                <>
+                  <button onClick={() => enterEditMode(comment)}>수정</button>
+                  <button onClick={() => handleDelete(comment.id)}>삭제</button>
+                </>
+              )}
+            </>
+          )}
         </div>
       ))}
 
@@ -150,3 +229,4 @@ function CommentSection({ postId }) {
 }
 
 export default CommentSection;
+s
