@@ -229,4 +229,3 @@ function CommentSection({ postId }) {
 }
 
 export default CommentSection;
-s
