@@ -76,14 +76,11 @@ function CommentSection({ postId }) {
         uploadedImageUrl = await uploadImageAsBase64();
       }
 
-      const contentToSubmit = uploadedImageUrl
-        ? `${newComment}\n[이미지]: ${uploadedImageUrl}`
-        : newComment;
-
       await axios.post(`/api/posts/${postId}/comments`, {
         userId: parsedUserId,
         parentId: replyTo || 0,
-        content: contentToSubmit,
+        content: newComment,          
+        url: uploadedImageUrl || "",  
         anonymous,
       });
 
