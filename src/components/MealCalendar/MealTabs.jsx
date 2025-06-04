@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, Tab } from '@mui/material';
 import MonthlyMealCalendar from './MonthlyMealCalendar';
 import WeeklyMealView from './WeeklyMealView';
@@ -19,6 +19,13 @@ function MealTabs({ schoolId }) {
     setTabIndex(2); // 일별 탭으로 전환
   };
 
+  // ✅ 일별 탭으로 전환되면 selectedDate를 오늘로 초기화
+  useEffect(() => {
+    if (tabIndex === 2) {
+      setSelectedDate(new Date());
+    }
+  }, [tabIndex]);
+
   return (
     <div className="p-4">
       <Tabs value={tabIndex} onChange={handleTabChange}>
@@ -35,10 +42,16 @@ function MealTabs({ schoolId }) {
           />
         )}
         {tabIndex === 1 && (
-          <WeeklyMealView schoolId={schoolId} selectedDate={selectedDate} />
+          <WeeklyMealView
+            schoolId={schoolId}
+            selectedDate={selectedDate}
+          />
         )}
         {tabIndex === 2 && (
-          <DailyMealView schoolId={schoolId} selectedDate={selectedDate} />
+          <DailyMealView
+            schoolId={schoolId}
+            selectedDate={selectedDate}
+          />
         )}
       </div>
     </div>

@@ -10,10 +10,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginButton />} />  {/* ✅ 원래 로그인 루트 */}
+        <Route path="/" element={<LoginButton />} />
         <Route path="/post/write" element={<WritePostPage />} />
         <Route path="/post/view" element={<PostPage />} />
-        <Route path="/meals" element={<MealPage />} /> {/* ✅ 급식표는 /meals 경로 */}
+        <Route path="/meals" element={<MealPage />} />
       </Routes>
     </Router>
   );

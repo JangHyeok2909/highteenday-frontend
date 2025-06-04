@@ -12,4 +12,4 @@ function MealPage() {
   );
 }
 
-export default MealPage; // ✅ 반드시 default export!
+export default MealPage;

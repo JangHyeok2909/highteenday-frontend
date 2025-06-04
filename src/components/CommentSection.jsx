@@ -41,25 +41,24 @@ function CommentSection({ postId }) {
     }
   };
 
-  // ✅ 헤더에서 Location 추출하는 방식으로 수정
-  const uploadImageAsBase64 = async (file) => {
+  const uploadImage = async (file) => {
     if (!file || !userId) return null;
-    const reader = new FileReader();
-    return new Promise((resolve, reject) => {
-      reader.onloadend = async () => {
-        try {
-          const base64String = reader.result.split(',')[1];
-          const res = await axios.post(`/api/media?userId=${userId}`, {
-            file: base64String,
-          });
-          const imageUrl = res.headers.location; // ✅ 헤더에서 URL 받음
-          resolve(imageUrl);
-        } catch (e) {
-          reject(e);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
+
+    const formData = new FormData();
+    formData.append('userId', userId);
+    formData.append('file', file);
+
+    try {
+      const res = await axios.post('/api/media', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return res.headers.location;
+    } catch (e) {
+      console.error('이미지 업로드 실패:', e);
+      return null;
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -73,14 +72,14 @@ function CommentSection({ postId }) {
     try {
       let uploadedImageUrl = null;
       if (imageFile) {
-        uploadedImageUrl = await uploadImageAsBase64(imageFile);
+        uploadedImageUrl = await uploadImage(imageFile);
       }
 
       await axios.post(`/api/posts/${postId}/comments`, {
         userId: parsedUserId,
         parentId: replyTo || 0,
         content: newComment,
-        url: uploadedImageUrl || "",
+        url: uploadedImageUrl || '',
         anonymous,
       });
 
@@ -114,14 +113,14 @@ function CommentSection({ postId }) {
     try {
       let uploadedImageUrl = null;
       if (editImageFile) {
-        uploadedImageUrl = await uploadImageAsBase64(editImageFile);
+        uploadedImageUrl = await uploadImage(editImageFile);
       }
 
       await axios.put(`/api/posts/${postId}/comments/${comment.id}`, {
         userId: parsedUserId,
         parentId: comment.parentId,
         content: editComment,
-        url: uploadedImageUrl || editPreviewUrl || "",
+        url: uploadedImageUrl || editPreviewUrl || '',
         anonymous: comment.anonymous,
       });
 
@@ -176,7 +175,9 @@ function CommentSection({ postId }) {
                 <img src={comment.url} alt="첨부 이미지" style={{ maxWidth: '200px' }} />
               )}
               <button onClick={() => setReplyTo(comment.id)}>답글</button>
-              {parseInt(userId) === comment.userId && (
+
+              {/* ✅ 익명 여부와 무관하게 userId가 같으면 수정/삭제 버튼 표시 */}
+              {comment.userId && parseInt(userId) === comment.userId && (
                 <>
                   <button onClick={() => enterEditMode(comment)}>수정</button>
                   <button onClick={() => handleDelete(comment.id)}>삭제</button>
