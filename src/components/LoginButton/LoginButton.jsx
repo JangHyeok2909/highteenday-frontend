@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function LoginButton() {
 
+    const [jwtStatus, setJwtStatus] = useState("Jwt 없음");
+
+    useEffect(() => {
+        fetch("https://highteenday.duckdns.org/api/user", {
+            method: "GET",
+            credentials: "include"
+        })
+        .then(response => {
+            if(response.ok){
+                setJwtStatus("Jwt 작동 중 (로그인 상태)");
+            } else {
+                setJwtStatus("Jwt 없음 (비로그인 상태)");
+            }
+        })
+        .catch(error => {
+            setJwtStatus("오류 발생");
+        });
+    
+    }, []);
+
+
     return(<div>
+        <p>{jwtStatus}</p>
+        
         <a href="https://highteenday.duckdns.org/oauth2/authorization/kakao">
             <button>카카오 로그인</button>
         </a> 
