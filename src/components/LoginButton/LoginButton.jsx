@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function LoginButton() {
 
@@ -25,7 +25,7 @@ function LoginButton() {
 
     return(<div>
         <p>{jwtStatus}</p>
-        
+
         <a href="https://highteenday.duckdns.org/oauth2/authorization/kakao">
             <button>카카오 로그인</button>
         </a> 
