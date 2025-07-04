@@ -5,6 +5,7 @@ import PostPage from './pages/PostPage';
 import LoginButton from './components/LoginButton/LoginButton';
 import NotFound from './pages/NotFound';
 import Register from './components/LoginRelated/Register';
+import UserPage from './components/LoginRelated/UserPage';
 
   function App() {
     return (
@@ -14,6 +15,7 @@ import Register from './components/LoginRelated/Register';
           <Route path="/post/write" element={<WritePostPage />} />
           <Route path="/post/view" element={<PostPage />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/user" element={<UserPage />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
