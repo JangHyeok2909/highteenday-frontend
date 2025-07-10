@@ -30,7 +30,7 @@ function PostEditor() {
     };
 
     try {
-      await axios.post('/api/posts', postData);
+      await axios.post('https://highteenday.duckdns.org/api/posts', postData);
       alert('게시글이 작성되었습니다.');
     } catch (error) {
       console.error(error);
