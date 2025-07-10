@@ -69,11 +69,11 @@ function Register() {
           <p>제공자: {provider}</p>
           {error && <p style={{ color: "red" }}>{error}</p>}
           
-          <form>
+          <form onSubmit={handleRegister}>
             <label>
               닉네임 : <input type="text" value={nickName} onChange={(e) => setNickName(e.target.value)}></input>
             </label>
-            <button type="submit" onSubmit={handleRegister}>가입</button>
+            <button type="submit">가입</button>
           </form>            
             
         </div>
