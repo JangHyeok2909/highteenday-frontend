@@ -37,7 +37,7 @@ function Register() {
             USR_provider: provider
           },
           {
-            withCredentials: true,
+            withCredentials: true
           }
         )
         console.log("회원가입 성공", res.data);
