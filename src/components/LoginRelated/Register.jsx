@@ -9,7 +9,11 @@ function Register() {
 
     const getUserInfo = async () => {
         try {
-          const res = await axios.get(`https://highteenday.duckdns.org/api/user/OAuth2UserInfo`);
+          const res = await axios.get(`https://highteenday.duckdns.org/api/user/OAuth2UserInfo`,
+            {
+              widthCredentials: true
+            }
+          );
           const data = await res.data;
 
           setEmail(data.Email);
