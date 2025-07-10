@@ -1,86 +1,120 @@
-import React, { useState } from 'react';
+// CreateComment.jsx
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './CreateComment.css';
 
 function CreateComment({ postId, parentId, onSuccess, onCancel }) {
-  const [content, setContent]   = useState('');
+  const [content, setContent] = useState('');
   const [anonymous, setAnonymous] = useState(true);
-  const [error, setError]       = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const userId = localStorage.getItem('loginUserId');
 
+  // parentId가 변경될 때마다 폼 초기화
+  useEffect(() => {
+    setContent('');
+    setError(null);
+  }, [parentId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     const uid = parseInt(userId, 10);
-
     if (!uid || !content.trim()) {
       setError('로그인 정보 또는 댓글 내용이 잘못되었습니다.');
       return;
     }
 
+    setLoading(true);
+    setError(null);
+
     try {
-      await axios.post(`/api/posts/${postId}/comments`, {
+      const response = await axios.post(`/api/posts/${postId}/comments`, {
         userId: uid,
-        parentId: parentId || 0,
+        parentId: parentId || null,
         content: content.trim(),
-        anonymous
+        anonymous,
+        url: ''
       });
+
+      // 성공 시 폼 초기화
       setContent('');
-      setError(null);
-      onSuccess();
-    } catch {
-      setError('댓글 작성에 실패했습니다.');
+      setAnonymous(true);
+      
+      // 부모 컴포넌트에 성공 알림
+      onSuccess(response.data);
+    } catch (err) {
+      console.error('댓글 작성 실패:', err);
+      setError(
+        err.response?.data?.message || 
+        '댓글 작성에 실패했습니다.'
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
+  const handleCancel = () => {
+    setContent('');
+    setError(null);
+    onCancel();
+  };
+
   return (
-    <form onSubmit={handleSubmit} style={{ marginTop: 20 }}>
+    <div className="create-comment">
       {parentId && (
-        <p style={{ color: 'gray' }}>
-          ➥ <strong>{parentId}</strong>번 댓글에 답글 작성 중...
-          <button
-            type="button"
-            onClick={onCancel}
-            style={{ marginLeft: 10, fontSize: 12 }}
+        <div className="reply-indicator">
+          <span>답글 작성 중...</span>
+          <button 
+            type="button" 
+            onClick={handleCancel}
+            className="cancel-reply-btn"
           >
             취소
           </button>
-        </p>
+        </div>
       )}
 
-      <textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        rows={4}
-        placeholder="댓글을 입력하세요"
-        style={{ width: '100%', padding: 8 }}
-      />
-      <div style={{ margin: '8px 0' }}>
-        <label>
-          <input
-            type="checkbox"
-            checked={anonymous}
-            onChange={(e) => setAnonymous(e.target.checked)}
-          />{' '}
-          익명으로 작성
-        </label>
-      </div>
-      <button
-        type="submit"
-        style={{
-          float: 'right',
-          marginTop: 8,
-          background: '#1976d2',
-          color: '#fff',
-          border: 'none',
-          padding: '8px 16px',
-          borderRadius: 4,
-          cursor: 'pointer'
-        }}
-      >
-        작성
-      </button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </form>
+      <form onSubmit={handleSubmit} className="comment-form">
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows={4}
+          placeholder="댓글을 입력하세요"
+          className="comment-textarea"
+          disabled={loading}
+          maxLength={500}
+        />
+        
+        <div className="comment-form-footer">
+          <div className="comment-options">
+            <label className="anonymous-checkbox">
+              <input
+                type="checkbox"
+                checked={anonymous}
+                onChange={(e) => setAnonymous(e.target.checked)}
+                disabled={loading}
+              />
+              익명으로 작성
+            </label>
+            <span className="character-count">
+              {content.length}/500
+            </span>
+          </div>
+          
+          <button
+            type="submit"
+            className="submit-comment-btn"
+            disabled={loading || !content.trim()}
+          >
+            {loading ? '작성 중...' : '댓글 작성'}
+          </button>
+        </div>
+        
+        {error && <div className="comment-error">{error}</div>}
+      </form>
+    </div>
   );
 }
 
