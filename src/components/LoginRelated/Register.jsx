@@ -46,8 +46,8 @@ function Register() {
         console.log("==================================================");
       } catch(err){
         console.log("회원가입 실패" + err);
-        console.log(res.status);  
-        console.log(res.statusText);
+        console.log(err.response?.status);
+        console.log(err.response?.statusText);
         console.log("==================================================");
       }
     };

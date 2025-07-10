@@ -24,6 +24,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            cp ~/highteenday-front-server/.env ~/.env || true
             sudo rm -rf ~/highteenday-front-server
             sudo rm -rf /home/ubuntu/front-end
 
@@ -49,6 +50,7 @@ jobs:
           script: |
             mkdir -p ~/highteenday-front-server
             cd ~/highteenday-front-server
+            mv ~/.env ~/highteenday-front-server/.env
 
             # 의존성 설치
             npm install --legacy-peer-deps
