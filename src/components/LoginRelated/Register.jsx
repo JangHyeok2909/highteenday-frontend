@@ -31,7 +31,7 @@ function Register() {
       try {
         const res = await axios.post(`https://highteenday.duckdns.org/api/user/register`,
           {
-            nickname: nickName,
+            nickName: nickName,
             name: name,
             email: email,
             provider: provider
@@ -40,12 +40,12 @@ function Register() {
             withCredentials: true
           }
         )
-        console.log("회원가입 성공", res.data);
+        console.log("회원가입 성공 ", res.data);
         console.log(res.status);  
         console.log(res.statusText);
         console.log("==================================================");
       } catch(err){
-        console.log("회원가입 실패" + err);
+        console.log("회원가입 실패 " + err);
         console.log(err.response?.status);
         console.log(err.response?.statusText);
         console.log("==================================================");
