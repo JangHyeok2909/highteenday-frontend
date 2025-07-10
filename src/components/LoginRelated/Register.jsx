@@ -31,10 +31,10 @@ function Register() {
       try {
         const res = await axios.post(`https://highteenday.duckdns.org/api/user/register`,
           {
-            USR_nickname: nickName,
-            USR_name: name,
-            USR_email: email,
-            USR_provider: provider
+            nickname: nickName,
+            name: name,
+            email: email,
+            provider: provider
           },
           {
             withCredentials: true
