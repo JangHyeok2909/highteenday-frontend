@@ -5,7 +5,7 @@ function LoginButton() {
     const [jwtStatus, setJwtStatus] = useState("Jwt 없음");
 
     useEffect(() => {
-        fetch("https://highteenday.duckdns.org/api/user", {
+        fetch("https://highteenday.duckdns.org/api/user/loginUser", {
             method: "GET",
             credentials: "include"
         })
