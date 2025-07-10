@@ -1,4 +1,3 @@
-// CreateComment.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CreateComment.css';
@@ -11,7 +10,6 @@ function CreateComment({ postId, parentId, onSuccess, onCancel }) {
 
   const userId = localStorage.getItem('loginUserId');
 
-  // parentId가 변경될 때마다 폼 초기화
   useEffect(() => {
     setContent('');
     setError(null);
@@ -38,11 +36,9 @@ function CreateComment({ postId, parentId, onSuccess, onCancel }) {
         url: ''
       });
 
-      // 성공 시 폼 초기화
       setContent('');
       setAnonymous(true);
       
-      // 부모 컴포넌트에 성공 알림
       onSuccess(response.data);
     } catch (err) {
       console.error('댓글 작성 실패:', err);

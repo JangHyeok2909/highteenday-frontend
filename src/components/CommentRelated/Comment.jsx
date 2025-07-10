@@ -1,6 +1,5 @@
-// Comment.jsx
 import React, { useState } from 'react';
-import './Comment.css'; // CSS 파일 분리 권장
+import './Comment.css';
 
 function Comment({ comment, replies, onReply, onEdit, onDelete }) {
   const [isEditing, setIsEditing] = useState(false);

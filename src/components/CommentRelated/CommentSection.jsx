@@ -1,4 +1,3 @@
-// CommentSection.jsx
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import Comment from './Comment';
@@ -30,7 +29,6 @@ function CommentSection({ postId }) {
     }
   }, [postId]);
 
-  // 댓글 추가 (API 호출 후 상태 업데이트)
   const addComment = useCallback((newComment) => {
     setComments(prev => [...prev, newComment]);
   }, []);
@@ -45,11 +43,10 @@ function CommentSection({ postId }) {
         {
           userId: parseInt(userId),
           content: newContent,
-          anonymous: true // 기존 설정 유지하거나 별도 관리
+          anonymous: true 
         }
       );
       
-      // 성공 시 로컬 상태 업데이트
       setComments(prev => 
         prev.map(comment => 
           comment.id === commentId 
@@ -63,7 +60,6 @@ function CommentSection({ postId }) {
     }
   }, [postId]);
 
-  // 댓글 삭제
   const deleteComment = useCallback(async (commentId) => {
     const userId = localStorage.getItem('loginUserId');
     
@@ -72,7 +68,6 @@ function CommentSection({ postId }) {
         data: { userId: parseInt(userId) }
       });
       
-      // 성공 시 로컬 상태 업데이트
       setComments(prev => prev.filter(comment => comment.id !== commentId));
     } catch (err) {
       console.error('댓글 삭제 실패:', err);
@@ -80,7 +75,6 @@ function CommentSection({ postId }) {
     }
   }, [postId]);
 
-  // 댓글 계층 구조 정리
   const normalizedComments = comments.map(c => ({
     ...c,
     parentId: c.parentId ?? null
@@ -94,10 +88,9 @@ function CommentSection({ postId }) {
     }
   });
 
-  // 댓글 성공 핸들러
   const handleCommentSuccess = useCallback(() => {
     setReplyTo(null);
-    fetchComments(); // 새로운 댓글 불러오기
+    fetchComments(); 
   }, [fetchComments]);
 
   if (loading && comments.length === 0) {
