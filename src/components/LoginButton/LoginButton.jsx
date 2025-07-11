@@ -36,7 +36,7 @@ function LoginButton() {
     return(<div>
         <p>{jwtStatus}</p><br></br>
         <div>
-            닉네임 : {userInfo.nickName}<br></br>
+            닉네임 : {userInfo.nickname}<br></br>
             이름 : {userInfo.name}<br></br>
             이메일 : {userInfo.email}<br></br>
             제공자 : {userInfo.provider}<br></br>
