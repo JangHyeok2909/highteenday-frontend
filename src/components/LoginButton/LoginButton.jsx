@@ -9,7 +9,7 @@ function LoginButton() {
     const getJwtStatus = async () => {
         try {
             const res = await axios.get(`https://highteenday.duckdns.org/api/user/loginUser`, {
-                withCredentials: true
+                withCredentials: true,
             });
     
             // 로그인된 경우
@@ -32,6 +32,19 @@ function LoginButton() {
         getJwtStatus();
     }, []);
     // 요기까지
+
+    //로그아웃 버튼 
+    const logoutHandler = async () => {
+        try{
+            const res = await axios.get(`htps://highteenday.duckdns.org/api/user/logout`, {
+                withCredentials: true,
+            });
+            console.log("로그아웃 성공");
+        } catch(err){
+            console.log("로그아웃 실패", err);
+            
+        }
+    };
 
     return(<div>
         <p>{jwtStatus}</p><br></br>
@@ -63,6 +76,8 @@ function LoginButton() {
         <a href="https://highteenday.duckdns.org/oauth2/authorization/google">
             <button>구글 로그인</button>
         </a>
+
+        <button onClick={logoutHandler}></button>
     </div>);
 }
 
