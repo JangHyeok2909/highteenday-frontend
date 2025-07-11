@@ -35,12 +35,14 @@ function LoginButton() {
 
     return(<div>
         <p>{jwtStatus}</p><br></br>
-        <div>
-            닉네임 : {userInfo.nickname}<br></br>
-            이름 : {userInfo.name}<br></br>
-            이메일 : {userInfo.email}<br></br>
-            제공자 : {userInfo.provider}<br></br>
-        </div>
+        {userInfo && (
+            <div>
+                <p>이름: {userInfo?.name}</p>
+                <p>이메일: {userInfo?.email}</p>
+                <p>닉네임: {userInfo?.nickname}</p>
+                <p>제공자: {userInfo?.provider}</p>
+            </div>
+        )}
 
         <a href="https://highteenday.duckdns.org/oauth2/authorization/kakao">
             <button>카카오 로그인</button>
