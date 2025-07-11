@@ -36,7 +36,7 @@ function LoginButton() {
     //로그아웃 버튼 
     const logoutHandler = async () => {
         try{
-            const res = await axios.get(`htps://highteenday.duckdns.org/api/user/logout`, {
+            const res = await axios.get(`https://highteenday.duckdns.org/api/user/logout`, {
                 withCredentials: true,
             });
             console.log("로그아웃 성공");
@@ -77,7 +77,7 @@ function LoginButton() {
             <button>구글 로그인</button>
         </a>
 
-        <button onClick={logoutHandler}></button>
+        <button onClick={logoutHandler}>로그인 버튼</button>
     </div>);
 }
 
