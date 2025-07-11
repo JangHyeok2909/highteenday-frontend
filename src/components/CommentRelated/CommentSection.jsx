@@ -19,7 +19,7 @@ function CommentSection({ postId }) {
     setError(null);
     
     try {
-      const { data } = await axios.get(`/api/posts/${postId}/comments`);
+      const { data } = await axios.get(`/api/posts/${postId}/comments?userId=1`);
       setComments(data);
     } catch (err) {
       setError('댓글을 불러오는 데 실패했습니다.');

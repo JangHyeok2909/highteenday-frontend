@@ -6,6 +6,7 @@ import LoginButton from './components/LoginButton/LoginButton';
 import NotFound from './pages/NotFound';
 import Register from './components/LoginRelated/Register';
 import UserPage from './components/LoginRelated/UserPage';
+import CommentSection from './components/CommentRelated/CommentSection';
 
   function App() {
     return (
@@ -16,6 +17,7 @@ import UserPage from './components/LoginRelated/UserPage';
           <Route path="/post/view" element={<PostPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/user" element={<UserPage />} />
+          <Route path="/comments" element={<CommentSection postId={1} />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
