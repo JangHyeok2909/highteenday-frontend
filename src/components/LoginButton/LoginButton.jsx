@@ -1,10 +1,46 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios"; // 테스트 코드용으로 사용
 import "./LoginButton.css";
 
 function LoginButton() {
   const [jwtStatus, setJwtStatus] = useState("Jwt 없음");
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+
+
+  //테스트용 사용자 정보 상태 및 관련 함수
+  const [userInfo, setUserInfo] = useState(null);
+
+  const getJwtStatus = async () => {
+    try {
+      const res = await axios.get("https://highteenday.duckdns.org/api/user/loginUser", {
+        withCredentials: true,
+      });
+      setJwtStatus("Jwt 작동 중 (로그인 상태)");
+      setUserInfo(res.data);
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        setJwtStatus("Jwt 없음 (비로그인 상태)");
+        setUserInfo(null);
+      } else {
+        setJwtStatus("오류 발생");
+        setUserInfo(null);
+      }
+    }
+  };
+
+  const logoutHandler = async () => {
+    try {
+      await axios.get("https://highteenday.duckdns.org/api/user/logout", {
+        withCredentials: true,
+      });
+      console.log("로그아웃 성공");
+      setUserInfo(null);
+      setJwtStatus("Jwt 없음 (비로그인 상태)");
+    } catch (err) {
+      console.log("로그아웃 실패", err);
+    }
+  };
 
   useEffect(() => {
     fetch("https://highteenday.duckdns.org/api/user", {
@@ -21,7 +57,13 @@ function LoginButton() {
       .catch(error => {
         setJwtStatus("오류 발생");
       });
+
+    // 테스트용 사용자 정보 조회
+    getJwtStatus();
   }, []);
+  // 테스트용 끝
+
+
 
   /*아이디 비밀번호 입력*/
   const handleLogin = () => {
@@ -30,7 +72,6 @@ function LoginButton() {
     alert(`로그인 시도: ${id}`);
   };
 
-  /* 카카오 네이버 구글 로그인 */
   return (
     <div>
       {/* 로고 */}
@@ -98,6 +139,28 @@ function LoginButton() {
           </div>
         </div>
       </div>
+
+      {/* 테스트용 정보 출력 */}
+      <div className="test-info" style={{ textAlign: "center", marginTop: "30px" }}>
+        <p>{jwtStatus}</p>
+        <br />
+        {userInfo && (
+          <div>
+            <p>이름: {userInfo.name}</p>
+            <p>이메일: {userInfo.email}</p>
+            <p>닉네임: {userInfo.nickname}</p>
+            <p>제공자: {userInfo.provider}</p>
+            <button
+              onClick={logoutHandler}
+              className="submit-button"
+              style={{ marginTop: "10px" }}
+            >
+              로그아웃
+            </button>
+          </div>
+        )}
+      </div>
+      {/* 테스트 끝 */}
     </div>
   );
 }
