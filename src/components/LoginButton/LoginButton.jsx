@@ -36,7 +36,7 @@ function LoginButton() {
       {/* 로고 */}
       <header className="logo-header">
         <img
-          src="/images/mainLogo.png"
+          src="/images/highteenLogo.jpg"
           alt="메인 로고"
           className="logo-img"
         />
