@@ -10,11 +10,11 @@ function SchoolVerification() {
   const [verificationCode, setVerificationCode] = useState("");
   const [verified, setVerified] = useState(false);
 
-  // 학교 리스트 불러오기 (백엔드 연동 예정)
   useEffect(() => {
-    axios.get("/api/schools") // 실제 API 주소로 교체 필요
-      .then(res => setSchools(res.data))
-      .catch(err => console.error("학교 리스트 로드 실패:", err));
+    axios
+      .get("/api/schools") // 실제 API 주소로 변경
+      .then((res) => setSchools(res.data))
+      .catch((err) => console.error("학교 리스트 로드 실패:", err));
   }, []);
 
   const handleSendCode = () => {
@@ -23,10 +23,11 @@ function SchoolVerification() {
       return;
     }
 
-    axios.post("/api/send-verification-code", {
-      email: email,
-      school: selectedSchool,
-    })
+    axios
+      .post("/api/send-verification-code", {
+        email: email,
+        school: selectedSchool,
+      })
       .then(() => {
         alert("인증 코드가 전송되었습니다.");
         setCodeSent(true);
@@ -35,10 +36,11 @@ function SchoolVerification() {
   };
 
   const handleVerify = () => {
-    axios.post("/api/verify-code", {
-      email: email,
-      code: verificationCode,
-    })
+    axios
+      .post("/api/verify-code", {
+        email: email,
+        code: verificationCode,
+      })
       .then(() => {
         alert("인증 완료되었습니다.");
         setVerified(true);
@@ -50,38 +52,57 @@ function SchoolVerification() {
     <div className="school-verification-container">
       <h2>학교 이메일 인증</h2>
 
-      <label>학교 선택</label>
-      <select value={selectedSchool} onChange={(e) => setSelectedSchool(e.target.value)} required>
-        <option value="">학교를 선택하세요</option>
-        {schools.map((school) => (
-          <option key={school.id} value={school.name}>{school.name}</option>
-        ))}
-      </select>
+      <div className="school-form-group">
+        <label>학교 선택</label>
+        <select
+          value={selectedSchool}
+          onChange={(e) => setSelectedSchool(e.target.value)}
+          required
+        >
+          <option value="">학교를 선택하세요</option>
+          {Array.isArray(schools) &&
+            schools.map((school) => (
+              <option key={school.id} value={school.name}>
+                {school.name}
+              </option>
+            ))}
+        </select>
+      </div>
 
-      <label>학교 이메일 주소</label>
-      <input
-        type="email"
-        value={email}
-        placeholder="example@school.ac.kr"
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
+      <div className="school-form-group">
+        <label>학교 이메일 주소</label>
+        <input
+          type="email"
+          value={email}
+          placeholder="HighteenDay@example.com"
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
 
-      <button onClick={handleSendCode}>인증 코드 전송</button>
+      <button className="verify-button" onClick={handleSendCode}>
+        인증 코드 전송
+      </button>
 
       {codeSent && (
         <>
-          <label>인증 코드 입력</label>
-          <input
-            type="text"
-            value={verificationCode}
-            onChange={(e) => setVerificationCode(e.target.value)}
-          />
-          <button onClick={handleVerify}>코드 확인</button>
+          <div className="school-form-group">
+            <label>인증 코드 입력</label>
+            <input
+              type="text"
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value)}
+            />
+          </div>
+          <button className="verify-button" onClick={handleVerify}>
+            코드 확인
+          </button>
         </>
       )}
 
-      {verified && <p className="verified-text">✅ 인증 완료되었습니다!</p>}
+      {verified && (
+        <p className="verified-text">인증 완료</p>
+      )}
     </div>
   );
 }

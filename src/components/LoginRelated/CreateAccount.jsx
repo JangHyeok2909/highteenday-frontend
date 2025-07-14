@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CreateAccount.css";
-import SchoolVerification from "./SchoolVerification";
 
 function CreateAccount() {
   const navigate = useNavigate();
@@ -110,6 +109,17 @@ function CreateAccount() {
           onChange={handleChange}
         />
 
+        {/* 학교 인증 */}
+        <div className="button-wrapper">
+          <button
+            type="button"
+            className="submit-button"
+            onClick={() => navigate("/school")}
+          >
+            학교 인증
+          </button>
+        </div>
+
         {/* 완료 버튼 */}
         <div className="button-wrapper">
           <button type="submit" className="submit-button">
@@ -117,17 +127,6 @@ function CreateAccount() {
           </button>
         </div>
       </form>
-
-      {/* 학교 인증 버튼 */}
-      <div className="button-wrapper">
-        <button
-          type="button"
-          className="submit-button"
-          onClick={() => navigate("/school")}
-        >
-          학교 인증
-        </button>
-      </div>
     </div>
   );
 }
