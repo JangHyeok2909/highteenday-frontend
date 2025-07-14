@@ -1,143 +1,203 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Comment from './Comment';
 import CreateComment from './CreateComment';
-import './CommentSection.css';
+import './CommentSystem.css';
 
-function CommentSection({ postId }) {
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
+const CommentSection = ({ postId }) => {
   const [comments, setComments] = useState([]);
   const [replyTo, setReplyTo] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [likedComments, setLikedComments] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchComments();
-  }, [postId]);
+  const userId = parseInt(localStorage.getItem('loginUserId'), 10);
 
   const fetchComments = useCallback(async () => {
     setLoading(true);
     setError(null);
-    
     try {
-      const { data } = await axios.get(`/api/posts/${postId}/comments?userId=1`);
-      setComments(data);
+      const res = await axios.get(
+        `${API_BASE}/posts/${postId}/comments?userId=${userId}`,
+        { withCredentials: true }
+      );
+      setComments(res.data);
     } catch (err) {
-      setError('댓글을 불러오는 데 실패했습니다.');
-      console.error('댓글 조회 실패:', err);
+      setError('댓글을 불러오는데 실패했습니다.');
+      console.error('댓글 로드 실패:', err);
     } finally {
       setLoading(false);
     }
-  }, [postId]);
+  }, [postId, userId]);
 
-  const addComment = useCallback((newComment) => {
-    setComments(prev => [...prev, newComment]);
-  }, []);
-
-  // 댓글 수정
-  const editComment = useCallback(async (commentId, newContent) => {
-    const userId = localStorage.getItem('loginUserId');
-    
-    try {
-      const response = await axios.put(
-        `/api/posts/${postId}/comments/${commentId}`,
-        {
-          userId: parseInt(userId),
-          content: newContent,
-          anonymous: true 
-        }
-      );
-      
-      setComments(prev => 
-        prev.map(comment => 
-          comment.id === commentId 
-            ? { ...comment, content: newContent }
-            : comment
-        )
-      );
-    } catch (err) {
-      console.error('댓글 수정 실패:', err);
-      throw err;
+  useEffect(() => {
+    if (postId && userId) {
+      fetchComments();
     }
-  }, [postId]);
-
-  const deleteComment = useCallback(async (commentId) => {
-    const userId = localStorage.getItem('loginUserId');
-    
-    try {
-      await axios.delete(`/api/posts/${postId}/comments/${commentId}`, {
-        data: { userId: parseInt(userId) }
-      });
-      
-      setComments(prev => prev.filter(comment => comment.id !== commentId));
-    } catch (err) {
-      console.error('댓글 삭제 실패:', err);
-      throw err;
-    }
-  }, [postId]);
-
-  const normalizedComments = comments.map(c => ({
-    ...c,
-    parentId: c.parentId ?? null
-  }));
-
-  const roots = normalizedComments.filter(c => c.parentId === null);
-  const byParent = {};
-  normalizedComments.forEach(c => {
-    if (c.parentId !== null) {
-      (byParent[c.parentId] = byParent[c.parentId] || []).push(c);
-    }
-  });
-
-  const handleCommentSuccess = useCallback(() => {
-    setReplyTo(null);
-    fetchComments(); 
   }, [fetchComments]);
 
-  if (loading && comments.length === 0) {
-    return (
-      <div className="comment-section">
-        <h3>댓글</h3>
-        <div className="comment-loading">댓글을 불러오는 중...</div>
-      </div>
-    );
-  }
+  const handleCommentSubmit = async (content, parentId = null) => {
+    try {
+      const response = await axios.post(
+        `${API_BASE}/comments`,
+        {
+          postId,
+          content,
+          parentId,
+          userId: String(userId),
+        },
+        { withCredentials: true }
+      );
+
+      if (response.status === 201) {
+        await fetchComments();
+        setReplyTo(null);
+        return { success: true };
+      }
+    } catch (err) {
+      console.error('댓글 작성 실패:', err);
+      return { success: false, error: '댓글 작성에 실패했습니다.' };
+    }
+  };
+
+  const handleCommentUpdate = async (commentId, content) => {
+    try {
+      const response = await axios.put(
+        `${API_BASE}/comments/${commentId}`,
+        {
+          content,
+          userId: String(userId),
+        },
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        await fetchComments();
+        setEditingId(null);
+        return { success: true };
+      }
+    } catch (err) {
+      console.error('댓글 수정 실패:', err);
+      return { success: false, error: '댓글 수정에 실패했습니다.' };
+    }
+  };
+
+  const handleCommentDelete = async (commentId) => {
+    try {
+      const response = await axios.delete(
+        `${API_BASE}/comments/${commentId}`,
+        {
+          data: { userId: String(userId) },
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        await fetchComments();
+        return { success: true };
+      }
+    } catch (err) {
+      console.error('댓글 삭제 실패:', err);
+      return { success: false, error: '댓글 삭제에 실패했습니다.' };
+    }
+  };
+
+  const handleLike = async (commentId) => {
+    try {
+      const response = await axios.post(
+        `${API_BASE}/comments/${commentId}/like`,
+        { userId: String(userId) },
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        await fetchComments();
+        setLikedComments(prev =>
+          prev.includes(commentId)
+            ? prev.filter(id => id !== commentId)
+            : [...prev, commentId]
+        );
+      }
+    } catch (err) {
+      console.error('좋아요 실패:', err);
+    }
+  };
+
+  const organizeComments = (comments) => {
+    const commentMap = {};
+    const rootComments = [];
+
+    comments.forEach(comment => {
+      commentMap[comment.id] = { ...comment, replies: [] };
+    });
+
+    comments.forEach(comment => {
+      if (comment.parentId != null && comment.parentId !== 0) {
+        const parentComment = commentMap[comment.parentId];
+        if (parentComment) {
+          parentComment.replies.push(commentMap[comment.id]);
+        }
+      } else {
+        rootComments.push(commentMap[comment.id]);
+      }
+    });
+
+    return rootComments;
+  };
+
+  if (loading) return <div className="loading">댓글을 불러오는 중...</div>;
+  if (error) return <div className="error-message">오류: {error}</div>;
+
+  const organizedComments = organizeComments(comments);
 
   return (
     <div className="comment-section">
       <h3>댓글 ({comments.length})</h3>
-      
-      {error && (
-        <div className="comment-error">
-          {error}
-          <button onClick={fetchComments}>다시 시도</button>
-        </div>
-      )}
-
-      <div className="comment-list">
-        {roots.length > 0 ? (
-          roots.map(root => (
-            <Comment
-              key={root.id}
-              comment={root}
-              replies={byParent[root.id] || []}
-              onReply={setReplyTo}
-              onEdit={editComment}
-              onDelete={deleteComment}
-            />
-          ))
-        ) : (
-          !loading && <div className="no-comments">아직 댓글이 없습니다.</div>
-        )}
-      </div>
 
       <CreateComment
         postId={postId}
-        parentId={replyTo}
-        onSuccess={handleCommentSuccess}
-        onCancel={() => setReplyTo(null)}
+        onSubmit={handleCommentSubmit}
+        placeholder="댓글을 작성하세요..."
       />
+
+      <div className="comments-list">
+        {organizedComments.map(comment => (
+          <Comment
+            key={comment.id}
+            comment={comment}
+            currentUserId={userId}
+            onUpdate={handleCommentUpdate}
+            onDelete={handleCommentDelete}
+            onLike={handleLike}
+            onReply={(parentId) => setReplyTo(parentId)}
+            onEdit={(commentId) => setEditingId(commentId)}
+            replyTo={replyTo}
+            editingId={editingId}
+            likedComments={likedComments}
+          />
+        ))}
+      </div>
+
+      {replyTo && (
+        <CreateComment
+          postId={postId}
+          parentId={replyTo}
+          onSubmit={handleCommentSubmit}
+          onCancel={() => setReplyTo(null)}
+          placeholder="답글을 작성하세요..."
+        />
+      )}
+
+      {comments.length === 0 && (
+        <div className="no-comments">
+          아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default CommentSection;

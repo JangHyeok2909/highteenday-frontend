@@ -1,117 +1,109 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import './CreateComment.css';
 
-function CreateComment({ postId, parentId, onSuccess, onCancel }) {
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
+const CreateComment = ({ postId, parentId = null, onSubmit, onCancel, placeholder = "댓글을 작성하세요..." }) => {
   const [content, setContent] = useState('');
-  const [anonymous, setAnonymous] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-  const userId = localStorage.getItem('loginUserId');
-
-  useEffect(() => {
-    setContent('');
-    setError(null);
-  }, [parentId]);
+  const userId = parseInt(localStorage.getItem('loginUserId'), 10);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const uid = parseInt(userId, 10);
-    if (!uid || !content.trim()) {
-      setError('로그인 정보 또는 댓글 내용이 잘못되었습니다.');
+
+    if (!content.trim()) {
+      setError('댓글 내용을 입력해주세요.');
       return;
     }
 
-    setLoading(true);
+    setIsSubmitting(true);
     setError(null);
 
     try {
-      const response = await axios.post(`/api/posts/${postId}/comments`, {
-        userId: uid,
-        parentId: parentId || null,
-        content: content.trim(),
-        anonymous,
-        url: ''
-      });
-
-      setContent('');
-      setAnonymous(true);
-      
-      onSuccess(response.data);
-    } catch (err) {
-      console.error('댓글 작성 실패:', err);
-      setError(
-        err.response?.data?.message || 
-        '댓글 작성에 실패했습니다.'
+      const response = await axios.post(
+        `${API_BASE}/comments`,
+        {
+          postId,
+          content: content.trim(),
+          parentId,
+          userId: String(userId),
+        },
+        { withCredentials: true }
       );
+
+      if (response.status === 201) {
+        setContent('');
+        if (onSubmit) onSubmit();
+        if (onCancel) onCancel();
+      } else {
+        setError('댓글 작성에 실패했습니다.');
+      }
+    } catch (err) {
+      console.error('댓글 작성 오류:', err);
+      setError('댓글 작성 중 오류가 발생했습니다.');
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-  const handleCancel = () => {
-    setContent('');
-    setError(null);
-    onCancel();
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      handleSubmit(e);
+    }
   };
 
+  const buttonLabel = isSubmitting
+    ? '작성 중...'
+    : parentId
+    ? '답글 작성'
+    : '댓글 작성';
+
   return (
-    <div className="create-comment">
-      {parentId && (
-        <div className="reply-indicator">
-          <span>답글 작성 중...</span>
-          <button 
-            type="button" 
-            onClick={handleCancel}
-            className="cancel-reply-btn"
+    <form onSubmit={handleSubmit} className="create-comment-form">
+      <div className="comment-input-container">
+        <textarea
+          name="content"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          rows="3"
+          maxLength="1000"
+          disabled={isSubmitting}
+        />
+        <div className="character-count">
+          {content.length}/1000
+        </div>
+      </div>
+
+      {error && <div className="error-message">{error}</div>}
+
+      <div className="comment-actions">
+        <button
+          type="submit"
+          disabled={isSubmitting || !content.trim()}
+          className="submit-button"
+        >
+          {buttonLabel}
+        </button>
+
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="cancel-button"
+            disabled={isSubmitting}
           >
             취소
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
-      <form onSubmit={handleSubmit} className="comment-form">
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          rows={4}
-          placeholder="댓글을 입력하세요"
-          className="comment-textarea"
-          disabled={loading}
-          maxLength={500}
-        />
-        
-        <div className="comment-form-footer">
-          <div className="comment-options">
-            <label className="anonymous-checkbox">
-              <input
-                type="checkbox"
-                checked={anonymous}
-                onChange={(e) => setAnonymous(e.target.checked)}
-                disabled={loading}
-              />
-              익명으로 작성
-            </label>
-            <span className="character-count">
-              {content.length}/500
-            </span>
-          </div>
-          
-          <button
-            type="submit"
-            className="submit-comment-btn"
-            disabled={loading || !content.trim()}
-          >
-            {loading ? '작성 중...' : '댓글 작성'}
-          </button>
-        </div>
-        
-        {error && <div className="comment-error">{error}</div>}
-      </form>
-    </div>
+      <div className="shortcut-hint">Ctrl + Enter로 빠른 작성</div>
+    </form>
   );
-}
+};
 
 export default CreateComment;

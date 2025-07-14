@@ -1,0 +1,246 @@
+/* 기본 섹션 */
+.comment-section {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 각 댓글 블록 */
+.comment {
+  margin-bottom: 24px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 24px;
+}
+
+.comment-content {
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.comment-author {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #888;
+}
+
+.comment-text {
+  margin: 12px 0;
+  line-height: 1.6;
+  color: #444;
+  white-space: pre-line;
+}
+
+/* 댓글 액션 버튼 */
+.comment-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.comment-actions-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.comment-actions-button:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+/* 대댓글 스타일 */
+.comment-reply {
+  margin-left: 32px;
+  margin-top: 16px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #e3f2fd;
+}
+
+.comment-replies {
+  margin-top: 16px;
+}
+
+/* 댓글 작성 폼 */
+.comment-form {
+  background: #fafafa;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  margin-top: 32px;
+}
+
+.comment-textarea {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.comment-textarea:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+/* 폼 하단 */
+.comment-form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.comment-options {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.anonymous-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+}
+
+.character-count {
+  font-size: 12px;
+  color: #888;
+}
+
+/* 버튼 */
+.submit-comment-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.submit-comment-btn:hover:not(:disabled) {
+  background: #1565c0;
+}
+
+.submit-comment-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* 오류 */
+.comment-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffebee;
+  color: #c62828;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #ffcdd2;
+  font-size: 14px;
+}
+
+/* 답글 작성 중 */
+.reply-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #e3f2fd;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1976d2;
+}
+
+.cancel-reply-btn {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.cancel-reply-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* 수정 textarea */
+.comment-edit-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  resize: vertical;
+  margin-bottom: 8px;
+}
+
+/* 수정 버튼 */
+.comment-edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.comment-edit-actions button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.comment-edit-actions button:hover {
+  background: #f5f5f5;
+}
+
+/* 댓글 없음 안내 */
+.no-comments {
+  text-align: center;
+  padding: 48px 24px;
+  color: #666;
+}
+
+.comment-list {
+  margin-top: 24px;
+}

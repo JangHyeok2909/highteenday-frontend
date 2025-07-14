@@ -1,146 +1,277 @@
 import React, { useState } from 'react';
-import './Comment.css';
+import CreateComment from './CreateComment';
 
-function Comment({ comment, replies, onReply, onEdit, onDelete }) {
+const Comment = ({ 
+  comment, 
+  currentUserId, 
+  onUpdate, 
+  onDelete, 
+  onLike, 
+  onReply, 
+  onEdit,
+  replyTo,
+  editingId,
+  likedComments,
+  depth = 0 
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
-  const [loading, setLoading] = useState(false);
-
-  const isReply = comment.parentId !== null && comment.parentId !== 0;
-  const userId = localStorage.getItem('loginUserId');
-  const canEdit = userId && parseInt(userId) === comment.userId;
-
-  // 시간 포맷팅 개선
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now - date;
-    
-    if (diff < 60000) return '방금 전';
-    if (diff < 3600000) return `${Math.floor(diff / 60000)}분 전`;
-    if (diff < 86400000) return `${Math.floor(diff / 3600000)}시간 전`;
-    
-    return date.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleEdit = async () => {
-    if (!editContent.trim()) return;
-    
-    setLoading(true);
+    if (!editContent.trim()) {
+      setError('댓글 내용을 입력해주세요.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
     try {
-      await onEdit(comment.id, editContent.trim());
-      setIsEditing(false);
-    } catch (error) {
-      console.error('댓글 수정 실패:', error);
+      const result = await onUpdate(comment.id, editContent.trim());
+      
+      if (result.success) {
+        setIsEditing(false);
+        setEditContent(comment.content);
+      } else {
+        setError(result.error || '댓글 수정에 실패했습니다.');
+      }
+    } catch (err) {
+      setError('댓글 수정에 실패했습니다.');
+      console.error('댓글 수정 오류:', err);
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
   const handleDelete = async () => {
-    if (window.confirm('댓글을 삭제하시겠습니까?')) {
-      setLoading(true);
-      try {
-        await onDelete(comment.id);
-      } catch (error) {
-        console.error('댓글 삭제 실패:', error);
-      } finally {
-        setLoading(false);
+    if (!window.confirm('댓글을 삭제하시겠습니까?')) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const result = await onDelete(comment.id);
+      
+      if (!result.success) {
+        setError(result.error || '댓글 삭제에 실패했습니다.');
       }
+    } catch (err) {
+      setError('댓글 삭제에 실패했습니다.');
+      console.error('댓글 삭제 오류:', err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  return (
-    <div className={`comment ${isReply ? 'comment-reply' : ''}`}>
-      <div className="comment-content">
-        <div className="comment-header">
-          <span className="comment-author">
-            {isReply && '↳ '}
-            {comment.anonymous ? '익명' : comment.author}
-          </span>
-          <span className="comment-date">{formatDate(comment.createdAt)}</span>
-        </div>
+  const handleLike = async () => {
+    try {
+      await onLike(comment.id);
+    } catch (err) {
+      console.error('좋아요 오류:', err);
+    }
+  };
 
+  const handleReplySubmit = async (content) => {
+    try {
+      const result = await onUpdate(comment.id, content);
+      return result;
+    } catch (err) {
+      console.error('답글 작성 오류:', err);
+      return { success: false, error: '답글 작성에 실패했습니다.' };
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      handleEdit();
+    }
+    if (e.key === 'Escape') {
+      setIsEditing(false);
+      setEditContent(comment.content);
+      setError(null);
+    }
+  };
+
+  // 현재 사용자가 댓글 작성자인지 확인
+  const isOwner = () => {
+    return String(comment.userId) === String(currentUserId);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now - date);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) {
+      return '오늘 ' + date.toLocaleTimeString('ko-KR', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      });
+    } else if (diffDays <= 7) {
+      return `${diffDays}일 전`;
+    } else {
+      return date.toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    }
+  };
+
+  const isLiked = likedComments.includes(comment.id);
+
+  return (
+    <div className={`comment ${depth > 0 ? 'comment-reply' : ''}`} style={{ marginLeft: `${depth * 20}px` }}>
+      <div className="comment-header">
+        <div className="comment-author">
+          <div className="author-avatar">
+            {comment.author ? comment.author.charAt(0).toUpperCase() : '?'}
+          </div>
+          <div className="author-info">
+            <span className="author-name">{comment.author || '익명'}</span>
+            <span className="comment-date">{formatDate(comment.createdAt)}</span>
+            {comment.updatedAt !== comment.createdAt && (
+              <span className="edited-indicator">(수정됨)</span>
+            )}
+          </div>
+        </div>
+        
+        {isOwner() && (
+          <div className="comment-actions">
+            <button 
+              onClick={() => setIsEditing(true)}
+              className="edit-button"
+              disabled={isSubmitting}
+              title="댓글 수정"
+            >
+              수정
+            </button>
+            <button 
+              onClick={handleDelete}
+              className="delete-button"
+              disabled={isSubmitting}
+              title="댓글 삭제"
+            >
+              삭제
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="comment-content">
         {isEditing ? (
-          <div className="comment-edit">
+          <div className="edit-form">
             <textarea
               value={editContent}
               onChange={(e) => setEditContent(e.target.value)}
-              rows={3}
-              disabled={loading}
+              onKeyDown={handleKeyPress}
+              rows="3"
+              maxLength="1000"
+              disabled={isSubmitting}
+              autoFocus
             />
-            <div className="comment-edit-actions">
+            <div className="character-count">
+              {editContent.length}/1000
+            </div>
+            {error && <div className="error-message">{error}</div>}
+            <div className="edit-actions">
               <button 
-                onClick={handleEdit} 
-                disabled={loading || !editContent.trim()}
+                onClick={handleEdit}
+                disabled={isSubmitting || !editContent.trim()}
+                className="save-button"
               >
-                {loading ? '수정 중...' : '완료'}
+                {isSubmitting ? '저장 중...' : '저장'}
               </button>
               <button 
                 onClick={() => {
                   setIsEditing(false);
                   setEditContent(comment.content);
+                  setError(null);
                 }}
-                disabled={loading}
+                className="cancel-button"
+                disabled={isSubmitting}
               >
                 취소
               </button>
             </div>
+            <div className="shortcut-hint">
+              Ctrl + Enter: 저장, Esc: 취소
+            </div>
           </div>
         ) : (
-          <p className="comment-text">{comment.content}</p>
+          <div className="comment-text">
+            {comment.content}
+          </div>
         )}
-
-        <div className="comment-actions">
-          <button 
-            className="comment-reply-btn"
-            onClick={() => onReply(comment.id)}
-          >
-            답글
-          </button>
-          {canEdit && (
-            <>
-              <button 
-                className="comment-edit-btn"
-                onClick={() => setIsEditing(true)}
-                disabled={loading}
-              >
-                수정
-              </button>
-              <button 
-                className="comment-delete-btn"
-                onClick={handleDelete}
-                disabled={loading}
-              >
-                삭제
-              </button>
-            </>
-          )}
-        </div>
       </div>
 
-      {replies.length > 0 && (
+      {!isEditing && (
+        <div className="comment-footer">
+          <div className="comment-stats">
+            <button 
+              onClick={handleLike}
+              className={`like-button ${isLiked ? 'liked' : ''}`}
+              title="좋아요"
+            >
+              ❤️ {comment.likeCount || 0}
+            </button>
+            
+            <button 
+              onClick={() => onReply(comment.id)}
+              className="reply-button"
+              title="답글 작성"
+            >
+              💬 답글
+            </button>
+          </div>
+          
+          {comment.replies && comment.replies.length > 0 && (
+            <span className="reply-count">
+              답글 {comment.replies.length}개
+            </span>
+          )}
+        </div>
+      )}
+
+      {replyTo === comment.id && (
+        <div className="reply-form">
+          <CreateComment
+            postId={comment.postId}
+            parentId={comment.id}
+            onSubmit={handleReplySubmit}
+            onCancel={() => onReply(null)}
+            placeholder="답글을 작성하세요..."
+          />
+        </div>
+      )}
+
+      {comment.replies && comment.replies.length > 0 && (
         <div className="comment-replies">
-          {replies.map(reply => (
-            <Comment 
-              key={reply.id} 
-              comment={reply} 
-              replies={[]} 
+          {comment.replies.map(reply => (
+            <Comment
+              key={reply.id}
+              comment={reply}
+              currentUserId={currentUserId}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+              onLike={onLike}
               onReply={onReply}
               onEdit={onEdit}
-              onDelete={onDelete}
+              replyTo={replyTo}
+              editingId={editingId}
+              likedComments={likedComments}
+              depth={depth + 1}
             />
           ))}
         </div>
       )}
     </div>
   );
-}
+};
 
 export default Comment;
