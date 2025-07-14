@@ -61,16 +61,18 @@
 
 /*아이디 비밀번호 CSS*/
 .idpw-login {
-  margin-top: 30px;
+  margin-top: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
 }
+
 
 .input-box {
   width: 200px;
   height: 40px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   padding: 0 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -78,8 +80,9 @@
 }
 
 .submit-button {
+  margin-top: 10px;
   width: 200px;
-  height: 45px;
+  height: 50px;
   background-color: #393c3f;
   color: white;
   border: none;
@@ -93,9 +96,23 @@
   background-color: #cfd4d8;
 }
 
-.idpw-login {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+
+/*회원가입 버튼*/
+.signup-link-wrapper {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup-text {
+  font-size: 14px;
+  color: #555;
+}
+
+.signup-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
 }

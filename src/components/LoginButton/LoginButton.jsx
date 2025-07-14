@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios"; // 테스트 코드용으로 사용
 import "./LoginButton.css";
+import { Link } from "react-router-dom";
+
 
 function LoginButton() {
   const [jwtStatus, setJwtStatus] = useState("Jwt 없음");
@@ -161,6 +163,18 @@ function LoginButton() {
         )}
       </div>
       {/* 테스트 끝 */}
+
+
+      {/* 회원가입 버튼*/}
+      <div className="signup-link-wrapper">
+        <p className="signup-text">
+          아직 회원이 아니신가요?{" "}
+          <Link to="/FormRegisterPage" className="signup-link">
+            회원가입
+          </Link>
+        </p>
+      </div>
+
     </div>
   );
 }
