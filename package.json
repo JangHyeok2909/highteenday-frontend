@@ -1,7 +1,7 @@
 {
   "name": "highteenday-frontend",
   "version": "0.1.0",
-  "proxy": "http://15.164.102.185:8080",
+  "proxy": "https://highteenday.duckdns.org",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
