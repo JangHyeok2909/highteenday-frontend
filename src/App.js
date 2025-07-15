@@ -6,6 +6,12 @@ import LoginButton from './components/LoginButton/LoginButton';
 import NotFound from './pages/NotFound';
 import Register from './components/LoginRelated/Register';
 import UserPage from './components/LoginRelated/UserPage';
+import FormRegisterPage from './components/LoginRelated/FormRegisterPage';
+import CreateAccount from './components/LoginRelated/CreateAccount'; 
+import SchoolVerification from './components/LoginRelated/SchoolVerification';
+
+
+
 
   function App() {
     return (
@@ -16,6 +22,9 @@ import UserPage from './components/LoginRelated/UserPage';
           <Route path="/post/view" element={<PostPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/user" element={<UserPage />} />
+          <Route path="/FormRegisterPage" element={<FormRegisterPage />} />
+          <Route path="/CreateAccount" element={<CreateAccount />} /> 
+          <Route path="/school" element={<SchoolVerification />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

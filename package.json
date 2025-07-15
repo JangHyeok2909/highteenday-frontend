@@ -1,7 +1,7 @@
 {
   "name": "highteenday-frontend",
   "version": "0.1.0",
-  "proxy": "http://15.164.102.185:8080",
+  "proxy": "https://highteenday.duckdns.org",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
@@ -10,13 +10,15 @@
     "@testing-library/user-event": "^13.5.0",
     "@toast-ui/editor": "^3.2.2",
     "@toast-ui/react-editor": "^3.2.3",
+    "ajv": "^8.11.0",
+    "ajv-keywords": "^5.1.0",
     "axios": "^1.9.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
-  }, 
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
