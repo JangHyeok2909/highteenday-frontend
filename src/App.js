@@ -7,7 +7,8 @@ import NotFound from './pages/NotFound';
 import Register from './components/LoginRelated/Register';
 import UserPage from './components/LoginRelated/UserPage';
 import CommentSection from './components/CommentRelated/CommentSection';
-import Timetable from './components/TimetableRelated/Timetable';
+//import Timetable from './components/TimetableRelated/Timetable';
+import BoardOverview from "./pages/BoardOverview";
 
 
 
@@ -21,7 +22,9 @@ import Timetable from './components/TimetableRelated/Timetable';
           <Route path="/register" element={<Register />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/comments" element={<CommentSection postId={1} />} />
-          <Route path="/timetable" element={<Timetable />} />
+          <Route path="/board-overview" element={<BoardOverview />} />
+
+          
 
           <Route path="*" element={<NotFound />} />
         </Routes>
