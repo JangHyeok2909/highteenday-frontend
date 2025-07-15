@@ -10,6 +10,7 @@ import CommentSection from './components/CommentRelated/CommentSection';
 import Timetable from './components/TimetableRelated/Timetable';
 
 
+
   function App() {
     return (
       <Router>
