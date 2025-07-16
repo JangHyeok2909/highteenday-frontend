@@ -11,7 +11,7 @@ function Register() {
 
     const getUserInfo = async () => {
         try {
-          const res = await axios.get(`https://highteenday.duckdns.org/api/user/OAuth2UserInfo`,
+          const res = await axios.get(`/api/user/OAuth2UserInfo`,
             {
               withCredentials: true
             }
@@ -30,7 +30,7 @@ function Register() {
     const handleRegister = async (e) => {
       e.preventDefault();
       try {
-        const res = await axios.post(`https://highteenday.duckdns.org/api/user/register`,
+        const res = await axios.post(`/api/user/register`,
           {
             nickname: nickName,
             name: name,
