@@ -30,7 +30,7 @@ function PostEditor() {
     };
 
     try {
-      await axios.post('https://highteenday.duckdns.org/api/posts', postData,
+      await axios.post('/api/posts', postData,
         {
           widthCredentials: true
         }

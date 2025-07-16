@@ -20,7 +20,7 @@ export default function BoardOverview() {
       for (const board of boardIds) {
         try {
           const res = await axios.get(
-            `https://highteenday.duckdns.org/api/boards/${board.id}/posts`,
+            `/api/boards/${board.id}/posts`,
             {
               params: {
                 page: 0,
