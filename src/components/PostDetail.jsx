@@ -33,17 +33,14 @@ function PostDetail({ postId}) {
   if (!post) return <p>게시글이 존재하지 않습니다.</p>;
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1>{post.title}</h1>
-      <p style={{ color: 'gray', fontSize: '14px' }}>
-        작성자: {post.author} | 조회수: {post.viewCount} | 좋아요: {post.likeCount}
+    <div className="post-detail-container">
+      <h1 className="post-detail-title">{post.title}</h1>
+      <p className="post-detail-meta">
+          작성자: {post.author} | 조회수: {post.viewCount} | 좋아요: {post.likeCount}
       </p>
-      <hr />
-      <div
-        dangerouslySetInnerHTML={{ __html: post.content }}
-        style={{ marginTop: '20px' }}
-      />
+      <div className="post-detail-content" dangerouslySetInnerHTML={{ __html: post.content }} />
     </div>
+
   );
 }
 

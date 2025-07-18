@@ -1,19 +1,24 @@
-export default function BoardSection({ boardName, posts = [] }) {
+// props에 isBoardPage 추가
+export default function BoardSection({ boardName, posts = [], isBoardPage = false }) {
   return (
     <div>
-      <h2 className="font-bold text-red-500 mb-2">{boardName}</h2>
-      <ul className="text-sm space-y-1">
-        {posts.length === 0 ? (
-          <li className="text-gray-400">게시글이 없습니다.</li>
-        ) : (
-          posts.slice(0, 4).map((post, index) => (
-            <li key={index} className="flex justify-between truncate">
-              <span className="truncate w-2/3">{post.title}</span>
-              <span className="text-gray-500 text-xs">+{post.viewCount} 조회</span>
-            </li>
-          ))
-        )}
-      </ul>
+      <h2>{boardName}</h2>
+
+      {/* 게시글 목록은 board 페이지일 때만 보여줌 */}
+      {isBoardPage && (
+        <ul>
+          {posts.length === 0 ? (
+            <li>게시글이 없습니다.</li>
+          ) : (
+            posts.slice(0, 4).map((post, index) => (
+              <li key={index}>
+                <span>{post.title}</span>
+                <span>{post.viewCount} 조회</span>
+              </li>
+            ))
+          )}
+        </ul>
+      )}
     </div>
   );
 }

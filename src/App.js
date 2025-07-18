@@ -9,6 +9,9 @@ import UserPage from './components/LoginRelated/UserPage';
 import CommentSection from './components/CommentRelated/CommentSection';
 //import Timetable from './components/TimetableRelated/Timetable';
 import BoardOverview from "./pages/BoardOverview";
+import BoardPage from "./pages/BoardPage";
+import PostDetail from "./components/PostDetail";
+
 
 
 
@@ -23,8 +26,9 @@ import BoardOverview from "./pages/BoardOverview";
           <Route path="/user" element={<UserPage />} />
           <Route path="/comments" element={<CommentSection postId={1} />} />
           <Route path="/board-overview" element={<BoardOverview />} />
+          <Route path="/board/:boardId/post/:postId" element={<PostDetail />} />
+          <Route path="/board/:boardId" element={<BoardPage />} />
 
-          
 
           <Route path="*" element={<NotFound />} />
         </Routes>

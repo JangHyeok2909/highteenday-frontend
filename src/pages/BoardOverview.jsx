@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BoardSection from "../components/BoardSection";
 import "./BoardOverview.css";
+import { Link } from "react-router-dom";
+
 
 export default function BoardOverview() {
   const [postsByBoard, setPostsByBoard] = useState({});
@@ -43,12 +45,13 @@ export default function BoardOverview() {
   return (
   <div className="board-container">
       {boardIds.map((board) => (
-        <div key={board.id} className="board-box">
-          <BoardSection
-            boardName={board.name}
+        <Link to={`/board/${board.id}`} key={board.id} className="board-box">
+          <BoardSection boardName={board.name}
             posts={postsByBoard[board.name]}
+            isBoardPage={false} // 게시글 안 보이게
           />
-        </div>
+
+        </Link>
       ))}
     </div>
 );
