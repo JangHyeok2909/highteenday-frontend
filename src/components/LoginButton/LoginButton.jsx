@@ -80,13 +80,13 @@ function LoginButton() {
         <div className="login-content">
           {/* 소셜 로그인 */}
           <div className="social-login">
-            <a href="/oauth2/authorization/naver">
+            <a href="https://highteenday.duckdns.org/oauth2/authorization/naver">
               <img src="/images/navLogin.png" alt="네이버 로그인" className="login-button" />
             </a>
-            <a href="/oauth2/authorization/kakao">
+            <a href="https://highteenday.duckdns.org/oauth2/authorization/kakao">
               <img src="/images/kakaLogo.png" alt="카카오 로그인" className="login-button" />
             </a>
-            <a href="/oauth2/authorization/google">
+            <a href="https://highteenday.duckdns.org/oauth2/authorization/google">
               <img src="/images/googLogin.png" alt="구글 로그인" className="login-button" />
             </a>
           </div>
