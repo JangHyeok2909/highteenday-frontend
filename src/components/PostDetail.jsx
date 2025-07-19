@@ -1,34 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function PostDetail({ postId}) {
-  const [post, setPost] = useState(null); // 게시글 데이터
-  const [loading, setLoading] = useState(true); // 로딩 상태
-  const [error, setError] = useState(null);     // 에러 상태
+function PostDetail({ postId }) {
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [isScrapped, setIsScrapped] = useState(false);
 
-  /*페이지가 다 렌더링 된 후에 postId가 변경될 때마다 
-  서버로 postId에 해당하는 게시글을 가져와 화면에 보여줌*/
+  const userId = localStorage.getItem('loginUserId');
+
   useEffect(() => {
-    setLoading(true);       
-    setError(null);
-    setPost(null); 
-    
     const fetchPost = async () => {
+      setLoading(true);
+      setError(null);
+      setPost(null);
       try {
-        const res = await axios.get(`/api/posts/${postId}`);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`,
+          {
+            params: { userId },
+            withCredentials: true,
+          }
+        );
         setPost(res.data);
+        setIsScrapped(res.data.isScrapped || false);
       } catch (err) {
+        console.error('게시글 불러오기 실패:', err);
         setError('게시글을 불러오는 데 실패했습니다.');
-        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPost();
-  }, [postId]);
+  }, [postId, userId]);
 
-  if (loading) return <p>로딩 중...</p>;
+  const handleScrap = async () => {
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/posts/${postId}/scraps`,
+        null,
+        {
+          params: { userId },
+          withCredentials: true,
+        }
+      );
+      setIsScrapped((prev) => !prev);
+    } catch (err) {
+      console.error('스크랩 요청 실패:', err);
+      alert('스크랩 처리 중 오류가 발생했습니다.');
+    }
+  };
+
+  if (loading) return <p>로딩 중 ...</p>;
   if (error) return <p>{error}</p>;
   if (!post) return <p>게시글이 존재하지 않습니다.</p>;
 
@@ -36,13 +60,12 @@ function PostDetail({ postId}) {
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
       <h1>{post.title}</h1>
       <p style={{ color: 'gray', fontSize: '14px' }}>
-        작성자: {post.author} | 조회수: {post.viewCount} | 좋아요: {post.likeCount}
+        작성자: {post.author || '익명'} | 조회수: {post.views}
       </p>
-      <hr />
-      <div
-        dangerouslySetInnerHTML={{ __html: post.content }}
-        style={{ marginTop: '20px' }}
-      />
+      <div dangerouslySetInnerHTML={{ __html: post.content }} />
+      <button onClick={handleScrap} style={{ marginTop: '20px' }}>
+        {isScrapped ? '스크랩 취소' : '스크랩'}
+      </button>
     </div>
   );
 }

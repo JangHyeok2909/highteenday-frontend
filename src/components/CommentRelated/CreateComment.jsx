@@ -23,20 +23,21 @@ const CreateComment = ({ postId, parentId = null, onSubmit, onCancel, placeholde
 
     try {
       const response = await axios.post(
-        `${API_BASE}/comments`,
+        `${API_BASE}/posts/${postId}/comments`,
         {
-          postId,
           content: content.trim(),
           parentId,
-          userId: String(userId),
+          userId,
+          anonymous: false,
+          url: ''
         },
         { withCredentials: true }
       );
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         setContent('');
-        if (onSubmit) onSubmit();
-        if (onCancel) onCancel();
+        if (onSubmit) onSubmit();  // 댓글 목록 새로고침용
+        if (onCancel) onCancel();  // 답글창 닫기용
       } else {
         setError('댓글 작성에 실패했습니다.');
       }
