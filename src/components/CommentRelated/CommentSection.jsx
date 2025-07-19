@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Comment from './Comment';
 import CreateComment from './CreateComment';
-import './CommentSystem.css';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
@@ -11,8 +10,9 @@ const CommentSection = ({ postId }) => {
   const [replyTo, setReplyTo] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [likedComments, setLikedComments] = useState([]);
-  const [error, setError] = useState(null);
+  const [dislikedComments, setDislikedComments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const userId = parseInt(localStorage.getItem('loginUserId'), 10);
 
@@ -26,8 +26,8 @@ const CommentSection = ({ postId }) => {
       );
       setComments(res.data);
     } catch (err) {
-      setError('댓글을 불러오는데 실패했습니다.');
-      console.error('댓글 로드 실패:', err);
+      console.error('댓글 불러오기 실패:', err);
+      setError('댓글을 불러오는 데 실패했습니다.');
     } finally {
       setLoading(false);
     }
@@ -41,18 +41,18 @@ const CommentSection = ({ postId }) => {
 
   const handleCommentSubmit = async (content, parentId = null) => {
     try {
-      const response = await axios.post(
-        `${API_BASE}/comments`,
+      const res = await axios.post(
+        `${API_BASE}/posts/${postId}/comments`,
         {
-          postId,
           content,
           parentId,
-          userId: String(userId),
+          userId,
+          anonymous: false,
+          url: ''
         },
         { withCredentials: true }
       );
-
-      if (response.status === 201) {
+      if (res.status === 200) {
         await fetchComments();
         setReplyTo(null);
         return { success: true };
@@ -65,16 +65,17 @@ const CommentSection = ({ postId }) => {
 
   const handleCommentUpdate = async (commentId, content) => {
     try {
-      const response = await axios.put(
-        `${API_BASE}/comments/${commentId}`,
+      const res = await axios.put(
+        `${API_BASE}/posts/${postId}/comments/${commentId}?userId=${userId}`,
         {
           content,
-          userId: String(userId),
+          parentId: null,
+          anonymous: false,
+          url: ''
         },
         { withCredentials: true }
       );
-
-      if (response.status === 200) {
+      if (res.status === 200) {
         await fetchComments();
         setEditingId(null);
         return { success: true };
@@ -87,15 +88,11 @@ const CommentSection = ({ postId }) => {
 
   const handleCommentDelete = async (commentId) => {
     try {
-      const response = await axios.delete(
-        `${API_BASE}/comments/${commentId}`,
-        {
-          data: { userId: String(userId) },
-          withCredentials: true,
-        }
+      const res = await axios.delete(
+        `${API_BASE}/posts/${postId}/comments/${commentId}?userId=${userId}`,
+        { withCredentials: true }
       );
-
-      if (response.status === 200) {
+      if (res.status === 200) {
         await fetchComments();
         return { success: true };
       }
@@ -107,14 +104,14 @@ const CommentSection = ({ postId }) => {
 
   const handleLike = async (commentId) => {
     try {
-      const response = await axios.post(
-        `${API_BASE}/comments/${commentId}/like`,
-        { userId: String(userId) },
+      const res = await axios.post(
+        `${API_BASE}/comments/${commentId}/like?userId=${userId}`,
+        {},
         { withCredentials: true }
       );
-
-      if (response.status === 200) {
+      if (res.status === 200) {
         await fetchComments();
+        setDislikedComments(prev => prev.filter(id => id !== commentId));
         setLikedComments(prev =>
           prev.includes(commentId)
             ? prev.filter(id => id !== commentId)
@@ -126,30 +123,45 @@ const CommentSection = ({ postId }) => {
     }
   };
 
+  const handleDislike = async (commentId) => {
+    try {
+      const res = await axios.post(
+        `${API_BASE}/comments/${commentId}/dislike?userId=${userId}`,
+        {},
+        { withCredentials: true }
+      );
+      if (res.status === 200) {
+        await fetchComments();
+        setLikedComments(prev => prev.filter(id => id !== commentId));
+        setDislikedComments(prev =>
+          prev.includes(commentId)
+            ? prev.filter(id => id !== commentId)
+            : [...prev, commentId]
+        );
+      }
+    } catch (err) {
+      console.error('싫어요 실패:', err);
+    }
+  };
+
   const organizeComments = (comments) => {
     const commentMap = {};
-    const rootComments = [];
+    const roots = [];
 
     comments.forEach(comment => {
       commentMap[comment.id] = { ...comment, replies: [] };
     });
 
     comments.forEach(comment => {
-      if (comment.parentId != null && comment.parentId !== 0) {
-        const parentComment = commentMap[comment.parentId];
-        if (parentComment) {
-          parentComment.replies.push(commentMap[comment.id]);
-        }
+      if (comment.parentId && commentMap[comment.parentId]) {
+        commentMap[comment.parentId].replies.push(commentMap[comment.id]);
       } else {
-        rootComments.push(commentMap[comment.id]);
+        roots.push(commentMap[comment.id]);
       }
     });
 
-    return rootComments;
+    return roots;
   };
-
-  if (loading) return <div className="loading">댓글을 불러오는 중...</div>;
-  if (error) return <div className="error-message">오류: {error}</div>;
 
   const organizedComments = organizeComments(comments);
 
@@ -163,7 +175,7 @@ const CommentSection = ({ postId }) => {
         placeholder="댓글을 작성하세요..."
       />
 
-      <div className="comments-list">
+      <div className="comment-list">
         {organizedComments.map(comment => (
           <Comment
             key={comment.id}
@@ -172,11 +184,13 @@ const CommentSection = ({ postId }) => {
             onUpdate={handleCommentUpdate}
             onDelete={handleCommentDelete}
             onLike={handleLike}
-            onReply={(parentId) => setReplyTo(parentId)}
-            onEdit={(commentId) => setEditingId(commentId)}
+            onDislike={handleDislike}
+            onReply={(id) => setReplyTo(id)}
+            onEdit={(id) => setEditingId(id)}
             replyTo={replyTo}
             editingId={editingId}
             likedComments={likedComments}
+            dislikedComments={dislikedComments}
           />
         ))}
       </div>
@@ -192,9 +206,7 @@ const CommentSection = ({ postId }) => {
       )}
 
       {comments.length === 0 && (
-        <div className="no-comments">
-          아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!
-        </div>
+        <div className="no-comments">아직 댓글이 없습니다. 첫 댓글을 남겨보세요!</div>
       )}
     </div>
   );

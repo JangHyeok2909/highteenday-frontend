@@ -244,3 +244,37 @@
 .comment-list {
   margin-top: 24px;
 }
+
+/* 좋아요/싫어요 버튼 스타일 */
+.like-button,
+.dislike-button,
+.reply-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.like-button:hover,
+.dislike-button:hover,
+.reply-button:hover {
+  background: #f0f0f0;
+  color: #000;
+}
+
+.like-button.liked {
+  color: #e53935;
+  font-weight: bold;
+}
+
+.dislike-button.disliked {
+  color: #1565c0;
+  font-weight: bold;
+}
