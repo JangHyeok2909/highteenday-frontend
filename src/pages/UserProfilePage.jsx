@@ -6,25 +6,23 @@ function UserProfilePage() {
   const navigate = useNavigate();
   const user = location.state;
 
-  if (!user) {
-    return (
-      <div className="profile-container">
-        <p className="profile-error">회원 정보를 찾을 수 없습니다.</p>
-        <button onClick={() => navigate(-1)} className="back-button">← 뒤로가기</button>
-      </div>
-    );
-  }
+  const exampleUser = {
+    name: "홍길동",
+    nickname: "gildong123",
+    email: "gildong@example.com",
+    provider: "instagram"
+  };
+
+  const currentUser = user ?? exampleUser;
 
   return (
     <div className="profile-container">
-      <h2>{user.nickname}님의 프로필</h2>
+      <h2>{currentUser.nickname}님의 프로필</h2>
       <div className="profile-card">
-        <p><strong>이름:</strong> {user.name}</p>
-        <p><strong>닉네임:</strong> {user.nickname}</p>
-        <p><strong>이메일:</strong> {user.email}</p>
-        <p><strong>학교:</strong> {user.school}</p>
-        <p><strong>학년:</strong> {user.grade}</p>
-        <p><strong>가입 경로:</strong> {user.provider}</p> 
+        <p><strong>이름:</strong> {currentUser.name}</p>
+        <p><strong>닉네임:</strong> {currentUser.nickname}</p>
+        <p><strong>이메일:</strong> {currentUser.email}</p>
+        <p><strong>가입 경로:</strong> {currentUser.provider}</p>
       </div>
       <button onClick={() => navigate(-1)} className="back-button">← 뒤로가기</button>
     </div>
