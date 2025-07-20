@@ -24,6 +24,7 @@ function UserProfilePage() {
         <p><strong>이메일:</strong> {user.email}</p>
         <p><strong>학교:</strong> {user.school}</p>
         <p><strong>학년:</strong> {user.grade}</p>
+        <p><strong>가입 경로:</strong> {user.provider}</p> 
       </div>
       <button onClick={() => navigate(-1)} className="back-button">← 뒤로가기</button>
     </div>
