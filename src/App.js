@@ -9,6 +9,10 @@ import UserPage from './components/LoginRelated/UserPage';
 import FormRegisterPage from './components/LoginRelated/FormRegisterPage';
 import CreateAccount from './components/LoginRelated/CreateAccount'; 
 import SchoolVerification from './components/LoginRelated/SchoolVerification';
+import UserProfilePage from "./pages/UserProfilePage";
+import CheckPage from "./pages/CheckPage";
+
+
 
 
 
@@ -25,6 +29,10 @@ import SchoolVerification from './components/LoginRelated/SchoolVerification';
           <Route path="/FormRegisterPage" element={<FormRegisterPage />} />
           <Route path="/CreateAccount" element={<CreateAccount />} /> 
           <Route path="/school" element={<SchoolVerification />} />
+          <Route path="/user-profile" element={<UserProfilePage />} />
+          <Route path="/check-Page" element={<CheckPage />} />
+          
+          
 
           <Route path="*" element={<NotFound />} />
         </Routes>
