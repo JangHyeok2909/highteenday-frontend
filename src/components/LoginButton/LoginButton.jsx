@@ -46,7 +46,6 @@ function LoginButton() {
 
   const handleLogin = async () => {
   try {
-    // 로그인 요청 (POST)
     const response = await axios.post("/api/user/login", {
       email: id,
       password: pw,
@@ -55,8 +54,6 @@ function LoginButton() {
     });
 
     alert("로그인 성공");
-
-    // ✅ 로그인 성공 후 유저 정보 요청
     await getJwtStatus();
 
   } catch (error) {
