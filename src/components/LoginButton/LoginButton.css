@@ -1,0 +1,118 @@
+/*네이버 카카오 구글 로그인 버튼 CSS*/
+.logo-header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 20px;
+}
+
+.logo-img {
+  width: 255px;
+  height: 98px;
+  cursor: pointer;
+}
+
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #cccccc;
+  border-radius: 10px;
+  padding: 30px 20px;
+  width: 550px;
+  height: 350px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  justify-content: center;            /* 로그인 창 세로 중앙 정렬 */
+}
+
+.login-content {
+  display: flex;
+  flex-direction: row;  /* 🔁 좌우 배치 */
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.login-title {
+  margin-bottom: 10px;
+}
+
+.jwt-status {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.login-button {
+  width: 200px;
+  height: 50px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.social-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/*아이디 비밀번호 CSS*/
+.idpw-login {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.input-box {
+  width: 200px;
+  height: 40px;
+  margin-bottom: 5px;
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.submit-button {
+  margin-top: 10px;
+  width: 200px;
+  height: 50px;
+  background-color: #393c3f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+  background-color: #cfd4d8;
+}
+
+
+/*회원가입 버튼*/
+.signup-link-wrapper {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup-text {
+  font-size: 14px;
+  color: #555;
+}
+
+.signup-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}

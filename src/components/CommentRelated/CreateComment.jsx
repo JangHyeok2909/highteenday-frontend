@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
-
-const CreateComment = ({ postId, parentId = null, onSubmit, onCancel, placeholder = "댓글을 작성하세요..." }) => {
+const CreateComment = ({ 
+  postId, 
+  parentId = null, 
+  anonymous=false, 
+  onSubmit, 
+  onCancel, 
+  placeholder = "댓글을 작성하세요..." 
+}) => {
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
-
-  const userId = parseInt(localStorage.getItem('loginUserId'), 10);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,25 +24,11 @@ const CreateComment = ({ postId, parentId = null, onSubmit, onCancel, placeholde
     setError(null);
 
     try {
-      const response = await axios.post(
-        `${API_BASE}/posts/${postId}/comments`,
-        {
-          content: content.trim(),
-          parentId,
-          userId,
-          anonymous: false,
-          url: ''
-        },
-        { withCredentials: true }
-      );
-
-      if (response.status === 200) {
-        setContent('');
-        if (onSubmit) onSubmit();  // 댓글 목록 새로고침용
-        if (onCancel) onCancel();  // 답글창 닫기용
-      } else {
-        setError('댓글 작성에 실패했습니다.');
+      if (onSubmit) {
+        await onSubmit(content.trim(), parentId);
       }
+      setContent('');
+      if (onCancel) onCancel();
     } catch (err) {
       console.error('댓글 작성 오류:', err);
       setError('댓글 작성 중 오류가 발생했습니다.');

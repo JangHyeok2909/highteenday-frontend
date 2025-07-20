@@ -6,24 +6,26 @@ const Comment = ({
   currentUserId,
   onUpdate,
   onDelete,
+  onSubmitReply,
   onLike,
   onDislike,
-  onReply,
-  onEdit,
-  replyTo,
-  editingId,
+  onReplyClick,
+  replyTarget,
   likedComments,
   dislikedComments,
-  depth = 0,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  const isOwner = () => String(comment.userId) === String(currentUserId);
+  const isOwner = String(comment.userId) === String(currentUserId);
   const isLiked = likedComments.includes(comment.id);
   const isDisliked = dislikedComments.includes(comment.id);
+
+  const anonymousLabel = comment.isAnonymous
+    ? `익명${comment.anonymousNumber || ''}`
+    : comment.author;
 
   const handleEdit = async () => {
     if (!editContent.trim()) {
@@ -69,28 +71,8 @@ const Comment = ({
     }
   };
 
-  const handleLike = () => {
-    onLike(comment.id);
-  };
-
-  const handleDislike = () => {
-    onDislike(comment.id);
-  };
-
-  const handleReplySubmit = async (content) => {
-    try {
-      const result = await onUpdate(comment.id, content);
-      return result;
-    } catch (err) {
-      console.error('답글 작성 오류:', err);
-      return { success: false, error: '답글 작성에 실패했습니다.' };
-    }
-  };
-
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && e.ctrlKey) {
-      handleEdit();
-    }
+    if (e.key === 'Enter' && e.ctrlKey) handleEdit();
     if (e.key === 'Escape') {
       setIsEditing(false);
       setEditContent(comment.content);
@@ -101,16 +83,16 @@ const Comment = ({
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffTime = Math.abs(now - date);
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diff = now - date;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) {
+    if (days === 0) {
       return '오늘 ' + date.toLocaleTimeString('ko-KR', {
         hour: '2-digit',
         minute: '2-digit',
       });
-    } else if (diffDays <= 7) {
-      return `${diffDays}일 전`;
+    } else if (days < 7) {
+      return `${days}일 전`;
     } else {
       return date.toLocaleDateString('ko-KR', {
         year: 'numeric',
@@ -121,17 +103,14 @@ const Comment = ({
   };
 
   return (
-    <div
-      className={`comment ${depth > 0 ? 'comment-reply' : ''}`}
-      style={{ marginLeft: `${depth * 20}px` }}
-    >
+    <div className="comment">
       <div className="comment-header">
         <div className="comment-author">
           <div className="author-avatar">
-            {comment.author ? comment.author.charAt(0).toUpperCase() : '익'}
+            {anonymousLabel ? anonymousLabel.charAt(0).toUpperCase() : '익'}
           </div>
           <div className="author-info">
-            <span className="author-name">{comment.author || '익명'}</span>
+            <span className="author-name">{anonymousLabel}</span>
             <span className="comment-date">{formatDate(comment.createdAt)}</span>
             {comment.updatedAt !== comment.createdAt && (
               <span className="edited-indicator">(수정됨)</span>
@@ -139,7 +118,7 @@ const Comment = ({
           </div>
         </div>
 
-        {isOwner() && (
+        {isOwner && (
           <div className="comment-actions">
             <button onClick={() => setIsEditing(true)} disabled={isSubmitting}>
               수정
@@ -191,59 +170,38 @@ const Comment = ({
         <div className="comment-footer">
           <div className="comment-stats">
             <button
-              onClick={handleLike}
+              onClick={() => onLike(comment.id)}
               className={`like-button ${isLiked ? 'liked' : ''}`}
             >
-              ❤️ {comment.likeCount || 0}
+              👍 {comment.likeCount || 0}
             </button>
             <button
-              onClick={handleDislike}
+              onClick={() => onDislike(comment.id)}
               className={`dislike-button ${isDisliked ? 'disliked' : ''}`}
             >
-              💔 {comment.dislikeCount || 0}
+              👎 {comment.dislikeCount || 0}
             </button>
-            <button onClick={() => onReply(comment.id)} className="reply-button">
+            <button
+              onClick={() => onReplyClick(comment.id, anonymousLabel)}
+              className="reply-button"
+            >
               💬 답글
             </button>
           </div>
-          {comment.replies && comment.replies.length > 0 && (
-            <span className="reply-count">답글 {comment.replies.length}개</span>
-          )}
         </div>
       )}
 
-      {replyTo === comment.id && (
+      {replyTarget?.parentId === comment.id && (
         <div className="reply-form">
           <CreateComment
             postId={comment.postId}
             parentId={comment.id}
-            onSubmit={handleReplySubmit}
-            onCancel={() => onReply(null)}
-            placeholder="답글을 작성하세요..."
-          />
-        </div>
-      )}
-
-      {comment.replies && comment.replies.length > 0 && (
-        <div className="comment-replies">
-          {comment.replies.map((reply) => (
-            <Comment
-              key={reply.id}
-              comment={reply}
-              currentUserId={currentUserId}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-              onLike={onLike}
-              onDislike={onDislike}
-              onReply={onReply}
-              onEdit={onEdit}
-              replyTo={replyTo}
-              editingId={editingId}
-              likedComments={likedComments}
-              dislikedComments={dislikedComments}
-              depth={depth + 1}
-            />
-          ))}
+            onSubmit={(content) =>
+              onSubmitReply(`@${replyTarget.parentAuthor} ${content}`, comment.id)
+            }
+            onCancel={() => onReplyClick(null)}
+            placeholder={`@${replyTarget.parentAuthor} 님에게 답글`}
+          />  
         </div>
       )}
     </div>
