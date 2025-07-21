@@ -15,6 +15,7 @@ function PostDetail({ postId }) {
       setError(null);
       setPost(null);
       try {
+
         const res = await axios.get(
           `${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`,
           {

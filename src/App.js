@@ -14,8 +14,7 @@ import CommentSection from './components/CommentRelated/CommentSection';
 import BoardOverview from "./pages/BoardOverview";
 import BoardPage from "./pages/BoardPage";
 import PostDetail from "./components/PostDetail";
-
-
+import UserProfilePage from "./pages/UserProfilePage";
 
   function App() {
     return (
@@ -33,7 +32,7 @@ import PostDetail from "./components/PostDetail";
           <Route path="/board-overview" element={<BoardOverview />} />
           <Route path="/board/:boardId/post/:postId" element={<PostDetail />} />
           <Route path="/board/:boardId" element={<BoardPage />} />
-
+          <Route path="/user-profile" element={<UserProfilePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

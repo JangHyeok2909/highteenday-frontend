@@ -7,10 +7,11 @@ function Register() {
     const [name, setName] = useState("");
     const [error, setError] = useState("");
     const [nickName, setNickName] = useState("");
+    const [password, setPassword] = useState("");
 
     const getUserInfo = async () => {
         try {
-          const res = await axios.get(`https://highteenday.duckdns.org/api/user/OAuth2UserInfo`,
+          const res = await axios.get(`/api/user/OAuth2UserInfo`,
             {
               withCredentials: true
             }
@@ -29,12 +30,13 @@ function Register() {
     const handleRegister = async (e) => {
       e.preventDefault();
       try {
-        const res = await axios.post(`https://highteenday.duckdns.org/api/user/register`,
+        const res = await axios.post(`/api/user/register`,
           {
-            nickName: nickName,
+            nickname: nickName,
             name: name,
             email: email,
-            provider: provider
+            provider: provider,
+            password: password
           },
           {
             withCredentials: true
@@ -72,6 +74,9 @@ function Register() {
           <form onSubmit={handleRegister}>
             <label>
               닉네임 : <input type="text" value={nickName} onChange={(e) => setNickName(e.target.value)}></input>
+            </label>
+            <label>
+              비밀번호 : <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
             </label>
             <button type="submit">가입</button>
           </form>            
