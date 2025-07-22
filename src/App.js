@@ -33,6 +33,7 @@ import UserProfilePage from "./pages/UserProfilePage";
           <Route path="/board/:boardId/post/:postId" element={<PostDetail />} />
           <Route path="/board/:boardId" element={<BoardPage />} />
           <Route path="/user-profile" element={<UserProfilePage />} />
+          <Route path="/post/:postId" element={<PostDetail/>}/>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
