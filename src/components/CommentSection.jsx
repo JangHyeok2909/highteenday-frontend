@@ -16,7 +16,7 @@ function CommentSection({ postId }) {
 
   const fetchComments = async () => {
     try {
-      const res = await axios.get(`https://highteenday.duckdns.org/api/posts/${postId}/comments`,
+      const res = await axios.get(`/api/posts/${postId}/comments`,
         {
           widthCredentials: true
         }
