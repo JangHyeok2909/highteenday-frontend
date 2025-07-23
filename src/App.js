@@ -15,6 +15,9 @@ import BoardOverview from "./pages/BoardOverview";
 import BoardPage from "./pages/BoardPage";
 import PostDetail from "./components/PostDetail";
 import UserProfilePage from "./pages/UserProfilePage";
+import UserCommunityPage from "./pages/UserCommunityPage.jsx";
+
+
 
   function App() {
     return (
@@ -34,6 +37,10 @@ import UserProfilePage from "./pages/UserProfilePage";
           <Route path="/board/:boardId" element={<BoardPage />} />
           <Route path="/user-profile" element={<UserProfilePage />} />
           <Route path="/post/:postId" element={<PostDetail/>}/>
+          <Route path="/mypage/community" element={<UserCommunityPage />} />
+   
+
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
