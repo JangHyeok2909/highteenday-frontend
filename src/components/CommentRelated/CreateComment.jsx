@@ -8,10 +8,11 @@ const CreateComment = ({
   onSubmit,
   onCancel,
   parentId = null,
+  parentAuthor = null,
   placeholder = "댓글을 작성하세요...",
   anonymous = false,
 }) => {
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(parentAuthor ? `@${parentAuthor} ` : '');
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState('');
@@ -19,7 +20,24 @@ const CreateComment = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleContentChange = (e) => {
-    setContent(e.target.value);
+    let newContent = e.target.value;
+    
+    // 답글 작성 시 @부모 멘션 처리
+    if (parentAuthor && parentId) {
+      const mentionPrefix = `@${parentAuthor} `;
+      
+      // @부모 멘션이 삭제되었다면 다시 추가
+      if (!newContent.startsWith(mentionPrefix)) {
+        // 사용자가 다른 내용을 입력하고 있다면 멘션을 앞에 유지
+        if (newContent.length > 0) {
+          newContent = mentionPrefix + newContent;
+        } else {
+          newContent = mentionPrefix;
+        }
+      }
+    }
+    
+    setContent(newContent);
   };
 
   const handleFileChange = async (e) => {
@@ -29,14 +47,12 @@ const CreateComment = ({
     setFile(selectedFile);
     setError(null);
 
-    // 미리보기 생성
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreviewUrl(reader.result);
     };
     reader.readAsDataURL(selectedFile);
 
-    // 실제 업로드 처리
     try {
       const formData = new FormData();
       formData.append('file', selectedFile);
@@ -53,12 +69,10 @@ const CreateComment = ({
         }
       );
 
-      // location 헤더에서 URL 가져오기
       const locationUrl = response.headers['location'];
       if (locationUrl) {
         setUploadedImageUrl(locationUrl);
       } else if (response.data && response.data.url) {
-        // 응답 데이터에서 URL 가져오기 (백업)
         setUploadedImageUrl(response.data.url);
       } else {
         throw new Error('서버에서 이미지 URL을 반환하지 않았습니다.');
@@ -75,7 +89,16 @@ const CreateComment = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!content.trim() && !uploadedImageUrl) {
+    // 답글에서 @부모만 있고 다른 내용이 없는 경우 처리
+    let finalContent = content.trim();
+    if (parentAuthor && parentId) {
+      const mentionPrefix = `@${parentAuthor}`;
+      if (finalContent === mentionPrefix || finalContent === mentionPrefix + ' ') {
+        finalContent = '';
+      }
+    }
+
+    if (!finalContent && !uploadedImageUrl) {
       setError('댓글 내용이나 이미지를 입력해주세요.');
       return;
     }
@@ -85,19 +108,17 @@ const CreateComment = ({
 
     try {
       const result = await onSubmit(content.trim(), uploadedImageUrl, parentId, anonymous);
-      
-      if (result && result.success !== false) {
-        // 성공 시 초기화
-        setContent('');
+
+      if (result && result.success === false) {
+        setError(result.error || '댓글 작성에 실패했습니다.');
+      } else {
+        setContent(parentAuthor ? `@${parentAuthor} ` : '');
         setFile(null);
         setPreviewUrl(null);
         setUploadedImageUrl('');
-        
-        // 파일 입력 초기화
-        const fileInput = document.querySelector('input[type="file"]');
+
+        const fileInput = document.querySelector(`input[type="file"]#file-input-${parentId || 'main'}`);
         if (fileInput) fileInput.value = '';
-      } else {
-        setError(result?.error || '댓글 작성에 실패했습니다.');
       }
     } catch (err) {
       console.error('댓글 작성 실패:', err);
@@ -111,9 +132,23 @@ const CreateComment = ({
     setFile(null);
     setPreviewUrl(null);
     setUploadedImageUrl('');
-    const fileInput = document.querySelector('input[type="file"]');
+    const fileInput = document.querySelector(`input[type="file"]#file-input-${parentId || 'main'}`);
     if (fileInput) fileInput.value = '';
   };
+
+  // 실제 제출될 내용 길이 계산 (멘션 제외)
+  const getActualContentLength = () => {
+    let actualContent = content.trim();
+    if (parentAuthor && parentId) {
+      const mentionPrefix = `@${parentAuthor}`;
+      if (actualContent.startsWith(mentionPrefix)) {
+        actualContent = actualContent.substring(mentionPrefix.length).trim();
+      }
+    }
+    return actualContent.length;
+  };
+
+  const isSubmitDisabled = isSubmitting || (getActualContentLength() === 0 && !uploadedImageUrl);
 
   return (
     <form className="create-comment-form" onSubmit={handleSubmit}>
@@ -125,7 +160,7 @@ const CreateComment = ({
         disabled={isSubmitting}
         rows="3"
       />
-      
+
       <div className="file-upload-section">
         <input
           type="file"
@@ -146,20 +181,20 @@ const CreateComment = ({
       )}
 
       {error && <div className="create-comment-error">{error}</div>}
-      
+
       <div className="comment-form-actions">
-        <button 
-          type="submit" 
-          className="create-comment-button" 
-          disabled={isSubmitting || (!content.trim() && !uploadedImageUrl)}
+        <button
+          type="submit"
+          className="create-comment-button"
+          disabled={isSubmitDisabled}
         >
           {isSubmitting ? '작성 중...' : '댓글 작성'}
         </button>
-        
+
         {onCancel && (
-          <button 
-            type="button" 
-            onClick={onCancel} 
+          <button
+            type="button"
+            onClick={onCancel}
             className="cancel-comment-button"
             disabled={isSubmitting}
           >

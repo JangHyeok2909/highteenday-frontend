@@ -6,7 +6,6 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 
 function PostEditor() {
   const editorRef = useRef();
-  const userIdInputRef = useRef();
   const { postId } = useParams();
   const navigate = useNavigate();
 
@@ -27,7 +26,7 @@ function PostEditor() {
           setTitle(data.title);
           setIsAnonymous(data.anonymous);
           editorRef.current?.getInstance().setHTML(data.content);
-          setBoardId(data.boardId || ''); // boardId가 포함되어 있다면
+          setBoardId(data.boardId || '');
         })
         .catch((err) => {
           console.error('게시글 로딩 실패:', err);
@@ -37,13 +36,6 @@ function PostEditor() {
   }, [isEditMode, postId]);
 
   const handleSubmit = async () => {
-    const currentUserId = userIdInputRef.current?.value;
-
-    if (!currentUserId || isNaN(currentUserId)) {
-      alert('User ID를 입력하세요.');
-      return;
-    }
-
     const content = editorRef.current.getInstance().getHTML();
 
     const postData = {
@@ -54,7 +46,6 @@ function PostEditor() {
 
     try {
       if (isEditMode) {
-        // 수정 모드
         await axios.put(
           `${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`,
           postData,
@@ -63,11 +54,9 @@ function PostEditor() {
         alert('게시글이 수정되었습니다.');
         navigate(`/posts/${postId}`);
       } else {
-        // 작성 모드
         const newPostData = {
           ...postData,
           boardId: Number(boardId),
-          userId: Number(currentUserId),
         };
 
         const res = await axios.post(
@@ -76,7 +65,6 @@ function PostEditor() {
           { withCredentials: true }
         );
         alert('게시글이 작성되었습니다.');
-        // 새로 생성된 postId를 이용해 이동
         const location = res.headers.location || '/';
         navigate(location.startsWith('/posts/') ? location : '/');
       }
@@ -89,14 +77,6 @@ function PostEditor() {
   return (
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
       <h2>{isEditMode ? '게시글 수정' : '게시글 작성'}</h2>
-
-      <input
-        type="text"
-        placeholder="User ID"
-        ref={userIdInputRef}
-        style={{ width: '100%', marginBottom: '10px' }}
-        disabled={isEditMode} // 수정 모드에서는 userId 입력 불필요
-      />
 
       {!isEditMode && (
         <input
@@ -125,16 +105,8 @@ function PostEditor() {
         useCommandShortcut={true}
         hooks={{
           addImageBlobHook: async (blob, callback) => {
-            const currentUserId = userIdInputRef.current?.value;
-
-            if (!currentUserId || isNaN(currentUserId)) {
-              alert('이미지를 업로드하려면 User ID를 입력하세요.');
-              return;
-            }
-
             const formData = new FormData();
             formData.append('file', blob);
-            formData.append('userId', Number(currentUserId));
 
             try {
               const res = await axios.post(

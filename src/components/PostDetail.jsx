@@ -143,18 +143,12 @@ function PostDetail() {
           👎 {post.disliked ? '싫어요 취소' : '싫어요'} ({post.dislikeCount})
         </button>
 
-        {/*
         {post.owner && (
           <button onClick={handleEdit}>
             📝 수정
           </button>
-        )} // '수정'버튼을 owner에게만 보여줌
-        */}
-        {true && (
-          <button onClick={handleEdit}>
-            📝 수정
-          </button>
-        )} 
+        )}
+        
       </div>
     </div>
   );

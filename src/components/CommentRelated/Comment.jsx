@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import CreateComment from './CreateComment';
+import { ThumbsUp, ThumbsDown, MessageSquare, Trash2, Edit3, X } from 'lucide-react';
 
 const Comment = ({
   comment,
@@ -9,218 +10,250 @@ const Comment = ({
   onSubmitReply,
   onLike,
   onDislike,
-  onReplyClick,
+  replyTo,
   replyTarget,
   likedComments,
   dislikedComments,
+  onCancelReply,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editImage, setEditImage] = useState(comment.imageUrl || null);
+  const [editFile, setEditFile] = useState(null);
   const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isOwner = comment.owner === true;
+  const isOwner = comment.owner === currentUserId;
+  const isReply = comment.parentId !== null;
   const isLiked = likedComments.includes(comment.id);
   const isDisliked = dislikedComments.includes(comment.id);
+  const fileInputRef = useRef(null);
 
-  const anonymousLabel = comment.anonymous
+  const anonymousLabel = comment.isAnonymous
     ? `익명${comment.anonymousNumber || ''}`
     : comment.author;
 
+  // 댓글 내용에서 멘션 처리
+  const renderCommentContent = (content) => {
+    if (!content) return '';
+    
+    // @사용자명 패턴을 찾아서 하이라이트 처리
+    const mentionRegex = /@(\S+)/g;
+    const parts = content.split(mentionRegex);
+    
+    return parts.map((part, index) => {
+      if (index % 2 === 1) {
+        // 멘션된 사용자명
+        return (
+          <span key={index} className="mention">
+            @{part}
+          </span>
+        );
+      }
+      return part;
+    });
+  };
+
+  const handleEditContentChange = (e) => {
+    let newContent = e.target.value;
+    
+    // 수정 시 "@부모" 텍스트 처리 - 보여주되 수정 불가
+    if (isReply && comment.parentId) {
+      // 원본 댓글에서 멘션 패턴 찾기
+      const originalMentionMatch = comment.content.match(/^@\S+\s*/);
+      if (originalMentionMatch) {
+        const mentionPrefix = originalMentionMatch[0];
+        
+        // 사용자가 멘션을 삭제하려고 하면 다시 추가
+        if (!newContent.startsWith(mentionPrefix.trim())) {
+          if (newContent.length > 0) {
+            newContent = mentionPrefix + newContent;
+          } else {
+            newContent = mentionPrefix;
+          }
+        }
+      }
+    }
+    
+    setEditContent(newContent);
+  };
+
   const handleEdit = async () => {
-    if (!editContent.trim()) {
-      setError('댓글 내용을 입력해주세요.');
+    // 답글에서 멘션만 있고 다른 내용이 없는 경우 체크
+    let finalContent = editContent.trim();
+    if (isReply && comment.parentId) {
+      const mentionMatch = finalContent.match(/^@\S+\s*/);
+      if (mentionMatch && finalContent === mentionMatch[0].trim()) {
+        setError('댓글 내용을 입력해주세요.');
+        return;
+      }
+    }
+
+    if (!finalContent && !editImage) {
+      setError('댓글 내용이나 이미지를 입력해주세요.');
       return;
     }
 
     setIsSubmitting(true);
     setError(null);
 
-    try {
-      const result = await onUpdate(comment.id, editContent.trim());
-      if (result.success) {
-        setIsEditing(false);
-        setEditContent(editContent.trim());
-      } else {
-        setError(result.error || '댓글 수정에 실패했습니다.');
-      }
-    } catch (err) {
-      setError('댓글 수정에 실패했습니다.');
-      console.error('댓글 수정 오류:', err);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!window.confirm('댓글을 삭제하시겠습니까?')) return;
-
-    setIsSubmitting(true);
-    setError(null);
+    let imageUrl = editImage;
 
     try {
-      const result = await onDelete(comment.id);
-      if (!result.success) {
-        setError(result.error || '댓글 삭제에 실패했습니다.');
-      }
-    } catch (err) {
-      setError('댓글 삭제에 실패했습니다.');
-      console.error('댓글 삭제 오류:', err);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+      if (editFile) {
+        const formData = new FormData();
+        formData.append('file', editFile);
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && e.ctrlKey) handleEdit();
-    if (e.key === 'Escape') {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/media`, {
+          method: 'POST',
+          body: formData,
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          throw new Error('이미지 업로드 실패');
+        }
+
+        imageUrl = response.headers.get('location') || (await response.json()).url;
+      }
+
+      await onUpdate(comment.id, editContent.trim(), imageUrl);
       setIsEditing(false);
-      setEditContent(comment.content);
-      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError('댓글 수정 중 오류가 발생했습니다.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now - date;
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-    if (days === 0) {
-      return '오늘 ' + date.toLocaleTimeString('ko-KR', {
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-    } else if (days < 7) {
-      return `${days}일 전`;
-    } else {
-      return date.toLocaleDateString('ko-KR', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setEditFile(file);
+      setEditImage(URL.createObjectURL(file));
     }
+  };
+
+  const handleRemoveImage = () => {
+    setEditFile(null);
+    setEditImage(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleReplyClick = () => {
+    replyTo(comment.id, anonymousLabel);
   };
 
   return (
-    <div className="comment">
-      <div className="comment-header">
-        <div className="comment-author">
-          <div className="author-avatar">
-            {anonymousLabel ? anonymousLabel.charAt(0).toUpperCase() : '익'}
-          </div>
-          <div className="author-info">
-            <span className="author-name">{anonymousLabel}</span>
-            <span className="comment-date">{formatDate(comment.createdAt)}</span>
-            {comment.updatedAt !== comment.createdAt && (
-              <span className="edited-indicator">(수정됨)</span>
-            )}
-          </div>
-        </div>
-
-        {isOwner && (
-          <div className="comment-actions">
-            <button onClick={() => setIsEditing(true)} disabled={isSubmitting}>수정</button>
-            <button onClick={handleDelete} disabled={isSubmitting}>삭제</button>
-          </div>
-        )}
-      </div>
-
-      <div className="comment-content">
-        {isEditing ? (
-          <div className="edit-form">
-            <textarea
-              value={editContent}
-              onChange={(e) => setEditContent(e.target.value)}
-              onKeyDown={handleKeyPress}
-              rows="3"
-              maxLength="1000"
-              disabled={isSubmitting}
-              autoFocus
-            />
-            <div className="character-count">{editContent.length}/1000</div>
-            {error && <div className="error-message">{error}</div>}
-            <div className="edit-actions">
-              <button onClick={handleEdit} disabled={isSubmitting || !editContent.trim()}>
-                저장
-              </button>
-              <button
-                onClick={() => {
-                  setIsEditing(false);
-                  setEditContent(comment.content);
-                  setError(null);
-                }}
-                disabled={isSubmitting}
-              >
-                취소
-              </button>
+    <div className={`comment ${isReply ? 'comment-reply' : ''}`}>
+      <div className="comment-container">
+        <div className="comment-content">
+          <div className="comment-header">
+            <div className="comment-author">
+              <div className="author-avatar">{anonymousLabel[0]}</div>
+              <div className="author-info">
+                <span className="author-name">{anonymousLabel}</span>
+                <span className="comment-date">{comment.createdAt}</span>
+                {comment.updatedAt !== comment.createdAt && (
+                  <span className="edited-indicator">(수정됨)</span>
+                )}
+              </div>
             </div>
-            <div className="shortcut-hint">Ctrl + Enter: 저장, Esc: 취소</div>
-          </div>
-        ) : (
-          <>
-            <div className="comment-text">{comment.content}</div>
-            {comment.url && comment.url.trim() !== '' && (
-              <div className="comment-image" style={{ marginTop: '10px' }}>
-                <img
-                  src={comment.url}
-                  alt="첨부 이미지"
-                  style={{
-                    maxWidth: '100%',
-                    maxHeight: '300px',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => window.open(comment.url, '_blank')}
-                  onError={(e) => {
-                    console.error('이미지 로드 실패:', comment.url);
-                    e.target.style.display = 'none';
-                  }}
-                />
+            {isOwner && !isEditing && (
+              <div className="comment-actions">
+                <button onClick={() => setIsEditing(true)}><Edit3 size={16} /></button>
+                <button onClick={() => onDelete(comment.id)}><Trash2 size={16} /></button>
               </div>
             )}
-          </>
-        )}
-      </div>
-
-      {!isEditing && (
-        <div className="comment-footer">
-          <div className="comment-stats">
-            <button
-              onClick={() => onLike(comment.id)}
-              className={`like-button ${isLiked ? 'liked' : ''}`}
-            >
-              👍 {comment.likeCount || 0}
-            </button>
-            <button
-              onClick={() => onDislike(comment.id)}
-              className={`dislike-button ${isDisliked ? 'disliked' : ''}`}
-            >
-              👎 {comment.dislikeCount || 0}
-            </button>
-            {!isOwner && (
-              <button
-                onClick={() => onReplyClick(comment.id, anonymousLabel)}
-                className="reply-button"
-              >
-                💬 답글
-              </button>
-            )}
           </div>
-        </div>
-      )}
 
-      {!isOwner && replyTarget?.parentId === comment.id && (
-        <div className="reply-form">
-          <CreateComment
-            postId={comment.postId}
-            parentId={comment.id}
-            onSubmit={(content, imageUrl) =>
-              onSubmitReply(`@${replyTarget.parentAuthor} ${content}`, imageUrl, comment.id, false)
-            }
-            onCancel={() => onReplyClick(null)}
-            placeholder={`@${replyTarget.parentAuthor} 님에게 답글`}
-          />
+          {isEditing ? (
+            <div className="edit-form">
+              <textarea
+                value={editContent}
+                onChange={handleEditContentChange}
+                rows={3}
+                placeholder="댓글을 입력하세요"
+              />
+              {editImage && (
+                <div className="image-preview">
+                  <img src={editImage} alt="preview" />
+                  <button className="remove-image-btn" onClick={handleRemoveImage}><X size={16} /></button>
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                ref={fileInputRef}
+              />
+              {error && <div className="error-message">{error}</div>}
+              <div className="edit-actions">
+                <button onClick={handleEdit} disabled={isSubmitting}>수정 완료</button>
+                <button onClick={() => setIsEditing(false)} disabled={isSubmitting}>취소</button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="comment-text">
+                {renderCommentContent(comment.content)}
+              </div>
+              {comment.imageUrl && (
+                <div className="comment-image">
+                  <img src={comment.imageUrl} alt="comment" />
+                </div>
+              )}
+            </>
+          )}
+
+          {!isEditing && (
+            <div className="comment-footer">
+              <div className="comment-stats">
+                <button
+                  className={`like-button ${isLiked ? 'liked' : ''}`}
+                  onClick={() => onLike(comment.id)}
+                >
+                  <ThumbsUp size={14} /> {comment.likes || 0}
+                </button>
+                <button
+                  className={`dislike-button ${isDisliked ? 'disliked' : ''}`}
+                  onClick={() => onDislike(comment.id)}
+                >
+                  <ThumbsDown size={14} /> {comment.dislikes || 0}
+                </button>
+                {!isReply && (
+                  <button
+                    className="reply-button"
+                    onClick={handleReplyClick}
+                  >
+                    <MessageSquare size={14} /> 답글
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      {comment.replies && comment.replies.length > 0 && (
+        <div className="replies-container">
+          {comment.replies.map((reply) => (
+            <Comment
+              key={reply.id}
+              comment={reply}
+              currentUserId={currentUserId}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+              onSubmitReply={onSubmitReply}
+              onLike={onLike}
+              onDislike={onDislike}
+              replyTo={replyTo}
+              replyTarget={replyTarget}
+              likedComments={likedComments}
+              dislikedComments={dislikedComments}
+              onCancelReply={onCancelReply}
+            />
+          ))}
         </div>
       )}
     </div>
