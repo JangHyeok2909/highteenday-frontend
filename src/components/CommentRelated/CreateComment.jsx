@@ -22,13 +22,10 @@ const CreateComment = ({
   const handleContentChange = (e) => {
     let newContent = e.target.value;
     
-    // 답글 작성 시 @부모 멘션 처리
     if (parentAuthor && parentId) {
       const mentionPrefix = `@${parentAuthor} `;
       
-      // @부모 멘션이 삭제되었다면 다시 추가
       if (!newContent.startsWith(mentionPrefix)) {
-        // 사용자가 다른 내용을 입력하고 있다면 멘션을 앞에 유지
         if (newContent.length > 0) {
           newContent = mentionPrefix + newContent;
         } else {
@@ -89,7 +86,6 @@ const CreateComment = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 답글에서 @부모만 있고 다른 내용이 없는 경우 처리
     let finalContent = content.trim();
     if (parentAuthor && parentId) {
       const mentionPrefix = `@${parentAuthor}`;
@@ -136,7 +132,6 @@ const CreateComment = ({
     if (fileInput) fileInput.value = '';
   };
 
-  // 실제 제출될 내용 길이 계산 (멘션 제외)
   const getActualContentLength = () => {
     let actualContent = content.trim();
     if (parentAuthor && parentId) {

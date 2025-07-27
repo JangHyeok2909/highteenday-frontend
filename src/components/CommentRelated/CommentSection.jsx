@@ -37,40 +37,54 @@ const CommentSection = ({ postId }) => {
 
   const handleCommentSubmit = async (content, imageUrl, parentId, anonymous) => {
     try {
+      const requestBody = {
+        content,
+        parentId,
+        anonymous,
+        userId: currentUserId,
+      };
+
+      if (imageUrl && imageUrl.trim() !== "") {
+        requestBody.url = imageUrl;
+      }
+
       await axios.post(
         `${API_BASE}/posts/${postId}/comments`,
-        {
-          content,
-          imageUrl,
-          parentId,
-          anonymous,
-          url: window.location.href,
-          userId: currentUserId,
-        },
+        requestBody,
         { withCredentials: true }
       );
       await fetchComments();
-      setReplyTo(null); // 답글 작성 후 답글 모드 해제
+      setReplyTo(null);
+      return { success: true };
     } catch (err) {
-      console.error(err);
+      console.error('댓글 작성 실패:', err);
+      return { 
+        success: false, 
+        error: err.response?.data?.message || '댓글 작성에 실패했습니다.' 
+      };
     }
   };
 
   const handleCommentUpdate = async (commentId, content, imageUrl) => {
     try {
+      const requestBody = {
+        content,
+        userId: currentUserId,
+      };
+
+      if (imageUrl && imageUrl.trim() !== "") {
+        requestBody.url = imageUrl;
+      }
+
       await axios.put(
         `${API_BASE}/posts/${postId}/comments/${commentId}`,
-        {
-          content,
-          imageUrl,
-          url: window.location.href,
-          userId: currentUserId,
-        },
+        requestBody,
         { withCredentials: true }
       );
       await fetchComments();
     } catch (err) {
-      console.error(err);
+      console.error('댓글 수정 실패:', err);
+      throw err;
     }
   };
 
@@ -82,37 +96,45 @@ const CommentSection = ({ postId }) => {
       );
       await fetchComments();
     } catch (err) {
-      console.error(err);
+      console.error('댓글 삭제 실패:', err);
     }
   };
 
   const handleLike = async (commentId) => {
     try {
       await axios.post(
-        `${API_BASE}/posts/${postId}/comments/${commentId}/like?userId=${currentUserId}`,
-        {},
+        `${API_BASE}/comments/${commentId}/like`,
+        { userId: currentUserId },
         { withCredentials: true }
       );
+      
+      await fetchComments();
+      
       setLikedComments((prev) =>
         prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
       );
+      setDislikedComments((prev) => prev.filter((id) => id !== commentId));
     } catch (err) {
-      console.error(err);
+      console.error('좋아요 실패:', err);
     }
   };
 
   const handleDislike = async (commentId) => {
     try {
       await axios.post(
-        `${API_BASE}/posts/${postId}/comments/${commentId}/dislike?userId=${currentUserId}`,
-        {},
+        `${API_BASE}/comments/${commentId}/dislike`,
+        { userId: currentUserId },
         { withCredentials: true }
       );
+      
+      await fetchComments();
+      
       setDislikedComments((prev) =>
         prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
       );
+      setLikedComments((prev) => prev.filter((id) => id !== commentId));
     } catch (err) {
-      console.error(err);
+      console.error('싫어요 실패:', err);
     }
   };
 

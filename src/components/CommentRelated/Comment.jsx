@@ -18,32 +18,29 @@ const Comment = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
-  const [editImage, setEditImage] = useState(comment.imageUrl || null);
+  const [editImage, setEditImage] = useState(comment.url || null);
   const [editFile, setEditFile] = useState(null);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isOwner = comment.owner === currentUserId;
+  const isOwner = comment.owner === true;
   const isReply = comment.parentId !== null;
   const isLiked = likedComments.includes(comment.id);
   const isDisliked = dislikedComments.includes(comment.id);
   const fileInputRef = useRef(null);
 
-  const anonymousLabel = comment.isAnonymous
+  const anonymousLabel = comment.anonymous
     ? `익명${comment.anonymousNumber || ''}`
     : comment.author;
 
-  // 댓글 내용에서 멘션 처리
   const renderCommentContent = (content) => {
     if (!content) return '';
     
-    // @사용자명 패턴을 찾아서 하이라이트 처리
     const mentionRegex = /@(\S+)/g;
     const parts = content.split(mentionRegex);
     
     return parts.map((part, index) => {
       if (index % 2 === 1) {
-        // 멘션된 사용자명
         return (
           <span key={index} className="mention">
             @{part}
@@ -59,12 +56,10 @@ const Comment = ({
     
     // 수정 시 "@부모" 텍스트 처리 - 보여주되 수정 불가
     if (isReply && comment.parentId) {
-      // 원본 댓글에서 멘션 패턴 찾기
       const originalMentionMatch = comment.content.match(/^@\S+\s*/);
       if (originalMentionMatch) {
         const mentionPrefix = originalMentionMatch[0];
         
-        // 사용자가 멘션을 삭제하려고 하면 다시 추가
         if (!newContent.startsWith(mentionPrefix.trim())) {
           if (newContent.length > 0) {
             newContent = mentionPrefix + newContent;
@@ -79,7 +74,6 @@ const Comment = ({
   };
 
   const handleEdit = async () => {
-    // 답글에서 멘션만 있고 다른 내용이 없는 경우 체크
     let finalContent = editContent.trim();
     if (isReply && comment.parentId) {
       const mentionMatch = finalContent.match(/^@\S+\s*/);
@@ -104,7 +98,8 @@ const Comment = ({
         const formData = new FormData();
         formData.append('file', editFile);
 
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/media`, {
+        const userId = localStorage.getItem("loginUserId");
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/media?userId=${userId}`, {
           method: 'POST',
           body: formData,
           credentials: 'include',
@@ -199,9 +194,9 @@ const Comment = ({
               <div className="comment-text">
                 {renderCommentContent(comment.content)}
               </div>
-              {comment.imageUrl && (
+              {comment.url && ( // imageUrl -> url로 변경
                 <div className="comment-image">
-                  <img src={comment.imageUrl} alt="comment" />
+                  <img src={comment.url} alt="comment" />
                 </div>
               )}
             </>
@@ -214,13 +209,13 @@ const Comment = ({
                   className={`like-button ${isLiked ? 'liked' : ''}`}
                   onClick={() => onLike(comment.id)}
                 >
-                  <ThumbsUp size={14} /> {comment.likes || 0}
+                  <ThumbsUp size={14} /> {comment.likeCount || 0}
                 </button>
                 <button
                   className={`dislike-button ${isDisliked ? 'disliked' : ''}`}
                   onClick={() => onDislike(comment.id)}
                 >
-                  <ThumbsDown size={14} /> {comment.dislikes || 0}
+                  <ThumbsDown size={14} /> {comment.dislikeCount || 0}
                 </button>
                 {!isReply && (
                   <button
