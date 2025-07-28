@@ -11,7 +11,7 @@ function LoginButton() {
 
   const getJwtStatus = async () => {
     try {
-      const res = await axios.get("/api/user/loginUser", {
+      const res = await axios.get("/api/user/userInfo", {
         withCredentials: true,
       });
       setJwtStatus("Jwt 작동 중 (로그인 상태)");
