@@ -9,10 +9,29 @@ function MyScrapsPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("/api/mypage/scraps", {
-      params: { page: 1  },//sortType
-      withCredentials: true,
-    }).then(res => setScraps(res.data.postDtos));
+     // 서버 대신 더미 데이터
+    const mockScraps = [
+      {
+        id: 1,
+        title: "스크랩한 글 제목1",
+        author: "작가A",
+        createdAt: "2025-07-26T11:22:33",
+        viewCount: 200,
+      },
+      {
+        id: 2,
+        title: "스크랩한 글 제목2",
+        author: "작가B",
+        createdAt: "2025-07-25T09:15:00",
+        viewCount: 150,
+      },
+    ];
+    setScraps(mockScraps);
+
+   // axios.get('/api/mypage/scraps', {
+   //   params: { page: 1, sortType },
+   //   withCredentials: true,
+   // }).then(res => setScraps(res.data.postDtos));
   }, [sortType]);
 
   return (
@@ -25,13 +44,21 @@ function MyScrapsPage() {
       </select>
 
       {scraps.length === 0 ? (
-        <p>📭 스크랩한 게시글이 없습니다.</p>
+        <p>🫥 스크랩한 게시글이 없습니다.</p>
       ) : (
-        <ul className="list">
-          {scraps.map((scrap, idx) => (
-            <li key={scrap.id} onClick={() => navigate(`/post/${scrap.id}`)}>
+        <ul className="post-list">
+          <li className="list-header">
+            <span className="title">제목</span>
+            <span className="author">작성자</span>
+            <span className="date">작성일</span>
+            <span className="views">조회수</span>
+          </li>
+          {scraps.map((scrap) => (
+            <li key={scrap.id} className="post-item" onClick={() => navigate(`/post/${scrap.id}`)}>
               <span className="title">{scrap.title}</span>
-              <span className="date">{scrap.createdAt}</span>
+              <span className="author">{scrap.author || "-"}</span>
+              <span className="date">{scrap.createdAt.slice(0, 10)}</span>
+              <span className="views">{scrap.viewCount || "-"}</span>
             </li>
           ))}
         </ul>
@@ -41,4 +68,3 @@ function MyScrapsPage() {
 }
 
 export default MyScrapsPage;
-
