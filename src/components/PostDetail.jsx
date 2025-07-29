@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import CommentSection from '../components/CommentRelated/CommentSection';
 import './PostPage.css'; 
 
 function PostDetail() {
   const { postId } = useParams();
   const navigate = useNavigate();
+  const currentUserId = parseInt(localStorage.getItem('loginUserId'), 10);
 
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -148,8 +150,9 @@ function PostDetail() {
             📝 수정
           </button>
         )}
-        
       </div>
+
+      <CommentSection postId={postId} />
     </div>
   );
 }

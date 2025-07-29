@@ -10,6 +10,7 @@ function PostEditor() {
   const navigate = useNavigate();
 
   const isEditMode = !!postId;
+  const currentUserId = parseInt(localStorage.getItem('loginUserId'), 10);
 
   const [boardId, setBoardId] = useState('');
   const [title, setTitle] = useState('');
@@ -109,8 +110,9 @@ function PostEditor() {
             formData.append('file', blob);
 
             try {
+              const userId = localStorage.getItem("loginUserId");
               const res = await axios.post(
-                `${process.env.REACT_APP_API_BASE_URL}/media`,
+                `${process.env.REACT_APP_API_BASE_URL}/media?userId=${userId}`,
                 formData,
                 {
                   headers: {

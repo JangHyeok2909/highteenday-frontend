@@ -1,6 +1,13 @@
 import React, { useState, useRef } from 'react';
 import CreateComment from './CreateComment';
-import { ThumbsUp, ThumbsDown, MessageSquare, Trash2, Edit3, X } from 'lucide-react';
+import {
+  ThumbsUp,
+  ThumbsDown,
+  MessageSquare,
+  Trash2,
+  Edit3,
+  X
+} from 'lucide-react';
 
 const Comment = ({
   comment,
@@ -10,7 +17,7 @@ const Comment = ({
   onSubmitReply,
   onLike,
   onDislike,
-  replyTo,
+  onReplyClick,
   replyTarget,
   likedComments,
   dislikedComments,
@@ -30,15 +37,33 @@ const Comment = ({
   const fileInputRef = useRef(null);
 
   const anonymousLabel = comment.anonymous
-    ? `익명${comment.anonymousNumber || ''}`
+    ? `익명`
     : comment.author;
+
+  const getImageUrl = (url) => {
+    if (!url) return null;
+    if (url.startsWith('/')) {
+      return `${process.env.REACT_APP_API_BASE_URL}${url}`;
+    }
+    return url;
+  };
+
+  const handleImageError = (e) => {
+    e.target.style.display = 'none';
+    const errorMsg = document.createElement('div');
+    errorMsg.textContent = '이미지를 불러올 수 없습니다.';
+    errorMsg.style.cssText = 'color: #666; font-size: 12px; padding: 8px; border: 1px dashed #ccc;';
+    e.target.parentNode.appendChild(errorMsg);
+  };
+
+  const handleImageLoad = (e) => {
+    console.log('Image loaded:', e.target.src);
+  };
 
   const renderCommentContent = (content) => {
     if (!content) return '';
-    
     const mentionRegex = /@(\S+)/g;
     const parts = content.split(mentionRegex);
-    
     return parts.map((part, index) => {
       if (index % 2 === 1) {
         return (
@@ -53,36 +78,20 @@ const Comment = ({
 
   const handleEditContentChange = (e) => {
     let newContent = e.target.value;
-    
-    // 수정 시 "@부모" 텍스트 처리 - 보여주되 수정 불가
     if (isReply && comment.parentId) {
       const originalMentionMatch = comment.content.match(/^@\S+\s*/);
       if (originalMentionMatch) {
         const mentionPrefix = originalMentionMatch[0];
-        
         if (!newContent.startsWith(mentionPrefix.trim())) {
-          if (newContent.length > 0) {
-            newContent = mentionPrefix + newContent;
-          } else {
-            newContent = mentionPrefix;
-          }
+          newContent = mentionPrefix + newContent;
         }
       }
     }
-    
     setEditContent(newContent);
   };
 
   const handleEdit = async () => {
-    let finalContent = editContent.trim();
-    if (isReply && comment.parentId) {
-      const mentionMatch = finalContent.match(/^@\S+\s*/);
-      if (mentionMatch && finalContent === mentionMatch[0].trim()) {
-        setError('댓글 내용을 입력해주세요.');
-        return;
-      }
-    }
-
+    const finalContent = editContent.trim();
     if (!finalContent && !editImage) {
       setError('댓글 내용이나 이미지를 입력해주세요.');
       return;
@@ -97,26 +106,32 @@ const Comment = ({
       if (editFile) {
         const formData = new FormData();
         formData.append('file', editFile);
-
         const userId = localStorage.getItem("loginUserId");
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/media?userId=${userId}`, {
+        const uploadUrl = `${process.env.REACT_APP_API_BASE_URL}/media?userId=${userId}`;
+        const response = await fetch(uploadUrl, {
           method: 'POST',
           body: formData,
           credentials: 'include',
         });
 
-        if (!response.ok) {
-          throw new Error('이미지 업로드 실패');
-        }
+        if (!response.ok) throw new Error(`이미지 업로드 실패: ${response.status}`);
 
-        imageUrl = response.headers.get('location') || (await response.json()).url;
+        let extractedUrl = response.headers.get('location') || '';
+        if (!extractedUrl) {
+          const data = await response.json().catch(() => null);
+          extractedUrl = data?.url || data?.imageUrl || data?.path || '';
+        }
+        if (extractedUrl.startsWith('/')) {
+          extractedUrl = `${process.env.REACT_APP_API_BASE_URL}${extractedUrl}`;
+        }
+        imageUrl = extractedUrl;
       }
 
-      await onUpdate(comment.id, editContent.trim(), imageUrl);
+      await onUpdate(comment.id, finalContent, imageUrl);
       setIsEditing(false);
     } catch (err) {
       console.error(err);
-      setError('댓글 수정 중 오류가 발생했습니다.');
+      setError(`댓글 수정 중 오류 발생: ${err.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -137,7 +152,7 @@ const Comment = ({
   };
 
   const handleReplyClick = () => {
-    replyTo(comment.id, anonymousLabel);
+    onReplyClick(comment.id, anonymousLabel);
   };
 
   return (
@@ -173,8 +188,15 @@ const Comment = ({
               />
               {editImage && (
                 <div className="image-preview">
-                  <img src={editImage} alt="preview" />
-                  <button className="remove-image-btn" onClick={handleRemoveImage}><X size={16} /></button>
+                  <img
+                    src={getImageUrl(editImage)}
+                    alt="preview"
+                    onError={handleImageError}
+                    onLoad={handleImageLoad}
+                  />
+                  <button className="remove-image-btn" onClick={handleRemoveImage}>
+                    <X size={16} />
+                  </button>
                 </div>
               )}
               <input
@@ -185,18 +207,24 @@ const Comment = ({
               />
               {error && <div className="error-message">{error}</div>}
               <div className="edit-actions">
-                <button onClick={handleEdit} disabled={isSubmitting}>수정 완료</button>
+                <button onClick={handleEdit} disabled={isSubmitting}>
+                  {isSubmitting ? '수정 중...' : '수정 완료'}
+                </button>
                 <button onClick={() => setIsEditing(false)} disabled={isSubmitting}>취소</button>
               </div>
             </div>
           ) : (
             <>
-              <div className="comment-text">
-                {renderCommentContent(comment.content)}
-              </div>
-              {comment.url && ( // imageUrl -> url로 변경
+              <div className="comment-text">{renderCommentContent(comment.content)}</div>
+              {comment.url && comment.url !== '' && (
                 <div className="comment-image">
-                  <img src={comment.url} alt="comment" />
+                  <img
+                    src={getImageUrl(comment.url)}
+                    alt="comment"
+                    onError={handleImageError}
+                    onLoad={handleImageLoad}
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  />
                 </div>
               )}
             </>
@@ -217,11 +245,9 @@ const Comment = ({
                 >
                   <ThumbsDown size={14} /> {comment.dislikeCount || 0}
                 </button>
-                {!isReply && (
-                  <button
-                    className="reply-button"
-                    onClick={handleReplyClick}
-                  >
+
+                {!isReply && !isOwner && (
+                  <button className="reply-button" onClick={handleReplyClick}>
                     <MessageSquare size={14} /> 답글
                   </button>
                 )}
@@ -230,9 +256,22 @@ const Comment = ({
           )}
         </div>
       </div>
+
+      {replyTarget?.parentId === comment.id && (
+        <div className="reply-form-container">
+          <CreateComment
+            postId={comment.postId}
+            parentId={comment.id}
+            mentionText={`@${anonymousLabel}`}
+            onSubmit={onSubmitReply}
+            onCancel={onCancelReply}
+          />
+        </div>
+      )}
+
       {comment.replies && comment.replies.length > 0 && (
         <div className="replies-container">
-          {comment.replies.map((reply) => (
+          {comment.replies.map(reply => (
             <Comment
               key={reply.id}
               comment={reply}
@@ -242,7 +281,7 @@ const Comment = ({
               onSubmitReply={onSubmitReply}
               onLike={onLike}
               onDislike={onDislike}
-              replyTo={replyTo}
+              onReplyClick={onReplyClick}
               replyTarget={replyTarget}
               likedComments={likedComments}
               dislikedComments={dislikedComments}
