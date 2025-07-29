@@ -28,11 +28,29 @@ function MyScrapsPage() {
     //];
     //setScraps(mockScraps);
 
-    axios.get('/api/mypage/scraps', {
-      params: { page: 0, sortType },
-      withCredentials: true,
-    }).then(res => setScraps(res.data.postDtos));
-  }, [sortType]);
+    //axios.get('/api/mypage/scraps', {
+    //  params: { page: 0, sortType },
+    //  withCredentials: true,
+    //}).then(res => setScraps(res.data.postDtos));
+
+    axios //임시 프론트 수정 정렬
+      .get('/api/mypage/scraps', {
+        params: { page: 0, sortType },
+        withCredentials: true,
+      })
+      .then((res) => {
+        const data = res.data.postDtos;
+        if (sortType === "RECENT") {
+          data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        } else if (sortType === "VIEW") {
+          data.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
+        } else if (sortType === "LIKE") {
+          // 좋아요 정렬 없으면 생략
+        }
+        setScraps(data);
+      })
+
+    }, [sortType]);
 
   return (
     <div className="list-page-container">
