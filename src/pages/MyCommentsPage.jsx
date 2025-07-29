@@ -10,29 +10,29 @@ function MyCommentsPage() {
 
   useEffect(() => {
      // 실제 서버 요청이 안되므로 더미 데이터로 대체
-    const mockComments = [
-      {
-        id: 1,
-        postId: 101,
-        content: "테스트 댓글입니다.",
-        author: "망고",
-        createdAt: "2025-07-28T15:32:00",
-        viewCount: 123,
-      },
-      {
-        id: 2,
-        postId: 102,
-        content: "두 번째 댓글도 테스트용!",
-        author: "망고2",
-        createdAt: "2025-07-27T10:15:00",
-        viewCount: 55,
-      },
-    ];
-    setComments(mockComments);
-   // axios.get('/api/mypage/comments', {
-   //   params: { page: 1, sortType },
-   //   withCredentials: true,
-   // }).then(res => setComments(res.data.commentDtos));
+    //const mockComments = [
+    //  {
+    //    id: 1,
+    //    postId: 101,
+    //    content: "테스트 댓글입니다.",
+    //    author: "망고",
+    //    createdAt: "2025-07-28T15:32:00",
+    //    viewCount: 123,
+    //  },
+    //  {
+    //    id: 2,
+    //    postId: 102,
+    //    content: "두 번째 댓글도 테스트용!",
+    //    author: "망고2",
+    //    createdAt: "2025-07-27T10:15:00",
+    //    viewCount: 55,
+    //  },
+    //];
+    //setComments(mockComments);
+    axios.get('/api/mypage/comments', {
+      params: { page: 0, sortType },
+      withCredentials: true,
+    }).then(res => setComments(res.data.commentDtos));
   }, [sortType]);
 
   return (

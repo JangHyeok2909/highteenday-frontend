@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./MyPageList.css";
+import './MyPageList.css';
 
 function MyPostsPage() {
   const [posts, setPosts] = useState([]);
@@ -20,34 +20,38 @@ function MyPostsPage() {
 
   return (
     <div className="list-page-container">
-      <h2>📄 내가 쓴 게시글</h2>
-
-      <div className="list-header">
-        <span className="title">제목</span>
-        <span className="author">작성자</span>
-        <span className="date">작성일</span>
-        <span className="views">조회수</span>
-        <div className="sort-select">
-            <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
-                <option value="RECENT">최신순</option>
-                <option value="LIKE">좋아요순</option>
-                <option value="VIEW">조회수순</option>
-    </select>
-  </div>
-</div>
+      <h2>📌 내가 쓴 게시글</h2>
+      <select
+        value={sortType}
+        onChange={(e) => setSortType(e.target.value)}
+      >
+        <option value="RECENT">최신순</option>
+        <option value="LIKE">좋아요순</option>
+        <option value="VIEW">조회순</option>
+      </select>
 
       {posts.length === 0 ? (
-        <p>📭 게시글이 없습니다.</p>
+        <p>게시글이 없습니다.</p>
       ) : (
         <ul className="post-list">
-            {posts.map((post) => (
-                <li key={post.id} className="post-item" onClick={() => navigate(`/post/${post.id}`)}>
-                <span className="title">{post.title}</span>
-                <span className="author">{post.author}</span>
-                <span className="date">{post.createdAt.slice(0, 10)}</span>
-                <span className="views">{post.viewCount}</span>
-                </li>
-            ))}
+          <li className="list-header">
+            <span className="title">제목</span>
+            <span className="author">작성자</span>
+            <span className="date">작성일</span>
+            <span className="views">조회수</span>
+          </li>
+          {posts.map((post) => (
+            <li
+              key={post.id}
+              className="post-item"
+              onClick={() => navigate(`/post/${post.id}`)}
+            >
+              <span className="title">{post.title}</span>
+              <span className="author">{post.author}</span>
+              <span className="date">{post.createdAt?.slice(0, 10)}</span>
+              <span className="views">{post.viewCount ?? "-"}</span>
+            </li>
+          ))}
         </ul>
       )}
     </div>
@@ -55,4 +59,5 @@ function MyPostsPage() {
 }
 
 export default MyPostsPage;
+
 

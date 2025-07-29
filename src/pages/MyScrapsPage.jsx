@@ -10,28 +10,28 @@ function MyScrapsPage() {
 
   useEffect(() => {
      // 서버 대신 더미 데이터
-    const mockScraps = [
-      {
-        id: 1,
-        title: "스크랩한 글 제목1",
-        author: "작가A",
-        createdAt: "2025-07-26T11:22:33",
-        viewCount: 200,
-      },
-      {
-        id: 2,
-        title: "스크랩한 글 제목2",
-        author: "작가B",
-        createdAt: "2025-07-25T09:15:00",
-        viewCount: 150,
-      },
-    ];
-    setScraps(mockScraps);
+    //const mockScraps = [
+    //  {
+    //    id: 1,
+    //    title: "스크랩한 글 제목1",
+    //    author: "작가A",
+    //    createdAt: "2025-07-26T11:22:33",
+    //    viewCount: 200,
+    //  },
+    //  {
+    //    id: 2,
+    //    title: "스크랩한 글 제목2",
+    //    author: "작가B",
+    //    createdAt: "2025-07-25T09:15:00",
+    //    viewCount: 150,
+    //  },
+    //];
+    //setScraps(mockScraps);
 
-   // axios.get('/api/mypage/scraps', {
-   //   params: { page: 1, sortType },
-   //   withCredentials: true,
-   // }).then(res => setScraps(res.data.postDtos));
+    axios.get('/api/mypage/scraps', {
+      params: { page: 0, sortType },
+      withCredentials: true,
+    }).then(res => setScraps(res.data.postDtos));
   }, [sortType]);
 
   return (
