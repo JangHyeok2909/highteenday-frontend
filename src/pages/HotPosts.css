@@ -1,0 +1,62 @@
+.hotposts-container {
+  max-width: 600px; /* ✅ 전체 너비 줄임 */
+  margin: 3rem auto;
+  padding: 1rem;
+}
+
+.hotposts-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #222;
+  font-weight: bold;
+}
+
+.hotposts-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hotpost-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1rem; /* ✅ 카드 패딩 줄임 */
+  margin-bottom: 1rem; /* ✅ 카드 간격 줄임 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.hotpost-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.post-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #111;
+}
+
+.post-author {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.8rem;
+}
+
+.post-meta {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.no-posts {
+  text-align: center;
+  font-size: 1rem;
+  color: #777;
+  margin-top: 2rem;
+}
