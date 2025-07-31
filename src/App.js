@@ -17,6 +17,7 @@ import PostDetail from "./components/PostDetail";
 import UserProfilePage from "./pages/UserProfilePage";
 import PostEditor from './components/PostEditor';
 import PostWithCommentPage from './pages/PostWithCommentPage';
+import TimetablePage from './pages/TimetablePage';
 
   function App() {
     return (
@@ -38,6 +39,7 @@ import PostWithCommentPage from './pages/PostWithCommentPage';
           <Route path="/post/:postId" element={<PostDetail/>}/>
           <Route path="/posts/:postId/edit" element={<PostEditor />} />
           <Route path="/post/full/:postId" element={<PostWithCommentPage />} />
+          <Route path="/timetable" element={<TimetablePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
