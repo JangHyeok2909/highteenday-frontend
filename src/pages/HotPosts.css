@@ -1,62 +1,64 @@
 .hotposts-container {
-  max-width: 600px; /* ✅ 전체 너비 줄임 */
-  margin: 3rem auto;
+  max-width: 300px;
+  margin: 1rem 0 0 1rem;
   padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-sizing: border-box;
 }
 
 .hotposts-title {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  color: #222;
-  font-weight: bold;
-}
-
-.hotposts-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.hotpost-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  padding: 1rem; /* ✅ 카드 패딩 줄임 */
-  margin-bottom: 1rem; /* ✅ 카드 간격 줄임 */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
-}
-
-.hotpost-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
-}
-
-.post-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: #111;
-}
-
-.post-author {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 0.8rem;
-}
-
-.post-meta {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.no-posts {
-  text-align: center;
   font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  display: block;
+  width: 100%;
+}
+
+/* 표 스타일 시작 */
+.hotposts-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.6rem;
+}
+
+.hotposts-table tbody {
+  width: 100%;
+}
+
+.hotpost-row {
+  border-top: 1px solid #f0f0f0;
+}
+
+.hotpost-row:first-child {
+  border-top: none;
+}
+
+.hotpost-row td {
+  padding: 0.6rem 0;
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+/* 제목 셀 */
+.post-title {
+  text-align: left;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+  color: #222;
+}
+
+/* 날짜 셀 */
+.post-date {
+  text-align: right;
+  font-size: 0.8rem;
   color: #777;
-  margin-top: 2rem;
+  white-space: nowrap;
 }
