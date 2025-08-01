@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./LoginButton.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // ← useNavigate 추가
 
 function LoginButton() {
   const [jwtStatus, setJwtStatus] = useState("Jwt 없음");
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate(); 
 
   const getJwtStatus = async () => {
     try {
@@ -45,31 +46,32 @@ function LoginButton() {
   }, []);
 
   const handleLogin = async () => {
-  try {
-    const response = await axios.post("/api/user/login", {
-      email: id,
-      password: pw,
-    }, {
-      withCredentials: true,
-    });
+    try {
+      await axios.post("/api/user/login", {
+        email: id,
+        password: pw,
+      }, {
+        withCredentials: true,
+      });
 
-    alert("로그인 성공");
-    await getJwtStatus();
+      alert("로그인 성공");
+      await getJwtStatus();
+      navigate("/friends"); 
 
-  } catch (error) {
-    console.error("로그인 실패", error);
+    } catch (error) {
+      console.error("로그인 실패", error);
 
-    if (error.response && error.response.status === 401) {
-      alert("아이디 또는 비밀번호가 올바르지 않습니다.");
-      setJwtStatus("Jwt 없음 (비로그인 상태)");
-    } else {
-      alert("서버 오류 또는 네트워크 오류");
-      setJwtStatus("오류 발생");
+      if (error.response && error.response.status === 401) {
+        alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+        setJwtStatus("Jwt 없음 (비로그인 상태)");
+      } else {
+        alert("서버 오류 또는 네트워크 오류");
+        setJwtStatus("오류 발생");
+      }
+
+      setUserInfo(null);
     }
-
-    setUserInfo(null);
-  }
-};
+  };
 
   return (
     <div>
@@ -86,7 +88,6 @@ function LoginButton() {
         <div className="login-content">
           {/* 소셜 로그인 */}
           <div className="social-login">
-
             <a href="https://highteenday.duckdns.org/oauth2/authorization/naver">
               <img src="/images/navLogin.png" alt="네이버 로그인" className="login-button" />
             </a>
