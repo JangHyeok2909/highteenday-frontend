@@ -1,13 +1,17 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./FriendList.css";
 
 const FriendList = () => {
-  const [friends, setFriends] = useState([
+  // 임시 테스트용 친구 데이터
+  const testFriends = [
     { id: 1, name: "홍길동" },
     { id: 2, name: "김철수" },
     { id: 3, name: "이영희" },
-  ]);
+  ];
+
+  const [friends, setFriends] = useState(testFriends);
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -15,7 +19,26 @@ const FriendList = () => {
   const [deleteButtonText, setDeleteButtonText] = useState("친구 삭제");
 
   const navigate = useNavigate();
-  const timeoutRef = useRef(null);
+
+  /*
+  // 실제 API 호출용 (테스트 시 주석 처리)
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get("/api/friends/list", { withCredentials: true });
+        setFriends(res.data);
+        setError(null);
+      } catch (err) {
+        setError("친구 목록을 불러오지 못했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFriends();
+  }, []);
+  */
 
   const toggleSelect = (id) => {
     setSelectedIds((prev) => {
@@ -26,20 +49,14 @@ const FriendList = () => {
     });
   };
 
-  const onDeleteClick = () => {
+  const onDeleteClick = async () => {
     if (!showCheckboxes) {
       setShowCheckboxes(true);
       setSelectedIds(new Set());
+      setDeleteButtonText("삭제 취소");
     } else {
       if (selectedIds.size === 0) {
-        // 체크한 친구 없을 때 텍스트 바꾸기
-        setDeleteButtonText("삭제 취소");
-        if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        timeoutRef.current = setTimeout(() => {
-          setDeleteButtonText("친구 삭제");
-        }, 1500);
-
-        // 삭제 모드도 취소 처리
+        setDeleteButtonText("친구 삭제");
         setShowCheckboxes(false);
         return;
       }
@@ -48,27 +65,31 @@ const FriendList = () => {
 
       setLoading(true);
 
-      // 실제 API 호출 주석 처리
       /*
+      // 실제 API 호출용 (테스트 시 주석 처리)
       try {
         await axios.post(
           "/api/friends/delete",
           { ids: Array.from(selectedIds) },
           { withCredentials: true }
         );
+        const res = await axios.get("/api/friends/list", { withCredentials: true });
+        setFriends(res.data);
+        setError(null);
       } catch (err) {
         setError("친구 삭제 중 오류가 발생했습니다.");
+      } finally {
         setLoading(false);
-        return;
       }
       */
 
+      // 테스트용 로컬 삭제 처리
       setTimeout(() => {
         setFriends((prev) => prev.filter((f) => !selectedIds.has(f.id)));
         setSelectedIds(new Set());
         setShowCheckboxes(false);
         setLoading(false);
-        setDeleteButtonText("친구 삭제"); // 혹시 변경됐을 때 대비
+        setDeleteButtonText("친구 삭제");
       }, 500);
     }
   };
