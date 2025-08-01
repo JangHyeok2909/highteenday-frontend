@@ -29,7 +29,11 @@ export default function BoardPage() {
     const fetchPosts = async () => {
       try {
         const res = await axios.get(`/api/boards/${boardId}/posts`, {
-          params: { page, sortType: "RECENT" },
+         params: {
+          page,
+          size: 10, // ✅ 이거 추가!!
+          sortType: "RECENT",
+        },
           withCredentials: true,
         });
 
