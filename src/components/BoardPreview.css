@@ -1,0 +1,84 @@
+.board-block {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 16px;
+  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+  height: 220px; /* ✅ 고정 높이로 설정 */
+
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.board-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ff4500;
+  margin: 0;
+}
+
+.view-all-btn {
+  font-size: 0.85rem;
+  color: #888;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.view-all-btn:hover {
+  text-decoration: underline;
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /* ✅ 추가 */
+  flex-direction: column; /* ✅ 추가 */
+  min-height: 120px; /* ✅ 리스트 전체의 높이를 고정 (필요시 조정 가능) */
+}
+
+.post-item {
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+  flex: 1; /* ✅ 추가: 항목들 균등 분배해서 위쪽 정렬 */
+}
+
+.post-item:last-child {
+  border-bottom: none;
+}
+
+.post-link {
+  display: flex;
+  justify-content: space-between;
+  text-decoration: none;
+  color: inherit;
+}
+
+.post-title {
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+.post-time {
+  font-size: 0.75rem;
+  color: #999;
+  white-space: nowrap;
+}
+
+.post-item.empty {
+  text-align: center;
+  color: #aaa;
+  font-style: italic;
+}
