@@ -15,12 +15,14 @@ import BoardOverview from "./pages/BoardOverview";
 import BoardPage from "./pages/BoardPage";
 import PostDetail from "./components/PostDetail";
 import UserProfilePage from "./pages/UserProfilePage";
+import MainPage from './components/MainPage/MainPage';
 
   function App() {
     return (
       <Router>
         <Routes>
-          <Route path="/" element={<LoginButton />}/>
+          <Route path="/" element={<MainPage />}/>
+          <Route path="/loginTest" element={<LoginButton />}/>
           <Route path="/post/write" element={<WritePostPage />} />
           <Route path="/post/view" element={<PostPage />} />
           <Route path="/register" element={<Register />} />
@@ -35,6 +37,8 @@ import UserProfilePage from "./pages/UserProfilePage";
           <Route path="/user-profile" element={<UserProfilePage />} />
           <Route path="/post/:postId" element={<PostDetail/>}/>
           <Route path="*" element={<NotFound />} />
+
+          <Route path="/#" />
         </Routes>
       </Router>
     );

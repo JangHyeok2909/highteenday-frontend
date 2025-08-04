@@ -1,0 +1,43 @@
+/* NotificationBellIcon */
+.notification-icon-container {
+    position: relative;
+    display: inline-block;
+  }
+  .notifnication-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+  
+/* UserAddIcon */
+.UserAdd-icon-container {
+  position: relative;
+  display: inline-block;
+}
+.user-add-badge {
+  position: absolute;
+  left: 17px;
+  top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-add-badge .overlay-plus {
+  position: absolute;
+}
+
+/* UsersOverlayIcon */
+.user-icon-overlay-container {
+  position:relative;
+  display: inline-block;
+}
+.user-icon-overlay-small {
+  position: absolute;
+  left: -8px;
+  top: 8px;
+}
