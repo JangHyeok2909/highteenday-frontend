@@ -1,0 +1,23 @@
+/* searchSection */
+#searchSection {
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    padding: 10px 0;
+}
+#searchSection>.search-bar {
+    border: 1px solid #3f9763;
+    
+}
+#searchSection>.search-bar input{
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+#searchSection>.search-bar>.search-button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1px 6px;
+}

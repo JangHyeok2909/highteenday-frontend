@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import NotificationBellIcons from "../../Icons/NotificationBellIcon";
 import UserAddIcon from "../../Icons/UserAddIcon";
 import UsersOverlayIcon from "../../Icons/UsersOverlayIcon";
-import "../MainPage.css";
+import "./Header.css";
 import SidebarMenu from "../SideBar/SidebarMenu";
+import "../../Default.css"
+
 
 function Header() {
 

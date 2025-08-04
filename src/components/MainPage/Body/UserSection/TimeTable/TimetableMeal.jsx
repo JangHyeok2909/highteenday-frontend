@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./TimetableMeal.module.css";
 import axios from "axios";
+import "../../../../Default.css"
+
 
 const TimetableMeal = () => {
   const [activeTab, setActiveTab] = useState("시간표");

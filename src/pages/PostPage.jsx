@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PostDetail from '../components/PostDetail';
+import PostDetail from './PostDetail';
 
 function PostPage() {
     const [postId, setPostId] = useState('');

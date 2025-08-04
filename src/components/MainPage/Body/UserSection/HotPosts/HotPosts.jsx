@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./HotPosts.css";
+import "../../../../Default.css"
 
 const HotPosts = () => {
   const [posts, setPosts] = useState([]);

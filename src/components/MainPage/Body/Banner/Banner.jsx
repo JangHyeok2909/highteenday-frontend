@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "../../MainPage.css";
+import "./Banner.css";
 import Arrow_Left_Icon from "../../../Icons/Arrow_Left_Icon";
 import Arrow_right_Icon from "../../../Icons/Arrow_Right_Icon";
+import "../../../Default.css"
 
 function Banner({ width = "100%", height = "300px" }) {
 
