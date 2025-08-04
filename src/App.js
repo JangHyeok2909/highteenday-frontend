@@ -16,6 +16,9 @@ import BoardPage from "./pages/BoardPage";
 import PostDetail from "./components/PostDetail";
 import UserProfilePage from "./pages/UserProfilePage";
 import MainPage from './components/MainPage/MainPage';
+import HotPosts from "./pages/HotPosts";
+import TimetableMeal from "./pages/TimetableMeal";
+
 
   function App() {
     return (
@@ -36,6 +39,8 @@ import MainPage from './components/MainPage/MainPage';
           <Route path="/board/:boardId" element={<BoardPage />} />
           <Route path="/user-profile" element={<UserProfilePage />} />
           <Route path="/post/:postId" element={<PostDetail/>}/>
+          <Route path="/hotposts" element={<HotPosts />} /> 
+          <Route path="/timetable-meal" element={<TimetableMeal />} />
           <Route path="*" element={<NotFound />} />
 
           <Route path="/#" />
