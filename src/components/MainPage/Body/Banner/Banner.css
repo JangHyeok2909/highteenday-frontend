@@ -1,0 +1,77 @@
+/* banner */
+#banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+#banner>.banner-container {
+    background-color: #838383;
+}
+.banner-arrow {
+    position: absolute;
+    background-color: #C4C4C4;
+    width: 40px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+#banner>.banner-arrow.left {
+    left: 2.5%;
+    transform: scaleY(4);
+}
+#banner>.banner-arrow.right {
+    right: 2.5%;
+    transform: scaleY(4);
+}
+
+/* #banner #banner-content {
+    color: white;
+    font-size: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+} */
+
+#banner .banner-container {
+    overflow: hidden;
+    position: relative;
+}
+#banner .banner-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+#banner .banner-slide {
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 100px;
+    color: white;
+}
+
+#banner #indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display:flex;
+    gap: 5px;
+}
+#banner .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0.5;
+    cursor: pointer;
+}
+#banner .dot.active{
+    opacity: 1;
+    background-color: #3f9763;
+}

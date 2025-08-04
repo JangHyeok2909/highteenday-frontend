@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../MainPage.css";
+import "./SidebarMenu.css";
 import Menubar from "../../Icons/Menubar";
 import Arrow_Left_Icon from "../../Icons/Arrow_Left_Icon";
+import "../../Default.css"
 
 function SidebarMenu({size, color}) {
 

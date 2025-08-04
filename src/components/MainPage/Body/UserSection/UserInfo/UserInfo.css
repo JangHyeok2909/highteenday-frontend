@@ -1,0 +1,29 @@
+/* User Info */
+#user-profile-section .login-btn {
+    background-color: #3f9763;
+    text-align: center;
+    padding: 17px 0;
+    font-size: 1.4em;
+    cursor: pointer;
+    margin: 0 0 10px 0 ;
+}
+#user-profile-section .login-btn>a {
+    color: white;
+}
+#user-profile-section .login-btn>a:hover {
+    text-decoration: none;
+}
+
+#user-profile-section .login-function {
+    text-align: center;
+}
+
+#user-profile-section .login-function span {
+    text-align: center;
+    display: inline-block;
+}
+
+#user-profile-section .login-function a{
+    padding: 1em;
+    color: gray;
+}

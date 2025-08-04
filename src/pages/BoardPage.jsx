@@ -11,6 +11,12 @@ export default function BoardPage() {
   const [page, setPage] = useState(0);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [boardName, setBoardName] = useState(""); // ← 서버에서 받은 게시판 이름
+  const [sortType, setSortType] = useState("RECENT");
+
+  axios.get(`/api/boards/${boardId}/posts`, {
+    params: { page, sortType },
+  });
+
 
   useEffect(() => {
     setPage(0); // board 바뀌면 1페이지로
@@ -23,7 +29,11 @@ export default function BoardPage() {
     const fetchPosts = async () => {
       try {
         const res = await axios.get(`/api/boards/${boardId}/posts`, {
-          params: { page, sortType: "RECENT" },
+         params: {
+          page,
+          size: 10, // ✅ 이거 추가!!
+          sortType: "RECENT",
+        },
           withCredentials: true,
         });
 
@@ -50,7 +60,14 @@ export default function BoardPage() {
             <li key={post.id} className="post-item">
               <Link to={`/board/${boardId}/post/${post.id}`}>
                 <span className="post-title">{post.title}</span>
-                <span className="post-time">{post.createdAt}</span>
+                <span className="post-time">
+                  {new Date(post.createdAt).toLocaleString("ko-KR", {
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
               </Link>
             </li>
           ))

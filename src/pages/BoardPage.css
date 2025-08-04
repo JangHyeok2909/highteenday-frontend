@@ -5,7 +5,10 @@
 .post-list {
   list-style: none;
   padding: 0;
+  height: auto !important;      /* ✅ 덮어쓰기 */
+  overflow: visible !important; /* ✅ 덮어쓰기 */
 }
+
 
 .post-item {
   display: flex;

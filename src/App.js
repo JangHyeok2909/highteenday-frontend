@@ -10,18 +10,19 @@ import FormRegisterPage from './components/LoginRelated/FormRegisterPage';
 import CreateAccount from './components/LoginRelated/CreateAccount'; 
 import SchoolVerification from './components/LoginRelated/SchoolVerification';
 import CommentSection from './components/CommentRelated/CommentSection';
-//import Timetable from './components/TimetableRelated/Timetable';
-import BoardOverview from "./pages/BoardOverview";
+import BoardOverview from "./components/MainPage/Body/BoardSection/BoardSection";
 import BoardPage from "./pages/BoardPage";
-import PostDetail from "./components/PostDetail";
-import UserProfilePage from "./pages/UserProfilePage";
+import PostDetail from "./pages/PostDetail";
+import UserInfo from "./components/MainPage/Body/UserSection/UserInfo/UserInfo";
 import MainPage from './components/MainPage/MainPage';
+
 
   function App() {
     return (
       <Router>
         <Routes>
           <Route path="/" element={<MainPage />}/>
+          {/* <Route path="login" element={< />}/> */}
           <Route path="/loginTest" element={<LoginButton />}/>
           <Route path="/post/write" element={<WritePostPage />} />
           <Route path="/post/view" element={<PostPage />} />
@@ -34,7 +35,7 @@ import MainPage from './components/MainPage/MainPage';
           <Route path="/board-overview" element={<BoardOverview />} />
           <Route path="/board/:boardId/post/:postId" element={<PostDetail />} />
           <Route path="/board/:boardId" element={<BoardPage />} />
-          <Route path="/user-profile" element={<UserProfilePage />} />
+          <Route path="/user-profile" element={<UserInfo />} />
           <Route path="/post/:postId" element={<PostDetail/>}/>
           <Route path="*" element={<NotFound />} />
 

@@ -1,0 +1,20 @@
+/* body */
+#body #body-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1% 0 0 0;
+}
+#body #body-bottom .body-left {
+    width: 68%;
+}
+#body #body-bottom .body-right {
+    width: 28%;
+    
+}
+
+
+/* 삭제 / 확인용임 */
+/* #body #body-bottom {
+    background-color: yellow;
+} */

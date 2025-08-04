@@ -1,5 +1,7 @@
+
+
 // props에 isBoardPage 추가
-export default function BoardSection({ boardName, posts = [], isBoardPage = false }) {
+function BoardSection({ boardName, posts = [], isBoardPage = false }) {
   return (
     <div>
       <h2>{boardName}</h2>
@@ -22,3 +24,4 @@ export default function BoardSection({ boardName, posts = [], isBoardPage = fals
     </div>
   );
 }
+export default BoardSection;
