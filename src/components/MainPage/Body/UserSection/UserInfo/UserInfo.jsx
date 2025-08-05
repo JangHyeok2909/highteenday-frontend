@@ -36,7 +36,11 @@ function UserInfo() {
       ) : (
         <div className="logged-out-state">
           <div className="login-btn">
-            <Link to="/loginTest">로긔인</Link>
+            <Link to="/loginTest">
+                <div>
+                  로그인
+                </div>
+            </Link>
           </div>
           <div className="login-function">
             <span><Link to="/#">아이디 찾기</Link></span>

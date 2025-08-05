@@ -5,6 +5,7 @@ import "./BoardPreview.css";
 
 function BoardPreview({boardId}) {
   const [posts, setPosts] = useState([]);
+  const [boardName, setBoardName] = useState("");
 
   useEffect(() => {
     axios
@@ -15,17 +16,19 @@ function BoardPreview({boardId}) {
       .then((res) => {
         console.log(`${boardId} 게시판 응답`, res.data);
         setPosts(res.data.postDtos || []);
+        setBoardName(res.data.boardName || "");
       })
       .catch((err) => {
         console.error(`${boardId} 게시판 불러오기 실패 : `, err);
         setPosts([]);
+        setBoardName("");
       });
   }, []);
 
   return (
     <div className="board-block">
       <div className="board-header">
-        <h3 className="board-name">{boardId}</h3> {/* 이부분 수정 필요 */}
+        <h3 className="board-name">{boardName}</h3> {/* 이부분 수정 필요 */}
         <Link to={`/board/${boardId}`} className="view-all-btn">전체보기</Link>
       </div>
       <ul className="post-list">
