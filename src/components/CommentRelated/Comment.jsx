@@ -31,7 +31,7 @@ const Comment = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isOwner = comment.owner === true;
-  const isReply = comment.parentId !== null;
+  const isReply = comment.parentId !== null && comment.parentId !== undefined;
   const isLiked = likedComments.includes(comment.id);
   const isDisliked = dislikedComments.includes(comment.id);
   const fileInputRef = useRef(null);
@@ -39,6 +39,22 @@ const Comment = ({
   const anonymousLabel = comment.anonymous
     ? `익명`
     : comment.author;
+
+  const isCommentEdited = () => {
+    if (comment.updated !== undefined) {
+      return comment.updated === true;
+    }
+    
+    if (!comment.updatedAt || comment.updatedAt === null) {
+      return false;
+    }
+    
+    if (comment.createdAt && comment.updatedAt) {
+      return comment.createdAt !== comment.updatedAt;
+    }
+    
+    return false;
+  };
 
   const getImageUrl = (url) => {
     if (!url) return null;
@@ -155,119 +171,129 @@ const Comment = ({
     onReplyClick(comment.id, anonymousLabel);
   };
 
+  console.log('Comment rendering:', { 
+    id: comment.id, 
+    parentId: comment.parentId, 
+    isReply, 
+    repliesCount: comment.replies?.length || 0,
+    author: comment.author
+  });
+
   return (
-    <div className={`comment ${isReply ? 'comment-reply' : ''}`}>
-      <div className="comment-container">
-        <div className="comment-content">
-          <div className="comment-header">
-            <div className="comment-author">
-              <div className="author-avatar">{anonymousLabel[0]}</div>
-              <div className="author-info">
-                <span className="author-name">{anonymousLabel}</span>
-                <span className="comment-date">{comment.createdAt}</span>
-                {comment.updatedAt !== comment.createdAt && (
-                  <span className="edited-indicator">(수정됨)</span>
-                )}
+    <>
+      <div className={`comment ${isReply ? 'comment-reply' : ''}`}>
+        <div className="comment-container">
+          <div className="comment-content">
+            <div className="comment-header">
+              <div className="comment-author">
+                <div className="author-avatar">{anonymousLabel[0]}</div>
+                <div className="author-info">
+                  <span className="author-name">{anonymousLabel}</span>
+                  <span className="comment-date">{comment.createdAt}</span>
+                  {isCommentEdited() && (
+                    <span className="edited-indicator">(수정됨)</span>
+                  )}
+                </div>
               </div>
+              {isOwner && !isEditing && (
+                <div className="comment-actions">
+                  <button onClick={() => setIsEditing(true)}><Edit3 size={16} /></button>
+                  <button onClick={() => onDelete(comment.id)}><Trash2 size={16} /></button>
+                </div>
+              )}
             </div>
-            {isOwner && !isEditing && (
-              <div className="comment-actions">
-                <button onClick={() => setIsEditing(true)}><Edit3 size={16} /></button>
-                <button onClick={() => onDelete(comment.id)}><Trash2 size={16} /></button>
+
+            {isEditing ? (
+              <div className="edit-form">
+                <textarea
+                  value={editContent}
+                  onChange={handleEditContentChange}
+                  rows={3}
+                  placeholder="댓글을 입력하세요"
+                />
+                {editImage && (
+                  <div className="image-preview">
+                    <img
+                      src={getImageUrl(editImage)}
+                      alt="preview"
+                      onError={handleImageError}
+                      onLoad={handleImageLoad}
+                    />
+                    <button className="remove-image-btn" onClick={handleRemoveImage}>
+                      <X size={16} />
+                    </button>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  ref={fileInputRef}
+                />
+                {error && <div className="error-message">{error}</div>}
+                <div className="edit-actions">
+                  <button onClick={handleEdit} disabled={isSubmitting}>
+                    {isSubmitting ? '수정 중...' : '수정 완료'}
+                  </button>
+                  <button onClick={() => setIsEditing(false)} disabled={isSubmitting}>취소</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="comment-text">{renderCommentContent(comment.content)}</div>
+                {comment.url && comment.url !== '' && (
+                  <div className="comment-image">
+                    <img
+                      src={getImageUrl(comment.url)}
+                      alt="comment"
+                      onError={handleImageError}
+                      onLoad={handleImageLoad}
+                      style={{ maxWidth: '100%', height: 'auto' }}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+
+            {!isEditing && (
+              <div className="comment-footer">
+                <div className="comment-stats">
+                  <button
+                    className={`like-button ${isLiked ? 'liked' : ''}`}
+                    onClick={() => onLike(comment.id)}
+                  >
+                    <ThumbsUp size={14} /> {comment.likeCount || 0}
+                  </button>
+                  <button
+                    className={`dislike-button ${isDisliked ? 'disliked' : ''}`}
+                    onClick={() => onDislike(comment.id)}
+                  >
+                    <ThumbsDown size={14} /> {comment.dislikeCount || 0}
+                  </button>
+
+                  {!isReply && !isOwner && (
+                    <button className="reply-button" onClick={handleReplyClick}>
+                      <MessageSquare size={14} /> 답글
+                    </button>
+                  )}
+                </div>
               </div>
             )}
           </div>
-
-          {isEditing ? (
-            <div className="edit-form">
-              <textarea
-                value={editContent}
-                onChange={handleEditContentChange}
-                rows={3}
-                placeholder="댓글을 입력하세요"
-              />
-              {editImage && (
-                <div className="image-preview">
-                  <img
-                    src={getImageUrl(editImage)}
-                    alt="preview"
-                    onError={handleImageError}
-                    onLoad={handleImageLoad}
-                  />
-                  <button className="remove-image-btn" onClick={handleRemoveImage}>
-                    <X size={16} />
-                  </button>
-                </div>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                ref={fileInputRef}
-              />
-              {error && <div className="error-message">{error}</div>}
-              <div className="edit-actions">
-                <button onClick={handleEdit} disabled={isSubmitting}>
-                  {isSubmitting ? '수정 중...' : '수정 완료'}
-                </button>
-                <button onClick={() => setIsEditing(false)} disabled={isSubmitting}>취소</button>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="comment-text">{renderCommentContent(comment.content)}</div>
-              {comment.url && comment.url !== '' && (
-                <div className="comment-image">
-                  <img
-                    src={getImageUrl(comment.url)}
-                    alt="comment"
-                    onError={handleImageError}
-                    onLoad={handleImageLoad}
-                    style={{ maxWidth: '100%', height: 'auto' }}
-                  />
-                </div>
-              )}
-            </>
-          )}
-
-          {!isEditing && (
-            <div className="comment-footer">
-              <div className="comment-stats">
-                <button
-                  className={`like-button ${isLiked ? 'liked' : ''}`}
-                  onClick={() => onLike(comment.id)}
-                >
-                  <ThumbsUp size={14} /> {comment.likeCount || 0}
-                </button>
-                <button
-                  className={`dislike-button ${isDisliked ? 'disliked' : ''}`}
-                  onClick={() => onDislike(comment.id)}
-                >
-                  <ThumbsDown size={14} /> {comment.dislikeCount || 0}
-                </button>
-
-                {!isReply && !isOwner && (
-                  <button className="reply-button" onClick={handleReplyClick}>
-                    <MessageSquare size={14} /> 답글
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
         </div>
+
+        {replyTarget?.parentId === comment.id && (
+          <div className="reply-form-container">
+            <CreateComment
+              postId={comment.postId}
+              parentId={comment.id}
+              mentionText={`@${anonymousLabel}`}
+              onSubmit={onSubmitReply}
+              onCancel={onCancelReply}
+            />
+          </div>
+        )}
       </div>
-
-      {replyTarget?.parentId === comment.id && (
-        <div className="reply-form-container">
-          <CreateComment
-            postId={comment.postId}
-            parentId={comment.id}
-            mentionText={`@${anonymousLabel}`}
-            onSubmit={onSubmitReply}
-            onCancel={onCancelReply}
-          />
-        </div>
-      )}
 
       {comment.replies && comment.replies.length > 0 && (
         <div className="replies-container">
@@ -290,7 +316,7 @@ const Comment = ({
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 };
 

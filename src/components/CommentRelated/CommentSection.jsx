@@ -17,29 +17,73 @@ const CommentSection = ({ postId }) => {
   const userId = parseInt(localStorage.getItem('loginUserId'), 10);
 
   const buildCommentTree = (flatComments) => {
+    console.log('Building tree from comments:', flatComments);
+    
     const commentMap = {};
     const rootComments = [];
 
     flatComments.forEach(comment => {
       comment.replies = [];
       commentMap[comment.id] = comment;
+      console.log(`Comment ${comment.id}: parentId=${comment.parentId}, content="${comment.content}"`);
     });
 
     flatComments.forEach(comment => {
-      if (comment.parentId !== null) {
-        const parent = commentMap[comment.parentId];
+      let parentId = comment.parentId;
+      
+      // parentId가 null인 경우, 멘션을 통해 부모 찾기 시도
+      if ((parentId === null || parentId === undefined) && comment.content) {
+        const mentionMatch = comment.content.match(/^@(\S+)\s+/);
+        if (mentionMatch) {
+          const mentionedUser = mentionMatch[1];
+          console.log(`Comment ${comment.id} mentions: ${mentionedUser}`);
+          
+          // 멘션된 사용자의 가장 최근 댓글 찾기 
+          const potentialParents = flatComments.filter(c => 
+            c.id < comment.id && 
+            (c.parentId === null || c.parentId === undefined) && 
+            (
+              (c.anonymous && mentionedUser === '익명') ||
+              (!c.anonymous && c.author === mentionedUser)
+            )
+          ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          
+          if (potentialParents.length > 0) {
+            parentId = potentialParents[0].id;
+            console.log(`Inferred parentId ${parentId} for comment ${comment.id} based on mention @${mentionedUser}`);
+          }
+        }
+      }
+      
+      if (parentId !== null && parentId !== undefined) {
+        const parent = commentMap[parentId];
         if (parent) {
+          console.log(`Adding comment ${comment.id} as reply to ${parentId}`);
           parent.replies.push(comment);
+          // 임시로 parentId 설정
+          comment.parentId = parentId;
+        } else {
+          console.warn(`Parent comment ${parentId} not found for comment ${comment.id}, adding to root`);
+          rootComments.push(comment);
         }
       } else {
+        console.log(`Comment ${comment.id} is a root comment`);
         rootComments.push(comment);
       }
     });
 
     const sortByCreatedAt = (a, b) => new Date(a.createdAt) - new Date(b.createdAt);
+    
     rootComments.sort(sortByCreatedAt);
-    Object.values(commentMap).forEach(c => c.replies.sort(sortByCreatedAt));
+    
+    Object.values(commentMap).forEach(comment => {
+      if (comment.replies && comment.replies.length > 0) {
+        comment.replies.sort(sortByCreatedAt);
+        console.log(`Comment ${comment.id} has ${comment.replies.length} replies:`, comment.replies.map(r => r.id));
+      }
+    });
 
+    console.log('Final tree structure:', rootComments);
     return rootComments;
   };
 
@@ -50,7 +94,13 @@ const CommentSection = ({ postId }) => {
       const response = await axios.get(`${API_BASE}/posts/${postId}/comments`, {
         withCredentials: true,
       });
+      
+      console.log('Raw comments from API:', response.data); // 디버깅용
+      
       const tree = buildCommentTree(response.data);
+      
+      console.log('Built comment tree:', tree); // 디버깅용
+      
       setComments(tree);
     } catch (err) {
       console.error(err);
@@ -66,21 +116,36 @@ const CommentSection = ({ postId }) => {
 
   const handleCreate = async (content, parentId, anonymous, url) => {
     try {
+      const requestData = {
+        content,
+        parentId,
+        anonymous,
+        url: url || '',
+        userId,
+      };
+      
+      // 디버깅: 요청 데이터 로그
+      console.log('Creating comment with data:', requestData);
+      console.log('parentId type:', typeof parentId, 'value:', parentId);
+      
       const response = await axios.post(
         `${API_BASE}/posts/${postId}/comments`,
-        {
-          content,
-          parentId,
-          anonymous,
-          url: url || '',
-          userId,
-        },
+        requestData,
         { withCredentials: true }
       );
-      fetchComments();
+      
+      console.log('Comment creation response:', response.data);
+      
+      await fetchComments();
+      
+      if (parentId) {
+        setReplyTarget(null);
+      }
+      
       return { success: true };
     } catch (err) {
-      console.error(err);
+      console.error('Error creating comment:', err);
+      console.error('Error response:', err.response?.data);
       return { success: false, error: '댓글 작성에 실패했습니다.' };
     }
   };
@@ -156,9 +221,20 @@ const CommentSection = ({ postId }) => {
     setReplyTarget(null);
   };
 
+  const getTotalCommentCount = (comments) => {
+    let count = 0;
+    comments.forEach(comment => {
+      count += 1; 
+      if (comment.replies && comment.replies.length > 0) {
+        count += comment.replies.length; 
+      }
+    });
+    return count;
+  };
+
   return (
     <div className="comment-section">
-      <h3>댓글 ({comments.length})</h3>
+      <h3>댓글 ({getTotalCommentCount(comments)})</h3>
 
       <CreateComment
         postId={postId}
