@@ -7,6 +7,7 @@
 }
 #banner>.banner-container {
     background-color: #838383;
+    border-radius: 5px;
 }
 .banner-arrow {
     position: absolute;
@@ -26,17 +27,6 @@
     right: 2.5%;
     transform: scaleY(4);
 }
-
-/* #banner #banner-content {
-    color: white;
-    font-size: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    text-align: center;
-} */
-
 #banner .banner-container {
     overflow: hidden;
     position: relative;

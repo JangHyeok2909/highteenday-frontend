@@ -1,11 +1,7 @@
-
 /* main-page */
-#MainPage {
-    padding: 0;
-    margin: 0;
-}
-#MainPage>.content-container {
-    width: 90%;
-    margin: 0 auto;
-}
 
+#MainPage {
+    margin: 0 auto;
+    max-width: 1280px;
+    padding: 0 30px;
+}

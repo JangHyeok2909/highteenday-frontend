@@ -8,8 +8,8 @@ function UserAddIcon({size, color}) {
     <div className="UserAdd-icon-container">
       <UserRound  color={color} size={size} fill={color} />
       <span className="user-add-badge">
-        <Plus  color={"white"} strokeWidth={6} size={size/2} />
-        <Plus  color={color} size={size/2} className="overlay-plus"/>
+        <Plus  color={"white"} strokeWidth={6} size={size/2+5} />
+        <Plus  color={color} size={size/2+5} className="overlay-plus"/>
         </span>    
       
     </div>

@@ -8,10 +8,12 @@ function SearchSection() {
 
     const [value, setValue] = useState("");
 
+    // 엔터키로 검색
     const handleButtonDown = () => {
         
     }
 
+    // 돋보기로 검색
     const handleKeyDown = () => {
         
     }

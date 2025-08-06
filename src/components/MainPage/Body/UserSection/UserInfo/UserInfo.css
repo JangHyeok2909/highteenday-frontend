@@ -1,4 +1,9 @@
 /* User Info */
+
+#user-profile-section .logged-out-state {
+    width: 350px;
+}
+
 #user-profile-section .login-btn {
     background-color: #3f9763;
     text-align: center;
@@ -6,6 +11,7 @@
     font-size: 1.4em;
     cursor: pointer;
     margin: 0 0 10px 0 ;
+    border-radius: 5px;
 }
 #user-profile-section .login-btn>a {
     color: white;

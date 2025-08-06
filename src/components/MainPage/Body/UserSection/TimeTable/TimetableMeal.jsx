@@ -12,7 +12,9 @@ const TimetableMeal = () => {
   // ✅ 시간표 불러오기
   useEffect(() => {
     axios
-      .get("/api/timetableTemplates/userTimetables/today")
+      .get("/api/timetableTemplates/userTimetables/today", { 
+        withCredentials: true 
+      })
       .then((res) => {
         const timetableArr = Array(9).fill(null);
         res.data.forEach((item) => {
@@ -33,7 +35,9 @@ const TimetableMeal = () => {
   useEffect(() => {
     if (activeTab === "급식") {
       axios
-        .get("/api/schools/meals/today")
+        .get("/api/schools/meals/today", {
+          withCredentials: true
+        })
         .then((res) => {
           const mealArr = res.data.map((item) => item.dishName);
           const paddedMealArr = [...mealArr.slice(0, 8), ...Array(8).fill("")].slice(0, 8); // 8칸 고정

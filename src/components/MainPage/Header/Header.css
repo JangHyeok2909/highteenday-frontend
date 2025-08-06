@@ -1,18 +1,27 @@
 /* header */
 #header {
+    position: relative;
+    width: 1220px;
+    height: 156px;
+}
+
+#header .menu {
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    width: 48px;
+}
+
+#header .logo {
+    position: absolute;
+    top: 52px;
+    left: 50%;
+}
+
+#header .function {
+    position: absolute;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0 0 0;
-}
-#header .function>span
-{
-    padding: 9px;
-}
-#header .function>.padding-minus {
-    padding-right: 0px;
-}
-.menu, .logo, .function {
-    display: flex;
-    align-items: center;
+    gap: 10px;
+    top: 14px;
+    right: 0px;
 }

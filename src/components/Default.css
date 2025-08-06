@@ -1,4 +1,7 @@
-/* 기본 세팅 */
+/* 기본 세팅 */ /* 네이버 참고 했습니다 */ 
+/* 모바일은 따로 페이지를 만들거나 @media 사용하더라~ */
+/* width는 max-width: 1280px로 고정 시키고 */
+/* 컴포넌트의 위치는 부모 position을 relative로 자식들은 absolute로 하드코딩 하더라~ */
 *,
 *::before,
 *::after {
