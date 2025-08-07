@@ -5,7 +5,7 @@ import "./Icons.css";
  function UsersOverlayIcon({size, color}) {
   return (
     <div className="user-icon-overlay-container">
-      <User color={color} size={size} strokeWidth={1.5} fill={color}/>
+      <User className="lucide-icon" color={color} size={size} strokeWidth={1.5} fill={color}/>
       <User color={color} size={size-8} strokeWidth={1.5} fill={color} className="user-icon-overlay-small" />
     </div>
   );

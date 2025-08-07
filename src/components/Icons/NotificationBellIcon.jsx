@@ -8,7 +8,7 @@ function NotificationBellIcon({ size, color, count }) {
     
   return (
     <div className="notification-icon-container">
-      <Bell color={color} size={size} />
+      <Bell className="lucide-icon" color={color} size={size} />
       {count > 0 && <span className="notifnication-badge">{displayCount}</span>}
     </div>
   );
