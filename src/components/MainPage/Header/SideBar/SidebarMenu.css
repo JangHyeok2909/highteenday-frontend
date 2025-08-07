@@ -1,4 +1,8 @@
 /* Sidebar */
+
+#Sidebar-menu>.sidebar-container {
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+}
 #Sidebar-menu>.side-open-button {
     cursor: pointer;
 }

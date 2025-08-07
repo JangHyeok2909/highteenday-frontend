@@ -6,8 +6,8 @@ function Menubar({ size, color }) {
 
     
   return (
-    <div className="notification-icon-container">
-      <Menu color={color} size={size} />
+    <div className="menu-icon-container">
+      <Menu className="lucide-icon" color={color} size={size} />
     </div>
   );
 }

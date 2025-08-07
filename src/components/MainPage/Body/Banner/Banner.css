@@ -9,7 +9,7 @@
     background-color: #838383;
     border-radius: 5px;
 }
-.banner-arrow {
+#banner .banner-arrow {
     position: absolute;
     background-color: #C4C4C4;
     width: 40px;
@@ -60,6 +60,9 @@
     background-color: white;
     opacity: 0.5;
     cursor: pointer;
+
+    box-shadow: 0 2px 4px rgba(0, 128, 0, 0.2);
+    transition: all 0.2s ease;
 }
 #banner .dot.active{
     opacity: 1;

@@ -1,3 +1,12 @@
+/* icon 공통 부분 */
+.lucide-icon {
+  transition: filter 0.2s ease;
+  cursor: pointer;
+}
+.lucide-icon:hover {
+  filter: drop-shadow(0px 4px 6px rgba(46, 125, 50, 0.3));
+}
+
 /* NotificationBellIcon */
 .notification-icon-container {
     position: relative;

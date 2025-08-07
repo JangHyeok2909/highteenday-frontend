@@ -1,6 +1,7 @@
 /* Notice-Section */
 #notice-section .notice-content {
     border: 1px solid gray;
+    border-radius: 5px;
     padding: 10px;
     width: 850px;
 }

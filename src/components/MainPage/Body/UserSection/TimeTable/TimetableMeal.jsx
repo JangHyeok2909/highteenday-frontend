@@ -71,13 +71,13 @@ const TimetableMeal = () => {
     <div className={styles.container}>
       <div className={styles.tabMenu}>
         <div
-          className={`${styles.tab} ${activeTab === "시간표" ? styles.active : ""}`}
+          className={`${styles.tab} ${activeTab === "시간표" ? styles.active_right : ""}`}
           onClick={() => setActiveTab("시간표")}
         >
           시간표
         </div>
         <div
-          className={`${styles.tab} ${activeTab === "급식" ? styles.active : ""}`}
+          className={`${styles.tab} ${activeTab === "급식" ? styles.active_left : ""}`}
           onClick={() => setActiveTab("급식")}
         >
           급식

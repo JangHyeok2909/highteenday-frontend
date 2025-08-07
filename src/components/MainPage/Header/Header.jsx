@@ -13,7 +13,7 @@ function Header() {
   return (
    <div id="header">    
     <div className="menu">
-        <SidebarMenu size={45} color={"#3f9763"}/>
+        <SidebarMenu size={40} color={"#3f9763"}/>
     </div>
 
     <div className="logo">
@@ -21,9 +21,9 @@ function Header() {
     </div>
 
     <div className="function">
-        <span><UserAddIcon size={35} color={"#3f9763"} /></span>
-        <span className="padding-minus"><UsersOverlayIcon size={35} color={"#3f9763"}/></span>
-        <span><NotificationBellIcons size={35} color={"#3f9763"} count={0}/></span> {/* count 는 나중에 api로 들고와서 넣기 */}
+        <span><UserAddIcon size={32} color={"#3f9763"} /></span>
+        <span className="padding-minus"><UsersOverlayIcon size={32} color={"#3f9763"}/></span>
+        <span><NotificationBellIcons size={32} color={"#3f9763"} count={0}/></span> {/* count 는 나중에 api로 들고와서 넣기 */}
     </div>
    </div>
   );
