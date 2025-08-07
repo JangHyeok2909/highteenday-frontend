@@ -15,6 +15,7 @@ import BoardPage from "./pages/BoardPage";
 import PostDetail from "./pages/PostDetail";
 import UserInfo from "./components/MainPage/Body/UserSection/UserInfo/UserInfo";
 import MainPage from './components/MainPage/MainPage';
+import MealPage from './pages/MealPage';
 
 
   function App() {
@@ -37,6 +38,7 @@ import MainPage from './components/MainPage/MainPage';
           <Route path="/board/:boardId" element={<BoardPage />} />
           <Route path="/user-profile" element={<UserInfo />} />
           <Route path="/post/:postId" element={<PostDetail/>}/>
+          <Route path="/meal" element={<MealPage />} />
           <Route path="*" element={<NotFound />} />
 
           <Route path="/#" />
