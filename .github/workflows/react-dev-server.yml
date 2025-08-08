@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: '20'
 
+        # warning 도 막아버려서 CI=false 는 임시로 한거 
       - name: Install Dependencies and Build React App
         run: |
           npm install --legacy-peer-deps
@@ -61,3 +62,4 @@ jobs:
             sudo chmod -R o+rx /home/rasp-user/front-end
 
             sudo systemctl restart nginx
+            echo "✅ React 서버 실행 완료"
