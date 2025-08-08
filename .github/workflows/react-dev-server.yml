@@ -53,11 +53,11 @@ jobs:
           key: ${{ secrets.RASP_SSH_KEY }}
           port: ${{ secrets.RASP_PORT }}
           script: |
-            unzip -o /home/ubuntu/build.zip -d /home/ubuntu/
-            mv /home/ubuntu/build /home/ubuntu/front-end
-            rm /home/ubuntu/build.zip
+            unzip -o /home/rasp-user/build.zip -d /home/rasp-user/
+            mv /home/rasp-user/build /home/rasp-user/front-end
+            rm /home/rasp-user/build.zip
 
-            sudo chmod o+x /home/ubuntu
-            sudo chmod -R o+rx /home/ubuntu/front-end
+            sudo chmod o+x /home/rasp-user
+            sudo chmod -R o+rx /home/rasp-user/front-end
 
             sudo systemctl restart nginx
