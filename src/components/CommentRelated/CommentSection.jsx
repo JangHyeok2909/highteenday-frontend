@@ -3,7 +3,7 @@ import axios from 'axios';
 import Comment from './Comment';
 import CreateComment from './CreateComment';
 import "./CommentSystem.css";
-import { data } from 'react-router-dom';
+// import { data } from 'react-router-dom';
 
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL;

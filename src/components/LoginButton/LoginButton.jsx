@@ -46,7 +46,7 @@ function LoginButton() {
 
   const handleLogin = async () => {
   try {
-    const response = await axios.post("/api/user/login", {
+    await axios.post("/api/user/login", {
       email: id,
       password: pw,
     }, {

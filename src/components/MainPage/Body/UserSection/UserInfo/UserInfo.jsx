@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./UserInfo.css";
 import "../../../../Default.css"
 import Circle_user_Icon from "../../../../Icons/Circle_user_Icon";

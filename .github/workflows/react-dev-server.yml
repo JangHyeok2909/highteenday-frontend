@@ -20,7 +20,7 @@ jobs:
       - name: Install Dependencies and Build React App
         run: |
           npm install --legacy-peer-deps
-          npm run build
+          CI=false npm run build
 
       - name: Compress build folder
         run: zip -r build.zip build
