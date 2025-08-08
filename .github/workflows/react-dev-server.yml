@@ -1,11 +1,11 @@
-name: React CI/CD with Port 80
+name: React Build & Deploy to Ubuntu Server
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  deploy-react:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,53 +17,47 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Remove old app directory before upload
+      - name: Install Dependencies and Build React App
+        run: |
+          npm install --legacy-peer-deps
+          npm run build
+
+      - name: Compress build folder
+        run: zip -r build.zip build
+
+      - name: Remove existing front-end folder on server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{ secrets.RASP_HOST }}
+          username: ${{ secrets.RASP_USER }}
+          key: ${{ secrets.RASP_SSH_KEY }}
+          port: ${{ secrets.RASP_PORT }}
           script: |
-            cp ~/highteenday-front-server/.env ~/.env || true
-            sudo rm -rf ~/highteenday-front-server
-            sudo rm -rf /home/ubuntu/front-end
+            sudo rm -rf /home/rasp-user/front-end
 
-      - name: Upload React App to EC2
+      - name: Upload build.zip to server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: "./*"
-          target: "~/highteenday-front-server"
-          rm: false
-          overwrite: true
-          strip_components: 0
-          # exclude: ".git" 
+          host: ${{ secrets.RASP_HOST }}
+          username: ${{ secrets.RASP_USER }}
+          key: ${{ secrets.RASP_SSH_KEY }}
+          port: ${{ secrets.RASP_PORT }}
+          source: "build.zip"
+          target: "/home/rasp-user"
 
-      - name: Install & Start React App on EC2
+      - name: Unzip and move to front-end directory
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{ secrets.RASP_HOST }}
+          username: ${{ secrets.RASP_USER }}
+          key: ${{ secrets.RASP_SSH_KEY }}
+          port: ${{ secrets.RASP_PORT }}
           script: |
-            mkdir -p ~/highteenday-front-server
-            cd ~/highteenday-front-server
-            mv ~/.env ~/highteenday-front-server/.env
+            unzip -o /home/ubuntu/build.zip -d /home/ubuntu/
+            mv /home/ubuntu/build /home/ubuntu/front-end
+            rm /home/ubuntu/build.zip
 
-            # 의존성 설치
-            npm install --legacy-peer-deps
-
-            # 빌드 파일 생성
-            npm run build
-            
-            # nginx 폴더로 서빙
-            cp -r ~/highteenday-front-server/build/ /home/ubuntu/front-end
-
-            # 권한 주기 
             sudo chmod o+x /home/ubuntu
             sudo chmod -R o+rx /home/ubuntu/front-end
 
-            # nginx 재시작
             sudo systemctl restart nginx
