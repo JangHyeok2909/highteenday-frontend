@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./SchoolVerification.css";
 
@@ -7,27 +7,27 @@ function SchoolSearch() {
   const [query, setQuery] = useState("");
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (!query.trim()) {
       alert("학교 이름을 입력해주세요.");
       return;
     }
 
-    setLoading(true);
-    axios
-      .get(`/api/schools/search?name=${encodeURIComponent(query)}`)
-      .then((res) => {
-        setSchools(res.data);
-      })
-      .catch((err) => {
-        console.error("학교 검색 실패:", err);
-        alert("학교를 불러오는 중 오류가 발생했습니다.");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `/api/schools/search?name=${encodeURIComponent(query)}`,
+        { withCredentials: true }
+      );
+      setSchools(res.data);
+    } catch (err) {
+      console.error("학교 검색 실패:", err);
+      alert("학교를 불러오는 중 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSelectSchool = (schoolName) => {

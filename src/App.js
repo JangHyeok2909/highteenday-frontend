@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import axios from "axios";
 
 import WritePostPage from './pages/WritePostPage';
 import PostPage from './pages/PostPage';
@@ -11,12 +12,15 @@ import FormRegisterPage from './components/LoginRelated/FormRegisterPage';
 import CreateAccount from './components/LoginRelated/CreateAccount'; 
 import SchoolVerification from './components/LoginRelated/SchoolVerification';
 import CommentSection from './components/CommentRelated/CommentSection';
-// import Timetable from './components/TimetableRelated/Timetable';
 import BoardOverview from "./pages/BoardOverview";
 import BoardPage from "./pages/BoardPage";
 import PostDetail from "./components/PostDetail";
 import UserProfilePage from "./pages/UserProfilePage";
 import FriendList from './components/Friend/FriendList';
+
+// Axios 기본 설정
+axios.defaults.baseURL = "http://localhost:8080"; // 서버 주소로 변경
+axios.defaults.withCredentials = true;
 
 function App() {
   return (

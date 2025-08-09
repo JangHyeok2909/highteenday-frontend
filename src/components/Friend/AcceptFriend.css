@@ -1,0 +1,54 @@
+.acceptfriend-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.acceptfriend-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.acceptfriend-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.acceptfriend-item {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 6px;
+  transition: background-color 0.2s;
+}
+
+.acceptfriend-item:hover {
+  background-color: #f1f1f1;
+}
+
+.acceptfriend-item.selected {
+  background-color: #393c3f;
+  color: white;
+}
+
+.acceptfriend-submit {
+  height: 40px;
+  background-color: #393c3f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.acceptfriend-submit:hover {
+  background-color: #555;
+}
+
+.acceptfriend-message {
+  font-size: 14px;
+  color: green;
+}

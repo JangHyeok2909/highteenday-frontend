@@ -1,0 +1,43 @@
+.friendadd-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.friendadd-title {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.friendadd-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.friendadd-submit {
+  width: 100%;
+  height: 40px;
+  background-color: #393c3f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.friendadd-submit:hover {
+  background-color: #555;
+}
+
+.friendadd-message {
+  margin-top: 8px;
+  font-size: 14px;
+  color: green;
+}
