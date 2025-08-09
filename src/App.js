@@ -18,9 +18,7 @@ import PostDetail from "./components/PostDetail";
 import UserProfilePage from "./pages/UserProfilePage";
 import FriendList from './components/Friend/FriendList';
 
-// Axios 기본 설정
-axios.defaults.baseURL = "http://localhost:8080"; // 서버 주소로 변경
-axios.defaults.withCredentials = true;
+
 
 function App() {
   return (

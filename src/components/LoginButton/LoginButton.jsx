@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./LoginButton.css";
-import { Link, useNavigate } from "react-router-dom"; // ← useNavigate 추가
+import { Link, useNavigate } from "react-router-dom"; 
 
 function LoginButton() {
   const [jwtStatus, setJwtStatus] = useState("Jwt 없음");
