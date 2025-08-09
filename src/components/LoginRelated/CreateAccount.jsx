@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./CreateAccount.css";
 
 function CreateAccount() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [form, setForm] = useState({
     nickname: "",
@@ -12,7 +13,17 @@ function CreateAccount() {
     birth: "",
     gender: "",
     profileImage: null,
+    school: "",
   });
+
+  useEffect(() => {
+    if (location.state?.selectedSchool) {
+      setForm((prev) => ({
+        ...prev,
+        school: location.state.selectedSchool,
+      }));
+    }
+  }, [location.state]);
 
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
@@ -37,7 +48,6 @@ function CreateAccount() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("회원가입 데이터:", form);
-    // 서버 전송 처리 등
   };
 
   return (
@@ -109,18 +119,25 @@ function CreateAccount() {
           onChange={handleChange}
         />
 
-        {/* 학교 인증 */}
+        <label>학교</label>
+        <input
+          type="text"
+          name="school"
+          value={form.school}
+          readOnly
+          placeholder="학교를 검색하세요."
+        />
+
         <div className="button-wrapper">
           <button
             type="button"
             className="submit-button"
             onClick={() => navigate("/school")}
           >
-            학교 인증
+            학교 검색
           </button>
         </div>
 
-        {/* 완료 버튼 */}
         <div className="button-wrapper">
           <button type="submit" className="submit-button">
             완료
