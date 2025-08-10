@@ -6,19 +6,20 @@
     justify-content: right;
     padding: 10px 0;
 }
-#searchSection>.search-bar {
+#searchSection .search-bar {
     border: 1px solid #3f9763;
     height: 28px;
     width: 250px;
     position: relative;
     border-radius: 5px;
 }
-#searchSection>.search-bar input{
+#searchSection .search-bar input{
     border: none;
     outline: none;
     font-size: 15px;
+    padding: 0 0 0 5px;
 }
-#searchSection>.search-bar>.search-button{
+#searchSection .search-bar>.search-button{
     background: none;
     border: none;
     cursor: pointer;

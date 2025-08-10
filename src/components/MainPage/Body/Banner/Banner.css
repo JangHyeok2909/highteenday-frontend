@@ -13,7 +13,7 @@
     position: absolute;
     background-color: #C4C4C4;
     width: 40px;
-    height: 25px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -34,6 +34,7 @@
 #banner .banner-track {
     display: flex;
     transition: transform 0.5s ease-in-out;
+    height: 100%;
 }
 #banner .banner-slide {
     flex: 0 0 100%;
@@ -41,8 +42,17 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+#banner .banner-content {
+    width: 75%;
+    height: 100%;
+    background-color: rgba(44, 44, 44, 0.336);
     font-size: 100px;
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 #banner #indicators {

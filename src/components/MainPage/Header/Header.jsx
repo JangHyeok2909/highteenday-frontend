@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"
 import NotificationBellIcons from "../../Icons/NotificationBellIcon";
 import UserAddIcon from "../../Icons/UserAddIcon";
 import UsersOverlayIcon from "../../Icons/UsersOverlayIcon";
@@ -20,9 +21,9 @@ function Header() {
     </div>
 
     <div className="function">
-        <span><UserAddIcon size={32} color={"#3f9763"} /></span>
-        <span className="padding-minus"><UsersOverlayIcon size={32} color={"#3f9763"}/></span>
-        <span><NotificationBellIcons size={32} color={"#3f9763"} count={0}/></span> {/* count 는 나중에 api로 들고와서 넣기 */}
+        <Link to="/"><UserAddIcon size={32} color={"#3f9763"} /></Link>
+        <Link to="/" className="padding-minus"><UsersOverlayIcon size={32} color={"#3f9763"}/></Link>
+        <Link to="/"><NotificationBellIcons size={32} color={"#3f9763"} count={0}/></Link>
     </div>
    </div>
   );
