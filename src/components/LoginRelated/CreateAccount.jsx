@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 import "./CreateAccount.css";
 
 function CreateAccount() {
@@ -17,10 +18,10 @@ function CreateAccount() {
   });
 
   useEffect(() => {
-    if (location.state?.selectedSchool) {
+    if (location.state) {
       setForm((prev) => ({
         ...prev,
-        school: location.state.selectedSchool,
+        ...location.state, 
       }));
     }
   }, [location.state]);
@@ -45,9 +46,26 @@ function CreateAccount() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("회원가입 데이터:", form);
+    try {
+      const formData = new FormData();
+      Object.keys(form).forEach((key) => {
+        formData.append(key, form[key]);
+      });
+
+      const res = await axios.post("/api/user/register", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      });
+
+      alert("회원가입 성공!");
+      console.log("회원가입 응답:", res.data);
+      navigate("/");
+    } catch (err) {
+      console.error("회원가입 실패:", err);
+      alert(err.response?.data?.message || "회원가입 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -59,6 +77,7 @@ function CreateAccount() {
           name="nickname"
           placeholder="입력하세요."
           required
+          value={form.nickname}
           onChange={handleChange}
         />
 
@@ -68,6 +87,7 @@ function CreateAccount() {
           name="phone"
           placeholder="010-xxxx-xxxx"
           required
+          value={form.phone}
           onChange={handleChange}
         />
 
@@ -77,14 +97,21 @@ function CreateAccount() {
           name="email"
           placeholder="HighteenDay@example.com"
           required
+          value={form.email}
           onChange={handleChange}
         />
 
         <label>생일 [필수]</label>
-        <input type="date" name="birth" required onChange={handleChange} />
+        <input
+          type="date"
+          name="birth"
+          required
+          value={form.birth}
+          onChange={handleChange}
+        />
 
         <label>성별</label>
-        <select name="gender" onChange={handleChange}>
+        <select name="gender" value={form.gender} onChange={handleChange}>
           <option value="">선택</option>
           <option value="남자">남자</option>
           <option value="여자">여자</option>
@@ -132,7 +159,7 @@ function CreateAccount() {
           <button
             type="button"
             className="submit-button"
-            onClick={() => navigate("/school")}
+            onClick={() => navigate("/school", { state: form })}
           >
             학교 검색
           </button>

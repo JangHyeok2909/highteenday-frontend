@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./SchoolVerification.css";
 
@@ -8,6 +8,7 @@ function SchoolSearch() {
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); 
 
   const handleSearch = async () => {
     if (!query.trim()) {
@@ -31,7 +32,9 @@ function SchoolSearch() {
   };
 
   const handleSelectSchool = (schoolName) => {
-    navigate("/CreateAccount", { state: { selectedSchool: schoolName } });
+    navigate("/CreateAccount", {
+      state: { ...location.state, school: schoolName },
+    });
   };
 
   return (

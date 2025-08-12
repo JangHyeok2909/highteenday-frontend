@@ -14,7 +14,7 @@ const FriendAdd = () => {
 
     try {
       const res = await axios.post(
-        "/api/friends/request", //친구 추가 api 넣어야함
+        "/api/friends/request",
         { targetUserId: inputValue },
         { withCredentials: true }
       );
