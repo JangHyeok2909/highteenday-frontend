@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import WritePostPage from './pages/WritePostPage';
 import PostPage from './pages/PostPage';
 import LoginButton from './components/LoginButton/LoginButton';
@@ -15,6 +16,7 @@ import BoardPage from "./pages/BoardPage";
 import PostDetail from "./pages/PostDetail";
 import UserInfo from "./components/MainPage/Body/UserSection/UserInfo/UserInfo";
 import MainPage from './components/MainPage/MainPage';
+import FriendList from './components/Friend/FriendList';
 
 
   function App() {
@@ -38,6 +40,8 @@ import MainPage from './components/MainPage/MainPage';
           <Route path="/user-profile" element={<UserInfo />} />
           <Route path="/post/:postId" element={<PostDetail/>}/>
           <Route path="*" element={<NotFound />} />
+          
+          <Route path="/friend" element={<FriendList />} />
 
           <Route path="/#" />
         </Routes>
@@ -45,4 +49,4 @@ import MainPage from './components/MainPage/MainPage';
     );
   }
 
-  export default App;
+export default App;

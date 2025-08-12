@@ -14,8 +14,10 @@
 
 #header .logo {
     position: absolute;
-    top: 52px;
-    left: 50%;
+    top: 20px;
+    left: 45%;
+    border: 1px solid #000;
+    padding: 30px 25px;
 }
 
 #header .function {

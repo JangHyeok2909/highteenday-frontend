@@ -7,7 +7,6 @@ function SearchSection() {
 
     const [value, setValue] = useState("");
 
-    // 돋보기로 검색
     const handleSearch = (e) => {
         e.preventDefault();
         if(!value.trim()) return alert("검색어를 입력해주세요");

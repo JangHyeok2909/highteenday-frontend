@@ -22,8 +22,9 @@ function Header() {
 
     <div className="function">
         <Link to="/"><UserAddIcon size={32} color={"#3f9763"} /></Link>
-        <Link to="/" className="padding-minus"><UsersOverlayIcon size={32} color={"#3f9763"}/></Link>
+        <Link to="/friend" className="padding-minus"><UsersOverlayIcon size={32} color={"#3f9763"}/></Link>
         <Link to="/"><NotificationBellIcons size={32} color={"#3f9763"} count={0}/></Link>
+        {/* 위에 Notification은 다른 페이지가  아니라 팝업 이니까 Link 없엘 예정 */}
     </div>
    </div>
   );
