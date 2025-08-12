@@ -68,7 +68,7 @@ function SidebarMenu({size, color}) {
         type: "group",
         items: boards.map(board => ({
             name: board.name,
-            link: `/boards/${board.id}`
+            link: `/board/${board.id}`
         })),
     };
 

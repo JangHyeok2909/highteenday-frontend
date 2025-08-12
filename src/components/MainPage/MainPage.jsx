@@ -6,6 +6,8 @@ import "../Default.css"
 
 function MainPage() {
 
+  
+
   return (
     <div id="MainPage">
       <div className="content-container">

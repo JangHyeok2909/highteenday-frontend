@@ -33,3 +33,7 @@
     padding: 1em;
     color: gray;
 }
+
+#user-profile-section .logout-btn {
+    cursor: pointer;
+}

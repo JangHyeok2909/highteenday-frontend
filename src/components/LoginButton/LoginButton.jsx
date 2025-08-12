@@ -56,7 +56,7 @@ function LoginButton() {
 
       alert("로그인 성공");
       await getJwtStatus();
-      navigate("/friends"); 
+      navigate("/"); 
 
     } catch (error) {
       console.error("로그인 실패", error);
