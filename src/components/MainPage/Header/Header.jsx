@@ -19,8 +19,7 @@ function Header() {
         logo
     </div>
 
-    {dsafd ? 'asldfjalsdkfkas' : ""}
-
+    
     <div className="function">
         <Link to="/"><UserAddIcon size={32} color={"#3f9763"} /></Link>
         <Link to="/friend" className="padding-minus"><UsersOverlayIcon size={32} color={"#3f9763"}/></Link>
