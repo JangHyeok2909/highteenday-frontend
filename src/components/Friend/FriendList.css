@@ -1,17 +1,17 @@
-.friends-container {
+#friend-list .friend-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 }
 
-.friends-container .search-container {
+#friend-list .friends-container .search-container {
   display: flex;
   align-items: center;
   gap: 5px;
   margin-bottom: 15px;
 }
 
-.friends-container .search-container input {
+#friend-list .friends-container .search-container input {
   flex: 1;
   height: 40px;
   padding: 0 10px;
@@ -20,7 +20,7 @@
   border-radius: 8px;
 }
 
-button {
+#friend-list button {
   height: 40px;
   padding: 0 15px;
   border: none;
@@ -32,24 +32,24 @@ button {
   transition: background-color 0.2s;
 }
 
-button:hover {
+#friend-list button:hover {
   background-color: #555;
 }
 
-.action-buttons {
+#friend-list .action-buttons {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 20px;
 }
 
-.friend-list {
+#friend-list .friend-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.friend-card {
+#friend-list .friend-card {
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
@@ -58,17 +58,17 @@ button:hover {
   margin-bottom: 10px;
 }
 
-.friend-name {
+#friend-list .friend-name {
   flex: 1;
   font-size: 16px;
 }
 
-.friend-actions {
+#friend-list .friend-actions {
   display: flex;
   gap: 8px;
 }
 
-.modal-overlay {
+#friend-list .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -80,7 +80,7 @@ button:hover {
   justify-content: center;
 }
 
-.modal-content {
+#friend-list .modal-content {
   background-color: white;
   border-radius: 10px;
   padding: 20px;
@@ -89,7 +89,7 @@ button:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.close-btn {
+#friend-list .close-btn {
   margin-top: 10px;
   width: 100%;
 }

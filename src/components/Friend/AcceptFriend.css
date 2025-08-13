@@ -1,22 +1,22 @@
-.acceptfriend-container {
+#accept-friend .acceptfriend-container {
   display: flex;
   flex-direction: column;
   gap: 12px;
   width: 100%;
 }
 
-.acceptfriend-title {
+#accept-friend .acceptfriend-title {
   font-size: 18px;
   font-weight: bold;
 }
 
-.acceptfriend-list {
+#accept-friend .acceptfriend-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.acceptfriend-item {
+#accept-friend .acceptfriend-item {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -25,30 +25,49 @@
   transition: background-color 0.2s;
 }
 
-.acceptfriend-item:hover {
+#accept-friend .acceptfriend-item:hover {
   background-color: #f1f1f1;
 }
 
-.acceptfriend-item.selected {
+#accept-friend .acceptfriend-item.selected {
   background-color: #393c3f;
   color: white;
 }
 
-.acceptfriend-submit {
-  height: 40px;
+#accept-friend .acceptfriend-submit {
+  width: 60%;
+  height: 36px;
+  margin: 0 auto;
+  display: block;
   background-color: #393c3f;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
 }
 
-.acceptfriend-submit:hover {
+#accept-friend .acceptfriend-submit:hover {
   background-color: #555;
 }
 
-.acceptfriend-message {
+#accept-friend .acceptfriend-message {
   font-size: 14px;
   color: green;
+}
+
+#accept-friend .close-btn {
+  width: 60%;
+  height: 36px;
+  margin: 0 auto;
+  display: block;
+  background-color: #ccc;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#accept-friend .close-btn:hover {
+  background-color: #bbb;
 }
