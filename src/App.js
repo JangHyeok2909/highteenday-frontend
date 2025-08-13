@@ -29,7 +29,6 @@ import FriendList from './components/Friend/FriendList';
           <Route path="/post/write" element={<WritePostPage />} />
           <Route path="/post/view" element={<PostPage />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/user" element={<UserPage />} />
           <Route path="/FormRegisterPage" element={<FormRegisterPage />} />
           <Route path="/CreateAccount" element={<CreateAccount />} /> 
           <Route path="/school" element={<SchoolVerification />} />
@@ -39,6 +38,14 @@ import FriendList from './components/Friend/FriendList';
           <Route path="/board/:boardId" element={<BoardPage />} />
           <Route path="/user-profile" element={<UserInfo />} />
           <Route path="/post/:postId" element={<PostDetail/>}/>
+          <Route path="/mypage/posts" element={<MyPostsPage />} />
+          <Route path="/mypage/comments" element={<MyCommentsPage />} />
+          <Route path="/mypage/scraps" element={<MyScrapsPage />} />
+
+          
+   
+
+
           <Route path="*" element={<NotFound />} />
           
           <Route path="/friend" element={<FriendList />} />

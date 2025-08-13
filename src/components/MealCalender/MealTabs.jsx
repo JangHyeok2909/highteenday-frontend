@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Tabs, Tab } from '@mui/material';
 import MonthlyMealCalendar from './MonthlyMealCalendar';
 import WeeklyMealView from './WeeklyMealView';
-import DailyMealView from './DailyMealView';
+import DailyMealView from './DailyMealView.jsx';
 
 function MealTabs({ schoolId }) {
   const [tabIndex, setTabIndex] = useState(0);
