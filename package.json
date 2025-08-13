@@ -1,8 +1,7 @@
 {
   "name": "highteenday-frontend",
   "version": "0.1.0",
-  "proxy": "https://highteenday.duckdns.org",
-  "_proxy2": "https://highteenday.duckdns.org",
+  "proxy": "https://highteenday.duckdns.org/",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
@@ -44,11 +43,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7",
-    "cross-env": "^7.0.3",
-    "typescript": "^5.9.2"
   }
 }

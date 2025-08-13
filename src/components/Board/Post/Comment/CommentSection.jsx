@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom'
 import axios from 'axios';
 import Comment from './Comment';
 import CreateComment from './CreateComment';
@@ -6,7 +7,8 @@ import './CommentSystem.css';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
-const CommentSection = ({ postId }) => {
+const CommentSection = () => {
+  const { postId } = useParams();
   const [comments, setComments] = useState([]);
   const [replyTo, setReplyTo] = useState(null);
   const [likedComments, setLikedComments] = useState([]);

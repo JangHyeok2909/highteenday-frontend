@@ -1,8 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import WritePostPage from './pages/WritePostPage';
-import PostPage from './pages/PostPage';
+import WritePostPage from './components/Board/Post/WritePostPage';
 import LoginButton from './components/LoginButton/LoginButton';
 import NotFound from './pages/NotFound';
 import Register from './components/LoginRelated/Register';
@@ -12,11 +11,15 @@ import CreateAccount from './components/LoginRelated/CreateAccount';
 import SchoolVerification from './components/LoginRelated/SchoolVerification';
 import CommentSection from './components/CommentRelated/CommentSection';
 import BoardOverview from "./components/MainPage/Body/BoardSection/BoardSection";
-import BoardPage from "./pages/BoardPage";
-import PostDetail from "./pages/PostDetail";
+import BoardPage from "./components/Board/BoardPage";
+import PostDetail from "./components/Board/Post/PostDetail";
 import UserInfo from "./components/MainPage/Body/UserSection/UserInfo/UserInfo";
 import MainPage from './components/MainPage/MainPage';
 import FriendList from './components/Friend/FriendList';
+import MyPostsPage from './components/MyPage/MyPostsPage';
+import MyCommentsPage from './components/MyPage/MyCommentsPage';
+import MyScrapsPage from './components/MyPage/MyScrapsPage';
+import PostSection from './components/Board/Post/PostSection';
 
 
   function App() {
@@ -25,30 +28,37 @@ import FriendList from './components/Friend/FriendList';
         <Routes>
           <Route path="/" element={<MainPage />}/>
           {/* <Route path="login" element={< />}/> */}
+
+          {/* user related */}
           <Route path="/loginTest" element={<LoginButton />}/>
-          <Route path="/post/write" element={<WritePostPage />} />
-          <Route path="/post/view" element={<PostPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/FormRegisterPage" element={<FormRegisterPage />} />
           <Route path="/CreateAccount" element={<CreateAccount />} /> 
+
+          {/* school */}
           <Route path="/school" element={<SchoolVerification />} />
-          <Route path="/comments" element={<CommentSection postId={1} />} />
-          <Route path="/board-overview" element={<BoardOverview />} />
-          <Route path="/board/:boardId/post/:postId" element={<PostDetail />} />
+
+          {/* board & post */}
+          {/* board */}
+          <Route path="/board-overview" element={<BoardOverview />} /> {/* main page 의 게시판 4개 나중에 삭제 */}
+          <Route path="/board/:boardId/post/:postId" element={<PostSection />} />
           <Route path="/board/:boardId" element={<BoardPage />} />
-          <Route path="/user-profile" element={<UserInfo />} />
-          <Route path="/post/:postId" element={<PostDetail/>}/>
+          {/* post */}
+          <Route path="/post/write" element={<WritePostPage />} />
+          <Route path="/comments" element={<CommentSection postId={1} />} />
+
+          {/* my page */}
           <Route path="/mypage/posts" element={<MyPostsPage />} />
           <Route path="/mypage/comments" element={<MyCommentsPage />} />
           <Route path="/mypage/scraps" element={<MyScrapsPage />} />
-
           
-   
 
+
+          {/* friend */}
+          <Route path="/friend" element={<FriendList />} />
 
           <Route path="*" element={<NotFound />} />
           
-          <Route path="/friend" element={<FriendList />} />
 
           <Route path="/#" />
         </Routes>

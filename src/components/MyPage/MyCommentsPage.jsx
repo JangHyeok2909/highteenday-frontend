@@ -1,3 +1,5 @@
+// 스크랩, 포스트, 작성글 컴포넌트 1개로 통일화 필요
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
