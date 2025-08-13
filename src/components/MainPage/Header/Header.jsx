@@ -9,7 +9,6 @@ import "../../Default.css"
 
 
 function Header() {
-
   return (
    <div id="header">    
     <div className="menu">
@@ -19,6 +18,8 @@ function Header() {
     <div className="logo">
         logo
     </div>
+
+    {dsafd ? 'asldfjalsdkfkas' : ""}
 
     <div className="function">
         <Link to="/"><UserAddIcon size={32} color={"#3f9763"} /></Link>
@@ -31,4 +32,3 @@ function Header() {
 }
 
 export default Header;
-

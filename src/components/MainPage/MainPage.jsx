@@ -8,7 +8,7 @@ function MainPage() {
 
   
 
-  return (
+return (
     <div id="MainPage">
       <div className="content-container">
         <div className="header">
