@@ -57,23 +57,25 @@ const HotPosts = () => {
   };
 
   return (
-    <div className="hotposts-container">
-      <h2 className="hotposts-title">🔥 HOT 게시물</h2>
+    <div id="hot-posts">
+      <div className="hotposts-container">
+        <h2 className="hotposts-title">🔥 HOT 게시물</h2>
 
-      {error || posts.length === 0 ? (
-        <p className="no-posts">실시간 인기 게시글이 없습니다.</p>
-      ) : (
-        <table className="hotposts-table">
-          <tbody>
-            {posts.map((post) => (
-              <tr key={post.id} className="hotpost-row">
-                <td className="post-title">{post.title}</td>
-                <td className="post-date">{formatDate(post.createdAt)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+        {error || posts.length === 0 ? (
+          <p className="no-posts">실시간 인기 게시글이 없습니다.</p>
+        ) : (
+          <table className="hotposts-table">
+            <tbody>
+              {posts.map((post) => (
+                <tr key={post.id} className="hotpost-row">
+                  <td className="post-title">{post.title}</td>
+                  <td className="post-date">{formatDate(post.createdAt)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };

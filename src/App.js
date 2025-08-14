@@ -9,7 +9,6 @@ import UserPage from './components/LoginRelated/UserPage';
 import FormRegisterPage from './components/LoginRelated/FormRegisterPage';
 import CreateAccount from './components/LoginRelated/CreateAccount'; 
 import SchoolVerification from './components/LoginRelated/SchoolVerification';
-import CommentSection from './components/CommentRelated/CommentSection';
 import BoardOverview from "./components/MainPage/Body/BoardSection/BoardSection";
 import BoardPage from "./components/Board/BoardPage";
 import PostDetail from "./components/Board/Post/PostDetail";
@@ -45,7 +44,6 @@ import PostSection from './components/Board/Post/PostSection';
           <Route path="/board/:boardId" element={<BoardPage />} />
           {/* post */}
           <Route path="/post/write" element={<WritePostPage />} />
-          <Route path="/comments" element={<CommentSection postId={1} />} />
 
           {/* my page */}
           <Route path="/mypage/posts" element={<MyPostsPage />} />

@@ -26,25 +26,27 @@ function BoardPreview({boardId}) {
   }, []);
 
   return (
-    <div className="board-block">
-      <div className="board-header">
-        <h3 className="board-name">{boardName}</h3> {/* 이부분 수정 필요 */}
-        <Link to={`/board/${boardId}`} className="view-all-btn">전체보기</Link>
+    <div id="board-preview">
+      <div className="board-block">
+        <div className="board-header">
+          <h3 className="board-name">{boardName}</h3> {/* 이부분 수정 필요 */}
+          <Link to={`/board/${boardId}`} className="view-all-btn">전체보기</Link>
+        </div>
+        <ul className="post-list">
+          {posts.length > 0 ? (
+            posts.slice(0, 4).map((post) => (
+              <li key={post.id} className="post-item">
+                <Link to={`/board/${boardId}/post/${post.id}`} className="post-link">
+                  <span className="post-title">{post.title}</span>
+                  <span className="post-time">{formatDate(post.createdAt)}</span>
+                </Link>
+              </li>
+            ))
+          ) : (
+            <li className="post-item">게시글이 없습니다.</li>
+          )}
+        </ul>
       </div>
-      <ul className="post-list">
-        {posts.length > 0 ? (
-          posts.slice(0, 4).map((post) => (
-            <li key={post.id} className="post-item">
-              <Link to={`/board/${boardId}/post/${post.id}`} className="post-link">
-                <span className="post-title">{post.title}</span>
-                <span className="post-time">{formatDate(post.createdAt)}</span>
-              </Link>
-            </li>
-          ))
-        ) : (
-          <li className="post-item">게시글이 없습니다.</li>
-        )}
-      </ul>
     </div>
   );
 }

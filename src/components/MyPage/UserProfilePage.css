@@ -1,4 +1,4 @@
-.profile-container {
+#user-profile .profile-container {
   max-width: 480px;
   margin: 80px auto;
   padding: 30px;
@@ -9,13 +9,13 @@
   text-align: center;
 }
 
-.profile-container h2 {
+#user-profile .profile-container h2 {
   font-size: 22px;
   color: #333;
   margin-bottom: 24px;
 }
 
-.profile-card {
+#user-profile .profile-card {
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 10px;
@@ -23,23 +23,23 @@
   text-align: left;
 }
 
-.profile-card p {
+#user-profile .profile-card p {
   font-size: 16px;
   margin: 10px 0;
   color: #444;
 }
 
-.profile-card strong {
+#user-profile .profile-card strong {
   color: #222;
 }
 
-.profile-error {
+#user-profile .profile-error {
   font-size: 18px;
   color: crimson;
   margin-bottom: 20px;
 }
 
-.back-button {
+#user-profile .back-button {
   margin-top: 20px;
   padding: 10px 18px;
   background-color: #eee;
@@ -49,6 +49,6 @@
   transition: all 0.2s ease;
 }
 
-.back-button:hover {
+#user-profile .back-button:hover {
   background-color: #ddd;
 }

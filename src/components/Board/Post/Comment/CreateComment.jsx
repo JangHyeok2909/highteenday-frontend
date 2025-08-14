@@ -116,58 +116,60 @@ const CreateComment = ({
   };
 
   return (
-    <form className="create-comment-form" onSubmit={handleSubmit}>
-      <textarea
-        className="create-comment-textarea"
-        value={content}
-        onChange={handleContentChange}
-        placeholder={placeholder}
-        disabled={isSubmitting}
-        rows="3"
-      />
-      
-      <div className="file-upload-section">
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
+    <div id="coment-related">
+        <form className="create-comment-form" onSubmit={handleSubmit}>
+        <textarea
+          className="create-comment-textarea"
+          value={content}
+          onChange={handleContentChange}
+          placeholder={placeholder}
           disabled={isSubmitting}
-          id={`file-input-${parentId || 'main'}`}
+          rows="3"
         />
-      </div>
-
-      {previewUrl && (
-        <div className="image-preview">
-          <img src={previewUrl} alt="이미지 미리보기" style={{ maxWidth: '200px', maxHeight: '200px' }} />
-          <button type="button" onClick={removeImage} className="remove-image-btn">
-            ✕ 제거
-          </button>
-        </div>
-      )}
-
-      {error && <div className="create-comment-error">{error}</div>}
-      
-      <div className="comment-form-actions">
-        <button 
-          type="submit" 
-          className="create-comment-button" 
-          disabled={isSubmitting || (!content.trim() && !uploadedImageUrl)}
-        >
-          {isSubmitting ? '작성 중...' : '댓글 작성'}
-        </button>
         
-        {onCancel && (
-          <button 
-            type="button" 
-            onClick={onCancel} 
-            className="cancel-comment-button"
+        <div className="file-upload-section">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
             disabled={isSubmitting}
-          >
-            취소
-          </button>
+            id={`file-input-${parentId || 'main'}`}
+          />
+        </div>
+
+        {previewUrl && (
+          <div className="image-preview">
+            <img src={previewUrl} alt="이미지 미리보기" style={{ maxWidth: '200px', maxHeight: '200px' }} />
+            <button type="button" onClick={removeImage} className="remove-image-btn">
+              ✕ 제거
+            </button>
+          </div>
         )}
-      </div>
-    </form>
+
+        {error && <div className="create-comment-error">{error}</div>}
+        
+        <div className="comment-form-actions">
+          <button 
+            type="submit" 
+            className="create-comment-button" 
+            disabled={isSubmitting || (!content.trim() && !uploadedImageUrl)}
+          >
+            {isSubmitting ? '작성 중...' : '댓글 작성'}
+          </button>
+          
+          {onCancel && (
+            <button 
+              type="button" 
+              onClick={onCancel} 
+              className="cancel-comment-button"
+              disabled={isSubmitting}
+            >
+              취소
+            </button>
+          )}
+        </div>
+      </form>
+    </div>
   );
 };
 

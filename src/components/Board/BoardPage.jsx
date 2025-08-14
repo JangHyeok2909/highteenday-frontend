@@ -51,37 +51,39 @@ export default function BoardPage() {
   }, [page, boardId, isInitialLoad]);
 
   return (
-    <div className="board-page-container">
-      <h2>{boardName}</h2>
+    <div id="board-page">   
+      <div className="board-page-container">
+        <h2>{boardName}</h2>
 
-      <ul className="post-list">
-        {Array.isArray(posts) && posts.length > 0 ? (
-          posts.map((post) => (
-            <li key={post.id} className="post-item">
-              <Link to={`/board/${boardId}/post/${post.id}`}>
-                <span className="post-title">{post.title}</span>
-                <span className="post-time">
-                  {new Date(post.createdAt).toLocaleString("ko-KR", {
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
-              </Link>
-            </li>
-          ))
-        ) : (
-          <li className="post-item">게시글이 없습니다.</li>
-        )}
-      </ul>
+        <ul className="post-list">
+          {Array.isArray(posts) && posts.length > 0 ? (
+            posts.map((post) => (
+              <li key={post.id} className="post-item">
+                <Link to={`/board/${boardId}/post/${post.id}`}>
+                  <span className="post-title">{post.title}</span>
+                  <span className="post-time">
+                    {new Date(post.createdAt).toLocaleString("ko-KR", {
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+                </Link>
+              </li>
+            ))
+          ) : (
+            <li className="post-item">게시글이 없습니다.</li>
+          )}
+        </ul>
 
-      <div className="pagination">
-        <button onClick={() => setPage((p) => Math.max(p - 1, 0))} disabled={page === 0}>
-          이전
-        </button>
-        <span>{page + 1} 페이지</span>
-        <button onClick={() => setPage((p) => p + 1)}>다음</button>
+        <div className="pagination">
+          <button onClick={() => setPage((p) => Math.max(p - 1, 0))} disabled={page === 0}>
+            이전
+          </button>
+          <span>{page + 1} 페이지</span>
+          <button onClick={() => setPage((p) => p + 1)}>다음</button>
+        </div>
       </div>
     </div>
   );
