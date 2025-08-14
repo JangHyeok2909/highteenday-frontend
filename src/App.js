@@ -20,6 +20,8 @@ import MyPostsPage from './components/MyPage/MyPostsPage';
 import MyCommentsPage from './components/MyPage/MyCommentsPage';
 import MyScrapsPage from './components/MyPage/MyScrapsPage';
 import PostSection from './components/Board/Post/PostSection';
+import UserInfoPage from './pages/UserInfoPage';
+
 
 
   function App() {
@@ -48,6 +50,7 @@ import PostSection from './components/Board/Post/PostSection';
           <Route path="/comments" element={<CommentSection postId={1} />} />
 
           {/* my page */}
+          <Route path="/mypage" element={<UserInfoPage />} />
           <Route path="/mypage/posts" element={<MyPostsPage />} />
           <Route path="/mypage/comments" element={<MyCommentsPage />} />
           <Route path="/mypage/scraps" element={<MyScrapsPage />} />

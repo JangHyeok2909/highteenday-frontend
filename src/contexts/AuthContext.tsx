@@ -1,48 +1,53 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import axios from "axios";
-
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect
+} from 'react';
+import axios from 'axios';
 
 export interface User {
-    name: string,
-    nickname: string,
-    email: string,
-    profileUrl: string,
-    userClass: number,
-    userGrade: number,
-    phoneNum: string,
-    schoolName: string,
-    provider: "LOCAL" | "GOOGLE" | "KAKAO" | "NAVER" | string;
-  }
-// 위에 값은 변경 가능
+  name: string;
+  nickname: string;
+  email: string;
+  profileUrl: string;
+  userClass: number;
+  userGrade: number;
+  phoneNum: string;
+  schoolName: string;
+  provider: 'LOCAL' | 'GOOGLE' | 'KAKAO' | 'NAVER' | string;
+}
 
 type AuthContextType = {
   user: User | null;
-  isLoggenIn: boolean;
+  isLoggedIn: boolean;
   logout: () => Promise<void>;
   login: (u: User) => void;
   refresh: () => Promise<void>;
-}
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   const login = (u: User) => setUser(u);
-  const logout = async () => { 
+
+  const logout = async () => {
     try {
-      await axios.get("/api/user/logout", {
+      await axios.get('/api/user/logout', {
         withCredentials: true
       });
-    } finally{
+    } finally {
       setUser(null);
     }
   };
 
   const refresh = async () => {
     try {
-      const { data } = await axios.get<User>("/api/user/userInfo", {
-        withCredentials: true,
+      const { data } = await axios.get<User>('/api/user/userInfo', {
+        withCredentials: true
       });
       setUser(data);
     } catch {
@@ -55,15 +60,16 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   }, []);
 
   return (
-    <AuthContext.Provider 
-      value={{user, isLoggenIn: !!user, login, logout, refresh}}>
+    <AuthContext.Provider
+      value={{ user, isLoggedIn: !!user, login, logout, refresh }}
+    >
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth(){
+export function useAuth() {
   const ctx = useContext(AuthContext);
-  if(!ctx) throw new Error("AuthProvider ㅇㅇ");
+  if (!ctx) throw new Error('AuthProvider 안에서만 사용 가능합니다.');
   return ctx;
 }

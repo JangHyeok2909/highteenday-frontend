@@ -30,7 +30,7 @@ function MyCommentsPage() {
   }, [sortType]);
 
   return (
-    <div className="list-page-container">
+    <div id="mypage-list">
       <h2>🗨️ 내가 쓴 댓글</h2>
       <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
         <option value="RECENT">최신순</option>

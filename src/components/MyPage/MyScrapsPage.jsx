@@ -28,7 +28,7 @@ function MyScrapsPage() {
     }, [sortType]);
 
   return (
-    <div className="list-page-container">
+    <div id="mypage-list">
       <h2>📌 스크랩한 게시글</h2>
       <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
         <option value="RECENT">최신순</option>
