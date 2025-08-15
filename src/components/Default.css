@@ -25,3 +25,10 @@ a:hover{
     text-decoration: underline;
     text-underline-offset: 3px;
 }
+
+/* 모든 루트 페이지의 루트 div의 className으로 주기 !!필수 */
+.default-root-value {
+    margin: 0 auto;
+    max-width: 1280px;
+    padding: 0 30px;
+}

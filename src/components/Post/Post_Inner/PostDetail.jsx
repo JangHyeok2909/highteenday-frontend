@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import CommentSection from './Comment/CommentSection';
+import CommentSection from '../../Comment/CommentSection';
 
 function PostDetail() {
   const { postId } = useParams();

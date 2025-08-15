@@ -181,23 +181,26 @@ const CommentSection = () => {
   );
 
   return (
-    <div className="comment-section">
-      <h3>댓글 ({comments.length})</h3>
+    <div id="coment-related">
+      <div className="comment-section">
+        <h3>댓글 ({comments.length})</h3>
 
-      <CreateComment
-        postId={postId}
-        onSubmit={handleCommentSubmit}
-        placeholder="댓글을 작성하세요..."
-      />
+        <CreateComment
+          postId={postId}
+          onSubmit={handleCommentSubmit}
+          placeholder="댓글을 작성하세요..."
+        />
 
-      {error && <div className="error-message">{error}</div>}
-      {loading && <div className="loading-message">댓글을 불러오는 중...</div>}
+        {/* 작성된 댓글 들고오는 부분 */}
+        {error && <div className="error-message">{error}</div>}
+        {loading && <div className="loading-message">댓글을 불러오는 중...</div>}
 
-      <div className="comment-list">
-        {organizedComments.map((comment) => renderComment(comment))}
+        <div className="comment-list">
+          {organizedComments.map((comment) => renderComment(comment))}
+        </div>
+
+        {!comments.length && !loading && <div className="no-comments">첫 댓글을 남겨보세요!</div>}
       </div>
-
-      {!comments.length && !loading && <div className="no-comments">첫 댓글을 남겨보세요!</div>}
     </div>
   );
 };

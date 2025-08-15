@@ -1,8 +1,5 @@
 /* Sidebar */
 
-#Sidebar-menu>.sidebar-container {
-    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
-}
 #Sidebar-menu>.side-open-button {
     cursor: pointer;
 }
@@ -23,6 +20,8 @@
     height: 100%;
     background-color: white;
     z-index: 1000;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
 }
 #Sidebar-menu>.sidebar-container.open{
     left: 0;

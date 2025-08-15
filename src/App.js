@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import WritePostPage from './components/Board/Post/WritePostPage';
+import WritePostPage from './components/Post/Post_Inner/WritePostPage';
 import LoginButton from './components/LoginButton/LoginButton';
 import NotFound from './pages/NotFound';
 import Register from './components/LoginRelated/Register';
@@ -11,19 +11,18 @@ import CreateAccount from './components/LoginRelated/CreateAccount';
 import SchoolVerification from './components/LoginRelated/SchoolVerification';
 import BoardOverview from "./components/MainPage/Body/BoardSection/BoardSection";
 import BoardPage from "./components/Board/BoardPage";
-import PostDetail from "./components/Board/Post/PostDetail";
+import PostDetail from "./components/Post/Post_Inner/PostDetail";
 import UserInfo from "./components/MainPage/Body/UserSection/UserInfo/UserInfo";
 import MainPage from './components/MainPage/MainPage';
 import FriendList from './components/Friend/FriendList';
 import MyPostsPage from './components/MyPage/MyPostsPage';
 import MyCommentsPage from './components/MyPage/MyCommentsPage';
 import MyScrapsPage from './components/MyPage/MyScrapsPage';
-import PostSection from './components/Board/Post/PostSection';
+import PostSection from './components/Post/PostSection';
 
 
   function App() {
     return (
-      <Router>
         <Routes>
           <Route path="/" element={<MainPage />}/>
           {/* <Route path="login" element={< />}/> */}
@@ -60,7 +59,6 @@ import PostSection from './components/Board/Post/PostSection';
 
           <Route path="/#" />
         </Routes>
-      </Router>
     );
   }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "./BoardPage.css";
+import Header from "../Header/Header";
 
 const POSTS_PER_PAGE = 10;
 
@@ -51,7 +52,10 @@ export default function BoardPage() {
   }, [page, boardId, isInitialLoad]);
 
   return (
-    <div id="board-page">   
+    <div id="board-page" className="default-root-value">   
+      <div className="header">
+        <Header isMainPage={false} />
+      </div>
       <div className="board-page-container">
         <h2>{boardName}</h2>
 

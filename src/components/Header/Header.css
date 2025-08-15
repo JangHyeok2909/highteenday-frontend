@@ -18,9 +18,10 @@
     left: 45%;
     border: 1px solid #000;
     padding: 30px 25px;
+    cursor: pointer;
 }
 
-#header .function {
+#header>.function {
     position: absolute;
     display: flex;
     gap: 10px;
@@ -30,4 +31,16 @@
 
 #header .padding-minus {
     padding: 0 0 0 10px;
+}
+
+#header .user-section {
+    position: absolute;
+    top: 10px;
+    right: 150px;
+}
+#header .user-section>.function button{
+    border: none;
+    background-color: #fff;
+    padding: 0 2px;
+    cursor: pointer;
 }
