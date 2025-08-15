@@ -29,9 +29,6 @@ function MealPage() {
 
   return (
     <div className={styles.mealPageContainer}>
-      <h2 className={styles.title}>
-        {schoolName || '우리학교'} {month}월 급식표
-      </h2>
       <MonthlyMealCalendar schoolId={1} onDateClick={() => {}} />
     </div>
   );

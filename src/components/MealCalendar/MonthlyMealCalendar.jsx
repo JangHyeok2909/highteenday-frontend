@@ -43,7 +43,9 @@ function MonthlyMealCalendar({ onDateClick }) {
 
         const byDate = {};
         for (const item of list) {
-          // ✅ 날짜 포맷을 통일
+
+          console.log(`date: ${item.date}, category: "${item.category}", dishName: "${item.dishName}"`);
+
           const dateKey = toYMD(new Date(item.date));
           if (!dateKey) continue;
 
@@ -51,10 +53,10 @@ function MonthlyMealCalendar({ onDateClick }) {
             byDate[dateKey] = { lunch: [], dinner: [] };
           }
 
-          // ✅ category 공백 제거 후 비교
-          if (item.category?.trim() === '중식') {
+          // ✅ API category 값(lunch/dinner)에 맞춰서 조건 수정
+          if (item.category?.toLowerCase() === 'lunch') {
             byDate[dateKey].lunch.push(item.dishName);
-          } else if (item.category?.trim() === '석식') {
+          } else if (item.category?.toLowerCase() === 'dinner') {
             byDate[dateKey].dinner.push(item.dishName);
           }
         }
@@ -98,7 +100,11 @@ function MonthlyMealCalendar({ onDateClick }) {
     const key = toYMD(day);
     const meals = mealMap[key];
 
-    if (!meals || (!meals.lunch?.length && !meals.dinner?.length)) {
+    // 급식 데이터 없을 때
+    if (
+      !meals ||
+      (!meals.lunch?.length && !meals.dinner?.length)
+    ) {
       return <div className="meal-preview">급식 없음</div>;
     }
 
@@ -107,12 +113,15 @@ function MonthlyMealCalendar({ onDateClick }) {
 
     return (
       <div className="meal-preview">
+        {/* 중식 */}
         {lunchList.length > 0 && (
           <div className="lunch">
             <strong>[중식]</strong>
             <div>{lunchList.join(', ')}</div>
           </div>
         )}
+
+        {/* 석식 */}
         {dinnerList.length > 0 && (
           <div className="dinner" style={{ marginTop: '4px' }}>
             <strong>[석식]</strong>
@@ -123,29 +132,30 @@ function MonthlyMealCalendar({ onDateClick }) {
     );
   };
 
+
   const title = useMemo(() => {
-    const y = date.getFullYear();
     const m = date.getMonth() + 1;
     return `가락고등학교 ${m}월 급식표`;
   }, [date]);
 
   return (
-    <div style={{ maxWidth: '1280px', margin: 'auto' }}>
-      <h2 className="meal-title">{title}</h2>
-      {error && <div className="meal-error">{error}</div>}
-      {loading && <div className="meal-loading">불러오는 중…</div>}
+  <div className="meal-calendar-container">
+    <h2 className="meal-title">{title}</h2>
+    {error && <div className="meal-error">{error}</div>}
+    {loading && <div className="meal-loading">불러오는 중…</div>}
 
-      <Calendar
-        view="month"
-        onClickDay={handleDateClick}
-        onActiveStartDateChange={handleActiveStartDateChange}
-        value={date}
-        tileContent={({ date: tileDate, view }) =>
-          view === 'month' ? renderMealPreview(tileDate) : null
-        }
-      />
-    </div>
-  );
+    <Calendar
+      view="month"
+      onClickDay={handleDateClick}
+      onActiveStartDateChange={handleActiveStartDateChange}
+      value={date}
+      tileContent={({ date: tileDate, view }) =>
+        view === 'month' ? renderMealPreview(tileDate) : null
+      }
+    />
+  </div>
+);
+
 }
 
 export default MonthlyMealCalendar;

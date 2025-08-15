@@ -1,43 +1,86 @@
-.react-calendar {
-  width: 100% !important;
-  max-width: 100%;
+/* 부모 컨테이너 */
+.meal-calendar-container {
+  max-width: 1280px;
+  margin: auto;
   font-family: 'Arial', sans-serif;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.react-calendar__tile {
-  height: 120px; /* 🔷 한 칸 높이 조절 */
-  vertical-align: top; /* 🔷 날짜 상단 배치 */
-  padding: 6px;
+/* 달력 전체 영역 */
+.meal-calendar-container .react-calendar {
+  width: 100%;
+  border: none;
+}
+
+/* 각 날짜 칸 */
+.meal-calendar-container .react-calendar__tile {
+  min-height: 200px; 
+  padding: 8px;
+  background: #f8f9fa; 
+  border: 1px solid #dee2e6; 
+  transition: background 0.2s ease-in-out;
+
+  /* 날짜/중식 위로 올리기 */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  overflow: hidden;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
-.meal-preview {
-  font-size: 11px;
-  line-height: 1.2;
-  padding: 2px 4px;
-  white-space: normal;
-  word-break: break-word;
-  /* max-height 제거하거나 늘려줌 */
-  max-height: none; /* 또는 충분히 크게: 200px */
-  overflow: visible; /* hidden → visible */
+/* hover 시 */
+.meal-calendar-container .react-calendar__tile:hover {
+  background: #e9ecef; 
 }
 
-
-/* 🔽 중식 섹션 스타일 */
-.lunch {
-  margin-bottom: 3px;
-  color: #1a73e8;
-  font-weight: 500;
+/* 선택된 날짜 */
+.meal-calendar-container .react-calendar__tile--active {
+  background: #d4edda !important; 
+  color: #155724; 
+  font-weight: bold;
 }
 
-/* 🔽 석식 섹션 스타일 */
-.dinner {
-  color: #d93025;
-  font-weight: 500;
+/* 네비게이션 버튼 */
+.meal-calendar-container .react-calendar__navigation button {
+  background: #d4edda; 
+  color: #155724;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+/* 버튼 hover 시 */
+.meal-calendar-container .react-calendar__navigation button:hover {
+  background: #c3e6cb; 
+}
+
+/* 버튼 disabled */
+.meal-calendar-container .react-calendar__navigation button:disabled {
+  background: #eee;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* 중식 */
+.meal-calendar-container .meal-preview .lunch {
+  color: #000;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+/* 석식 */
+.meal-calendar-container .meal-preview .dinner {
+  color: #28a745; 
+  font-size: 0.85rem;
+}
+
+/* 제목 스타일 */
+.meal-calendar-container .meal-title {
+  text-align: center;
+  font-size: 1.8rem; 
+  font-weight: bold;
+  color: #1c7430; 
+  margin-bottom: 16px;
 }
