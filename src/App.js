@@ -14,15 +14,13 @@ import BoardPage from "./components/Board/BoardPage";
 import PostDetail from "./components/Board/Post/PostDetail";
 import UserInfo from "./components/MainPage/Body/UserSection/UserInfo/UserInfo";
 import MainPage from './components/MainPage/MainPage';
-<<<<<<< HEAD
 import MealPage from './pages/MealPage';
-=======
 import FriendList from './components/Friend/FriendList';
 import MyPostsPage from './components/MyPage/MyPostsPage';
 import MyCommentsPage from './components/MyPage/MyCommentsPage';
 import MyScrapsPage from './components/MyPage/MyScrapsPage';
 import PostSection from './components/Board/Post/PostSection';
->>>>>>> main
+
 
 
   function App() {
@@ -46,11 +44,11 @@ import PostSection from './components/Board/Post/PostSection';
           <Route path="/board-overview" element={<BoardOverview />} /> {/* main page 의 게시판 4개 나중에 삭제 */}
           <Route path="/board/:boardId/post/:postId" element={<PostSection />} />
           <Route path="/board/:boardId" element={<BoardPage />} />
-<<<<<<< HEAD
+
           <Route path="/user-profile" element={<UserInfo />} />
           <Route path="/post/:postId" element={<PostDetail/>}/>
           <Route path="/meal" element={<MealPage />} />
-=======
+
           {/* post */}
           <Route path="/post/write" element={<WritePostPage />} />
 
@@ -63,8 +61,6 @@ import PostSection from './components/Board/Post/PostSection';
 
           {/* friend */}
           <Route path="/friend" element={<FriendList />} />
-
->>>>>>> main
           <Route path="*" element={<NotFound />} />
           
 

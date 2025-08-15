@@ -1,12 +1,9 @@
 {
   "name": "highteenday-frontend",
   "version": "0.1.0",
-<<<<<<< HEAD
-  "proxy": "http://211.49.155.168:8001/",
-  "_proxy2": "https://highteenday.duckdns.org",
-=======
+
   "proxy": "https://highteenday.duckdns.org/",
->>>>>>> main
+
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",

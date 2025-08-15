@@ -105,18 +105,6 @@ function BoardPreview({ boardId, customBoardName = null }) {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="board-block">
-      <div className="board-header">
-        <h3 className="board-name">{boardName}</h3>
-        <Link to={`/board/${boardId}`} className="view-all-btn">
-          전체보기
-        </Link>
-      </div>
-      <ul className="post-list">
-        {renderPostList()}
-      </ul>
-=======
     <div id="board-preview">
       <div className="board-block">
         <div className="board-header">
@@ -138,7 +126,7 @@ function BoardPreview({ boardId, customBoardName = null }) {
           )}
         </ul>
       </div>
->>>>>>> main
+
     </div>
   );
 }
