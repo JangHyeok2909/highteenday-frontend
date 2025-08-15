@@ -1,3 +1,4 @@
+// MonthlyMealCalendar.jsx
 import React, { useEffect, useMemo, useState } from 'react';
 import Calendar from 'react-calendar';
 import axios from 'axios';
@@ -9,40 +10,63 @@ function MonthlyMealCalendar({ onDateClick }) {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
   });
-  const [mealsMap, setMealsMap] = useState({}); // { '2025-08-11': [{...}, ...] }
+  const [mealMap, setMealMap] = useState({}); // 날짜별 중식/석식 객체
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // YYYY-MM-DD 문자열로 포맷
-  const toYMD = (d) => d.toISOString().split('T')[0];
+  const toYMD = (d) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
 
-  // 월이 바뀔 때 서버에서 급식 가져오기
+  useEffect(() => {
+    console.log('mealMap 확인:', mealMap);
+  }, [mealMap]);
+
+
+
   useEffect(() => {
     let cancelled = false;
 
     async function fetchMeals() {
       setLoading(true);
       setError('');
+
       try {
-        // 스웨거 상 "No parameters" 라서 기본 엔드포인트로 요청
-        // (만약 백엔드가 year/month 쿼리를 요구한다면 ?year=YYYY&month=MM 붙이면 됨)
         const res = await axios.get('/api/schools/meals/month', {
           headers: { Accept: 'application/json' },
         });
 
+        console.log("✅ res.data 응답 확인용 로그:", res.data);
+
         const list = Array.isArray(res.data) ? res.data : [];
-        // 배열을 날짜별로 그룹핑
+
         const byDate = {};
         for (const item of list) {
-          const key = item.date; // 예: '2025-08-11'
-          if (!key) continue;
-          if (!byDate[key]) byDate[key] = [];
-          byDate[key].push(item);
+          const date = item.date;
+          if (!date) continue;
+
+          // ⭐ 중식/석식 필드를 구분해서 저장
+          if (!byDate[date]) {
+            byDate[date] = { lunch: [], dinner: [] };
+          }
+
+          if (item.category === '중식') {
+            byDate[date].lunch.push(item.dishName);
+          } else if (item.category === '석식') {
+            byDate[date].dinner.push(item.dishName);
+          }
+
         }
-        if (!cancelled) setMealsMap(byDate);
+
+        if (!cancelled) setMealMap(byDate);
       } catch (e) {
-        if (!cancelled) setError('급식 정보를 불러오지 못했어요.');
-        console.error(e);
+        if (!cancelled) {
+          setError('급식 정보를 불러오지 못했어요.');
+          console.error(e);
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -54,16 +78,14 @@ function MonthlyMealCalendar({ onDateClick }) {
     };
   }, [currentMonthKey]);
 
-  // 달력에서 일 클릭
   const handleDateClick = (clickedDate) => {
     setDate(clickedDate);
     if (onDateClick) {
       const key = toYMD(clickedDate);
-      onDateClick(clickedDate, mealsMap[key] || []);
+      onDateClick(clickedDate, mealMap[key] || {});
     }
   };
 
-  // 달력이 다른 달로 이동할 때 (월 시작 날짜 기준)
   const handleActiveStartDateChange = ({ activeStartDate, view }) => {
     if (view !== 'month' || !activeStartDate) return;
     const y = activeStartDate.getFullYear();
@@ -74,33 +96,51 @@ function MonthlyMealCalendar({ onDateClick }) {
     }
   };
 
-  // 날짜 타일에 들어갈 미리보기 (첫 메뉴만 간단히)
   const renderMealPreview = (day) => {
-    const key = toYMD(day);
-    const meals = mealsMap[key];
-    const firstName = meals?.[0]?.dishName;
-    return (
-      <div className="meal-preview">
-        {firstName || '급식 없음'}
-      </div>
-    );
-  };
+  const key = toYMD(day);
+  const meals = mealMap[key];
 
-  // 상단 제목 등에 쓰려면 여기서 메모이즈 가능
+  if (!meals || (!meals.lunch?.length && !meals.dinner?.length)) {
+    return <div className="meal-preview">급식 없음</div>;
+  }
+
+  const lunchList = Array.isArray(meals.lunch) ? meals.lunch : [];
+  const dinnerList = Array.isArray(meals.dinner) ? meals.dinner : [];
+
+  return (
+    <div className="meal-preview">
+      {lunchList.length > 0 && (
+        <div className="lunch">
+          <strong>[중식]</strong>
+          <div>{lunchList.join(', ')}</div>
+        </div>
+      )}
+      {dinnerList.length > 0 && (
+        <div className="dinner" style={{ marginTop: '4px' }}>
+          <strong>[석식]</strong>
+          <div>{dinnerList.join(', ')}</div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+
+
   const title = useMemo(() => {
     const y = date.getFullYear();
     const m = date.getMonth() + 1;
-    return `우리학교 ${m}월 급식표`;
+    return `가락고등학교 ${m}월 급식표`;
   }, [date]);
 
   return (
-    <div style={{ maxWidth: '1200px', margin: 'auto' }}>
-      {/* 필요하면 제목 표시 */}
-      {/* <h2 className="meal-title">{title}</h2> */}
+    <div style={{ maxWidth: '1280px', margin: 'auto' }}>
+      <h2 className="meal-title">{title}</h2>
       {error && <div className="meal-error">{error}</div>}
       {loading && <div className="meal-loading">불러오는 중…</div>}
 
       <Calendar
+        view="month"  // ✅ 추가해줘!
         onClickDay={handleDateClick}
         onActiveStartDateChange={handleActiveStartDateChange}
         value={date}
@@ -108,6 +148,7 @@ function MonthlyMealCalendar({ onDateClick }) {
           view === 'month' ? renderMealPreview(tileDate) : null
         }
       />
+
     </div>
   );
 }

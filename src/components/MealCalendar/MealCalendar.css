@@ -8,8 +8,8 @@
 }
 
 .react-calendar__tile {
-  height: 120px;              /* 🔹 한 칸 높이 조절 */
-  vertical-align: top;        /* 🔹 날짜 상단 배치 */
+  height: 120px; /* 🔷 한 칸 높이 조절 */
+  vertical-align: top; /* 🔷 날짜 상단 배치 */
   padding: 6px;
   display: flex;
   flex-direction: column;
@@ -18,11 +18,26 @@
 }
 
 .meal-preview {
-  font-size: 0.75rem;
-  margin-top: 4px;
-  color: #333;
-  line-height: 1.4;
+  font-size: 11px;
+  line-height: 1.2;
+  padding: 2px 4px;
   white-space: normal;
-  word-break: keep-all;
-  text-align: center;
+  word-break: break-word;
+  /* max-height 제거하거나 늘려줌 */
+  max-height: none; /* 또는 충분히 크게: 200px */
+  overflow: visible; /* hidden → visible */
+}
+
+
+/* 🔽 중식 섹션 스타일 */
+.lunch {
+  margin-bottom: 3px;
+  color: #1a73e8;
+  font-weight: 500;
+}
+
+/* 🔽 석식 섹션 스타일 */
+.dinner {
+  color: #d93025;
+  font-weight: 500;
 }
