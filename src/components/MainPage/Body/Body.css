@@ -1,16 +1,18 @@
 /* body */
+
+#body #body-top {
+    box-sizing: border-box;
+    width: 1220px;
+}
+
 #body #body-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 1% 0 0 0;
+    width: 1220px;
+    padding: 10px 0 0 0;
+
 }
-#body #body-bottom .body-left {
-    width: 68%;
-}
-#body #body-bottom .body-right {
-    width: 28%;
-    
+
+#body .body-left, .body-right {
+    vertical-align: top;
 }
 
 

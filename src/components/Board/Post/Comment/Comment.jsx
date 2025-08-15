@@ -19,11 +19,11 @@ const Comment = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  const isOwner = String(comment.userId) === String(currentUserId);
+  const isOwner = comment.owner === true;
   const isLiked = likedComments.includes(comment.id);
   const isDisliked = dislikedComments.includes(comment.id);
 
-  const anonymousLabel = comment.isAnonymous
+  const anonymousLabel = comment.anonymous
     ? `익명${comment.anonymousNumber || ''}`
     : comment.author;
 
@@ -120,12 +120,8 @@ const Comment = ({
 
         {isOwner && (
           <div className="comment-actions">
-            <button onClick={() => setIsEditing(true)} disabled={isSubmitting}>
-              수정
-            </button>
-            <button onClick={handleDelete} disabled={isSubmitting}>
-              삭제
-            </button>
+            <button onClick={() => setIsEditing(true)} disabled={isSubmitting}>수정</button>
+            <button onClick={handleDelete} disabled={isSubmitting}>삭제</button>
           </div>
         )}
       </div>
@@ -162,7 +158,28 @@ const Comment = ({
             <div className="shortcut-hint">Ctrl + Enter: 저장, Esc: 취소</div>
           </div>
         ) : (
-          <div className="comment-text">{comment.content}</div>
+          <>
+            <div className="comment-text">{comment.content}</div>
+            {comment.url && comment.url.trim() !== '' && (
+              <div className="comment-image" style={{ marginTop: '10px' }}>
+                <img
+                  src={comment.url}
+                  alt="첨부 이미지"
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '300px',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => window.open(comment.url, '_blank')}
+                  onError={(e) => {
+                    console.error('이미지 로드 실패:', comment.url);
+                    e.target.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -181,27 +198,29 @@ const Comment = ({
             >
               👎 {comment.dislikeCount || 0}
             </button>
-            <button
-              onClick={() => onReplyClick(comment.id, anonymousLabel)}
-              className="reply-button"
-            >
-              💬 답글
-            </button>
+            {!isOwner && (
+              <button
+                onClick={() => onReplyClick(comment.id, anonymousLabel)}
+                className="reply-button"
+              >
+                💬 답글
+              </button>
+            )}
           </div>
         </div>
       )}
 
-      {replyTarget?.parentId === comment.id && (
+      {!isOwner && replyTarget?.parentId === comment.id && (
         <div className="reply-form">
           <CreateComment
             postId={comment.postId}
             parentId={comment.id}
-            onSubmit={(content) =>
-              onSubmitReply(`@${replyTarget.parentAuthor} ${content}`, comment.id)
+            onSubmit={(content, imageUrl) =>
+              onSubmitReply(`@${replyTarget.parentAuthor} ${content}`, imageUrl, comment.id, false)
             }
             onCancel={() => onReplyClick(null)}
             placeholder={`@${replyTarget.parentAuthor} 님에게 답글`}
-          />  
+          />
         </div>
       )}
     </div>

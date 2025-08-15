@@ -1,0 +1,73 @@
+#accept-friend .acceptfriend-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+#accept-friend .acceptfriend-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#accept-friend .acceptfriend-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#accept-friend .acceptfriend-item {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 6px;
+  transition: background-color 0.2s;
+}
+
+#accept-friend .acceptfriend-item:hover {
+  background-color: #f1f1f1;
+}
+
+#accept-friend .acceptfriend-item.selected {
+  background-color: #393c3f;
+  color: white;
+}
+
+#accept-friend .acceptfriend-submit {
+  width: 60%;
+  height: 36px;
+  margin: 0 auto;
+  display: block;
+  background-color: #393c3f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#accept-friend .acceptfriend-submit:hover {
+  background-color: #555;
+}
+
+#accept-friend .acceptfriend-message {
+  font-size: 14px;
+  color: green;
+}
+
+#accept-friend .close-btn {
+  width: 60%;
+  height: 36px;
+  margin: 0 auto;
+  display: block;
+  background-color: #ccc;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#accept-friend .close-btn:hover {
+  background-color: #bbb;
+}

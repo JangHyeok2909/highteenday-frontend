@@ -1,0 +1,68 @@
+#friend-add .friendadd-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+#friend-add .friendadd-title {
+  font-size: 18px;
+  text-align: center;
+}
+
+#friend-add .friendadd-form {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+#friend-add .friendadd-input {
+  flex: 1;
+  height: 40px;
+  padding: 0 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+#friend-add .friendadd-submit {
+  height: 40px;
+  padding: 0 15px;
+  background-color: #393c3f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+#friend-add .friendadd-submit:hover {
+  background-color: #555;
+}
+
+#friend-add .friendadd-message {
+  font-size: 14px;
+  color: green;
+  text-align: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  width: min(420px, 92vw);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}

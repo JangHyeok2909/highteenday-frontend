@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./SidebarMenu.css";
-import Menubar from "../../Icons/Menubar";
-import Arrow_Left_Icon from "../../Icons/Arrow_Left_Icon";
-import "../../Default.css"
+import Menubar from "../../../Icons/Menubar";
+import Arrow_Left_Icon from "../../../Icons/Arrow_Left_Icon";
+import "../../../Default.css"
 
 function SidebarMenu({size, color}) {
 
     const [isOpen, setIsOpen] = useState(false);
     const [boards, setBoards] = useState([]);
 
-    // board 이름 들고오는 api 란
-    useEffect(() => {
+    // board 이름 들고오는 부분
+    const getPostName = async () => {
+        try {
+          const res = await axios.get("/api/boards", {
+            withCredentials: true,
+          });
+          setBoards(res.data);
+        } catch (err) {
+            console.log("게시판 불러오기 실패", err);
+      };
+    }
 
+    useEffect(() => {
+        getPostName();
     }, []);
 
     const staticMenu = [
@@ -54,21 +66,11 @@ function SidebarMenu({size, color}) {
     const communitySection = {
         title: "커뮤니티",
         type: "group",
-        items: [
-            { name: "test1", link: "/#" },
-            { name: "test2", link: "/#" }
-        ]
-    }
-    
-    //  나중에 위에 대신 넣어야 할 값
-    // {
-    //     title: "커뮤니티",
-    //     type: "group",
-    //     items: boards.map(board => ({
-    //         name: board.name,
-    //         link: `/boards/${board.id}`
-    //     })),
-    // };
+        items: boards.map(board => ({
+            name: board.name,
+            link: `/board/${board.id}`
+        })),
+    };
 
     const menuData = [communitySection, ...staticMenu];
 
@@ -124,4 +126,4 @@ function SidebarMenu({size, color}) {
     );
 }
 
-export default SidebarMenu; 
+export default SidebarMenu;

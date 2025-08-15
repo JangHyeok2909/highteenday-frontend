@@ -1,15 +1,47 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import "./UserInfo.css";
 import "../../../../Default.css"
 import Circle_user_Icon from "../../../../Icons/Circle_user_Icon";
-
+import axios from "axios";
 
 function UserInfo() {
 
   const [login, setLogin] = useState(false); 
+  const [user, setUser] = useState(null);
 
+  const loginUser = async () => {
+    try{
+      const res = await axios.get(`/api/user/userInfo`,{
+        withCredentials: true
+      });
+      setUser(res.data);
+      setLogin(true);
+    } catch(err){
+      setLogin(false);
+    }
+  };
+
+  useEffect(() => {
+    loginUser();
+  }, []);
+
+  const logoutHandler = async () => {
+    try {
+      await axios.get("/api/user/logout", {
+        withCredentials: true,
+      });      
+    } catch (err) {
+      console.log("로그아웃 실패", err);
+    } finally {
+      console.log("로그아웃 성공");
+      setUser(null);
+      setLogin(false);
+
+      window.location.reload();
+    }
+  };
+  
   return (
     <div id="user-profile-section">
       {login ? (
@@ -20,14 +52,14 @@ function UserInfo() {
               <Circle_user_Icon size={30} color={"#3f9763"} />
             </div>
             <div className="user-name inline-block">
-              님
+              {user.nickname}님
             </div>
             <div className="message-icon inline-block">
               메세지
             </div>
             <div className="user-function">
               <span><Link to="/">내 정보</Link></span>
-              <span><Link to="/">로그아웃</Link></span>
+              <span className="logout-btn" onClick={logoutHandler}>로그아웃</span>
             </div>
           </div>
           

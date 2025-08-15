@@ -1,14 +1,40 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Editor } from '@toast-ui/react-editor';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
 function PostEditor() {
   const editorRef = useRef();
   const userIdInputRef = useRef();
+  const { postId } = useParams();
+  const navigate = useNavigate();
+
+  const isEditMode = !!postId;
+
   const [boardId, setBoardId] = useState('');
   const [title, setTitle] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(true);
+
+  useEffect(() => {
+    if (isEditMode) {
+      axios
+        .get(`${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          const data = res.data;
+          setTitle(data.title);
+          setIsAnonymous(data.anonymous);
+          editorRef.current?.getInstance().setHTML(data.content);
+          setBoardId(data.boardId || ''); // boardId가 포함되어 있다면
+        })
+        .catch((err) => {
+          console.error('게시글 로딩 실패:', err);
+          alert('게시글을 불러오지 못했습니다.');
+        });
+    }
+  }, [isEditMode, postId]);
 
   const handleSubmit = async () => {
     const currentUserId = userIdInputRef.current?.value;
@@ -21,44 +47,66 @@ function PostEditor() {
     const content = editorRef.current.getInstance().getHTML();
 
     const postData = {
-      userId: Number(currentUserId),
-      boardId: Number(boardId),
       title,
       content,
-      isAnonymous,
+      anonymous: isAnonymous,
     };
 
     try {
-      await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/posts`,
-        postData,
-        { withCredentials: true }
-      );
-      alert('게시글이 작성되었습니다.');
+      if (isEditMode) {
+        // 수정 모드
+        await axios.put(
+          `${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`,
+          postData,
+          { withCredentials: true }
+        );
+        alert('게시글이 수정되었습니다.');
+        navigate(`/posts/${postId}`);
+      } else {
+        // 작성 모드
+        const newPostData = {
+          ...postData,
+          boardId: Number(boardId),
+          userId: Number(currentUserId),
+        };
+
+        const res = await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}/posts`,
+          newPostData,
+          { withCredentials: true }
+        );
+        alert('게시글이 작성되었습니다.');
+        // 새로 생성된 postId를 이용해 이동
+        const location = res.headers.location || '/';
+        navigate(location.startsWith('/posts/') ? location : '/');
+      }
     } catch (error) {
-      console.error('게시글 작성 실패:', error);
-      alert('작성 실패');
+      console.error('게시글 저장 실패:', error);
+      alert(isEditMode ? '수정 실패' : '작성 실패');
     }
   };
 
   return (
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h2>게시글 작성</h2>
+      <h2>{isEditMode ? '게시글 수정' : '게시글 작성'}</h2>
 
       <input
         type="text"
         placeholder="User ID"
         ref={userIdInputRef}
         style={{ width: '100%', marginBottom: '10px' }}
+        disabled={isEditMode} // 수정 모드에서는 userId 입력 불필요
       />
 
-      <input
-        type="text"
-        placeholder="Board ID"
-        value={boardId}
-        onChange={(e) => setBoardId(e.target.value)}
-        style={{ width: '100%', marginBottom: '10px' }}
-      />
+      {!isEditMode && (
+        <input
+          type="text"
+          placeholder="Board ID"
+          value={boardId}
+          onChange={(e) => setBoardId(e.target.value)}
+          style={{ width: '100%', marginBottom: '10px' }}
+        />
+      )}
 
       <input
         type="text"
@@ -116,11 +164,11 @@ function PostEditor() {
           checked={isAnonymous}
           onChange={(e) => setIsAnonymous(e.target.checked)}
         />
-        익명으로 작성
+        익명으로 {isEditMode ? '수정' : '작성'}
       </label>
 
       <button onClick={handleSubmit} style={{ marginTop: '20px' }}>
-        작성 완료
+        {isEditMode ? '수정 완료' : '작성 완료'}
       </button>
     </div>
   );

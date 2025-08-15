@@ -1,32 +1,29 @@
-.board-page-container {
+#board-page .board-page-container {
   padding: 20px;
 }
 
-.post-list {
+#board-page .post-list {
   list-style: none;
   padding: 0;
-  height: auto !important;      /* ✅ 덮어쓰기 */
-  overflow: visible !important; /* ✅ 덮어쓰기 */
 }
 
-
-.post-item {
+#board-page .post-item {
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
   border-bottom: 1px solid #ddd;
 }
 
-.post-title {
+#board-page .post-title {
   font-weight: bold;
 }
 
-.post-time {
+#board-page .post-time {
   font-size: 0.9em;
   color: gray;
 }
 
-.pagination {
+#board-page .pagination {
   margin-top: 20px;
   display: flex;
   gap: 10px;
@@ -34,24 +31,24 @@
 }
 /* 게시글 상세 페이지용 스타일 */
 
-.post-detail-container {
+#board-page .post-detail-container {
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
 }
 
-.post-detail-title {
+#board-page .post-detail-title {
   font-size: 24px;
   margin-bottom: 10px;
 }
 
-.post-detail-meta {
+#board-page .post-detail-meta {
   color: gray;
   font-size: 14px;
   margin-bottom: 20px;
 }
 
-.post-detail-content {
+#board-page .post-detail-content {
   margin-top: 20px;
 }
 

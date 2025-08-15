@@ -41,7 +41,6 @@ function Banner({ width = "100%", height = "300px" }) {
             onMouseDown={handleMouseLeftSlide}
             onMouseUp={handleMouseRightSlide}
             >
-          {/* <div id="banner-content">{banners[currentIndex]}</div> */}
           <div
             className="banner-track"
             style={{
@@ -49,8 +48,10 @@ function Banner({ width = "100%", height = "300px" }) {
             }}
           >
             {banners.map((banner, idx) => (
-              <div className="banner-slide" key={idx}>
-                {banner}
+              <div className="banner-slide">
+                <div className="banner-content" key={idx}>
+                  {banner}
+                </div>
               </div>
             ))}
           </div>
@@ -67,10 +68,10 @@ function Banner({ width = "100%", height = "300px" }) {
         </div>
 
         <div className="banner-arrow left" onClick={prevSlide}>
-          <Arrow_Left_Icon size={50} strokeWidth={1.5} color={"white"} />
+          <Arrow_Left_Icon size={45} strokeWidth={1.5} color={"white"} />
         </div>
         <div className="banner-arrow right" onClick={nextSlide}>
-          <Arrow_right_Icon size={50} strokeWidth={1.5} color={"white"} />
+          <Arrow_right_Icon size={45} strokeWidth={1.5} color={"white"} />
         </div>
    </div>
   );

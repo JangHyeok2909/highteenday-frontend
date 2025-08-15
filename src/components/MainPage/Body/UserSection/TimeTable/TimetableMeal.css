@@ -1,18 +1,21 @@
-.container {
-  border: 1.5px solid #4caf50;
-  width: 250px; /* 작게 고정 */
-  border-radius: 4px;
+#time-table .container {
+  border: 1.5px solid #3f9673;
+  width: 100%; 
+  border-radius: 5px;
   font-family: sans-serif;
   background-color: #fff;
   position: relative;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.tabMenu {
+#time-table .tabMenu {
   display: flex;
-  border-bottom: 1.5px solid #4caf50;
+  border-bottom: 1.5px solid #3f9673;
+  border-radius: 5px 5px 0 0;
 }
 
-.tab {
+#time-table .tab {
   flex: 1;
   text-align: center;
   padding: 8px 0;
@@ -23,20 +26,29 @@
   background-color: white;
 }
 
-.active {
+#time-table .active_left {
   background-color: #d4f5d4;
-  border: 1.5px solid #4caf50;
+  border-left: 1.5px solid #3f9673;
+  border-top: none;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  color: black;
+}
+#time-table .active_right {
+  background-color: #d4f5d4;
+  border-right: 1.5px solid #3f9673;
+  border-top: none;
   border-bottom: none;
   border-radius: 4px 4px 0 0;
   color: black;
 }
 
-.contentBox {
+#time-table .contentBox {
   padding: 8px 12px; /* 아래 여백은 설정 아이콘 여유 */
   min-height: 260px;
 }
 
-.row {
+#time-table .row {
   display: flex;
   justify-content: flex-start;
   padding: 6px 0;
@@ -44,17 +56,17 @@
   color: #333;
 }
 
-.period {
+#time-table .period {
   width: 60px;
   font-weight: bold;
 }
 
-.content {
+#time-table .content {
   flex: 1;
   color: #333;
 }
 
-.centered {
+#time-table .centered {
   text-align: center;
   justify-content: center;
 }

@@ -1,48 +1,66 @@
-.school-verification-container {
+
+.school-search-container {
   max-width: 500px;
   margin: 50px auto;
-  padding: 30px;
-  border: 1px solid #ccc;
+  padding: 20px;
+  background: #ffffff;
   border-radius: 12px;
-  background-color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: Arial, sans-serif;
 }
 
-.school-verification-container h2 {
+.school-search-container h2 {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-.school-form-group {
+.school-search-form {
+  display: flex;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
-.school-form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
-
-.school-form-group input,
-.school-form-group select {
-  width: 100%;
+.school-search-form input {
+  flex: 1;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
 }
 
-.verify-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #393c3f;
+.school-search-form button {
+  padding: 10px 16px;
+  background-color: #2c2f32;
   color: white;
-  font-size: 16px;
   border: none;
   border-radius: 8px;
+  font-size: 14px;
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
-.verify-button:hover {
-  background-color: #555;
+.school-search-form button:hover {
+  background-color: #393c3f;
+}
+
+.school-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.school-list li {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.school-list li:hover {
+  background-color: #f7f9fc;
+}
+
+.school-list li:last-child {
+  border-bottom: none;
 }
