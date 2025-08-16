@@ -4,7 +4,7 @@ import Comment from './Comment';
 import CreateComment from './CreateComment';
 import './CommentSystem.css';
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
 
 const CommentSection = ({ postId }) => {
   const [comments, setComments] = useState([]);
@@ -17,73 +17,33 @@ const CommentSection = ({ postId }) => {
   const userId = parseInt(localStorage.getItem('loginUserId'), 10);
 
   const buildCommentTree = (flatComments) => {
-    console.log('Building tree from comments:', flatComments);
-    
     const commentMap = {};
     const rootComments = [];
 
-    flatComments.forEach(comment => {
-      comment.replies = [];
-      commentMap[comment.id] = comment;
-      console.log(`Comment ${comment.id}: parentId=${comment.parentId}, content="${comment.content}"`);
+    flatComments.forEach((c) => {
+      c.replies = [];
+      commentMap[c.id] = c;
     });
 
-    flatComments.forEach(comment => {
-      let parentId = comment.parentId;
-      
-      // parentId가 null인 경우, 멘션을 통해 부모 찾기 시도
-      if ((parentId === null || parentId === undefined) && comment.content) {
-        const mentionMatch = comment.content.match(/^@(\S+)\s+/);
-        if (mentionMatch) {
-          const mentionedUser = mentionMatch[1];
-          console.log(`Comment ${comment.id} mentions: ${mentionedUser}`);
-          
-          // 멘션된 사용자의 가장 최근 댓글 찾기 
-          const potentialParents = flatComments.filter(c => 
-            c.id < comment.id && 
-            (c.parentId === null || c.parentId === undefined) && 
-            (
-              (c.anonymous && mentionedUser === '익명') ||
-              (!c.anonymous && c.author === mentionedUser)
-            )
-          ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-          
-          if (potentialParents.length > 0) {
-            parentId = potentialParents[0].id;
-            console.log(`Inferred parentId ${parentId} for comment ${comment.id} based on mention @${mentionedUser}`);
-          }
-        }
-      }
-      
-      if (parentId !== null && parentId !== undefined) {
-        const parent = commentMap[parentId];
-        if (parent) {
-          console.log(`Adding comment ${comment.id} as reply to ${parentId}`);
-          parent.replies.push(comment);
-          // 임시로 parentId 설정
-          comment.parentId = parentId;
-        } else {
-          console.warn(`Parent comment ${parentId} not found for comment ${comment.id}, adding to root`);
-          rootComments.push(comment);
-        }
+    flatComments.forEach((c) => {
+      if (c.parentId === null || c.parentId === undefined) {
+        rootComments.push(c);
       } else {
-        console.log(`Comment ${comment.id} is a root comment`);
-        rootComments.push(comment);
+        const parent = commentMap[c.parentId];
+        if (parent) {
+          parent.replies.push(c);
+        } else {
+          rootComments.push(c);
+        }
       }
     });
 
     const sortByCreatedAt = (a, b) => new Date(a.createdAt) - new Date(b.createdAt);
-    
     rootComments.sort(sortByCreatedAt);
-    
-    Object.values(commentMap).forEach(comment => {
-      if (comment.replies && comment.replies.length > 0) {
-        comment.replies.sort(sortByCreatedAt);
-        console.log(`Comment ${comment.id} has ${comment.replies.length} replies:`, comment.replies.map(r => r.id));
-      }
+    Object.values(commentMap).forEach((c) => {
+      if (c.replies && c.replies.length > 0) c.replies.sort(sortByCreatedAt);
     });
 
-    console.log('Final tree structure:', rootComments);
     return rootComments;
   };
 
@@ -94,13 +54,7 @@ const CommentSection = ({ postId }) => {
       const response = await axios.get(`${API_BASE}/posts/${postId}/comments`, {
         withCredentials: true,
       });
-      
-      console.log('Raw comments from API:', response.data); // 디버깅용
-      
       const tree = buildCommentTree(response.data);
-      
-      console.log('Built comment tree:', tree); // 디버깅용
-      
       setComments(tree);
     } catch (err) {
       console.error(err);
@@ -114,39 +68,35 @@ const CommentSection = ({ postId }) => {
     fetchComments();
   }, [fetchComments]);
 
-  const handleCreate = async (content, parentId, anonymous, url) => {
+  const handleCreate = async (content, imageUrl, parentId, anonymous) => {
     try {
       const requestData = {
-        content,
-        parentId,
-        anonymous,
-        url: url || '',
+        content: content ?? '',
+        parentId: parentId ?? null,
+        anonymous: Boolean(anonymous),
+        url: imageUrl || '',
         userId,
       };
-      
-      // 디버깅: 요청 데이터 로그
-      console.log('Creating comment with data:', requestData);
-      console.log('parentId type:', typeof parentId, 'value:', parentId);
-      
-      const response = await axios.post(
+
+      await axios.post(
         `${API_BASE}/posts/${postId}/comments`,
         requestData,
         { withCredentials: true }
       );
-      
-      console.log('Comment creation response:', response.data);
-      
+
       await fetchComments();
-      
+
       if (parentId) {
         setReplyTarget(null);
       }
-      
+
       return { success: true };
     } catch (err) {
-      console.error('Error creating comment:', err);
-      console.error('Error response:', err.response?.data);
-      return { success: false, error: '댓글 작성에 실패했습니다.' };
+      console.error('댓글 작성 실패:', err);
+      return {
+        success: false,
+        error: err.response?.data?.message || '댓글 작성에 실패했습니다.',
+      };
     }
   };
 
@@ -155,86 +105,82 @@ const CommentSection = ({ postId }) => {
       await axios.put(
         `${API_BASE}/posts/${postId}/comments/${commentId}`,
         {
-          content,
-          url,
+          content: content ?? '',
+          url: url || '',
           anonymous: false,
-          parentId: null,
         },
         { withCredentials: true }
       );
       fetchComments();
     } catch (err) {
-      console.error(err);
+      console.error('댓글 수정 실패:', err);
     }
   };
 
   const handleDelete = async (commentId) => {
+    if (!window.confirm('정말 삭제하시겠습니까?')) return;
+
     try {
       await axios.delete(`${API_BASE}/posts/${postId}/comments/${commentId}`, {
         withCredentials: true,
       });
       fetchComments();
     } catch (err) {
-      console.error(err);
+      console.error('댓글 삭제 실패:', err);
     }
   };
 
   const handleLike = async (commentId) => {
     try {
       await axios.post(
-        `${API_BASE}/posts/${postId}/comments/${commentId}/like?userId=${userId}`,
+        `${API_BASE}/comments/${commentId}/like`,
         {},
         { withCredentials: true }
       );
-      setLikedComments(prev =>
-        prev.includes(commentId) ? prev.filter(id => id !== commentId) : [...prev, commentId]
+      setLikedComments((prev) =>
+        prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
       );
-      setDislikedComments(prev => prev.filter(id => id !== commentId));
+      setDislikedComments((prev) => prev.filter((id) => id !== commentId));
       fetchComments();
     } catch (err) {
-      console.error(err);
+      console.error('좋아요 실패:', err);
     }
   };
 
   const handleDislike = async (commentId) => {
     try {
       await axios.post(
-        `${API_BASE}/posts/${postId}/comments/${commentId}/dislike?userId=${userId}`,
+        `${API_BASE}/comments/${commentId}/dislike`,
         {},
         { withCredentials: true }
       );
-      setDislikedComments(prev =>
-        prev.includes(commentId) ? prev.filter(id => id !== commentId) : [...prev, commentId]
+      setDislikedComments((prev) =>
+        prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
       );
-      setLikedComments(prev => prev.filter(id => id !== commentId));
+      setLikedComments((prev) => prev.filter((id) => id !== commentId));
       fetchComments();
     } catch (err) {
-      console.error(err);
+      console.error('싫어요 실패:', err);
     }
   };
 
   const handleReplyClick = (parentId, parentAuthor) => {
     setReplyTarget({ parentId, parentAuthor });
   };
+  const handleCancelReply = () => setReplyTarget(null);
 
-  const handleCancelReply = () => {
-    setReplyTarget(null);
-  };
-
-  const getTotalCommentCount = (comments) => {
+  const getTotalCommentCount = (items) => {
     let count = 0;
-    comments.forEach(comment => {
-      count += 1; 
-      if (comment.replies && comment.replies.length > 0) {
-        count += comment.replies.length; 
-      }
+    items.forEach((c) => {
+      count += 1;
+      if (c.replies && c.replies.length > 0) count += c.replies.length;
     });
     return count;
   };
 
   return (
-    <div className="comment-section">
-      <h3>댓글 ({getTotalCommentCount(comments)})</h3>
+    <div id="comment-section-container" className="comment-section">
+      <h3 className="comment-section-title">댓글 ({getTotalCommentCount(comments)})</h3>
 
       <CreateComment
         postId={postId}
@@ -246,7 +192,7 @@ const CommentSection = ({ postId }) => {
       {error && <div className="error-message">{error}</div>}
 
       {loading ? (
-        <p>로딩 중...</p>
+        <p className="loading-message">로딩 중...</p>
       ) : (
         <div className="comment-list">
           {comments.map((comment) => (

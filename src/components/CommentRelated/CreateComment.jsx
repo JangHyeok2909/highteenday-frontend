@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
 
 const CreateComment = ({
   postId,
@@ -18,6 +18,7 @@ const CreateComment = ({
   const [anonymous, setAnonymous] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
+  const [imagePreview, setImagePreview] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -34,7 +35,10 @@ const CreateComment = ({
 
   const handleImageUpload = async (file) => {
     if (!file) return;
+    
     setUploadingImage(true);
+    setError(null);
+    
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -48,23 +52,24 @@ const CreateComment = ({
         withCredentials: true,
       });
 
-      let uploadedUrl =
-        response.headers.get?.('location') ||
-        response.headers?.location ||
-        response.data?.url ||
-        response.data?.location ||
-        (typeof response.data === 'string' ? response.data : '');
+      let uploadedUrl = response.headers.location || 
+                       response.data?.url || 
+                       response.data?.imageUrl || 
+                       response.data?.path ||
+                       (typeof response.data === 'string' ? response.data : '');
 
       if (uploadedUrl) {
         setImageUrl(uploadedUrl);
+        setImagePreview(URL.createObjectURL(file));
       } else {
-        throw new Error('이미지 URL을 가져올 수 없습니다.');
+        throw new Error('이미지 URL을 받을 수 없습니다.');
       }
     } catch (err) {
       console.error('이미지 업로드 실패:', err);
-      setError('이미지 URL을 가져올 수 없습니다.');
+      setError('이미지 업로드에 실패했습니다.');
       setImageFile(null);
       setImageUrl('');
+      setImagePreview('');
     } finally {
       setUploadingImage(false);
     }
@@ -91,6 +96,7 @@ const CreateComment = ({
   const removeImage = () => {
     setImageFile(null);
     setImageUrl('');
+    setImagePreview('');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -113,7 +119,7 @@ const CreateComment = ({
 
     try {
       if (onSubmit) {
-        const result = await onSubmit(content.trim(), parentId, anonymous, imageUrl);
+        const result = await onSubmit(content.trim(), imageUrl, parentId ?? null, anonymous);
         if (result?.success === false) {
           setError(result.error || '댓글 작성에 실패했습니다.');
           return;
@@ -217,9 +223,9 @@ const CreateComment = ({
         </div>
       </div>
 
-      {imageFile && (
+      {imagePreview && (
         <div className="image-preview">
-          <img src={URL.createObjectURL(imageFile)} alt="미리보기" />
+          <img src={imagePreview} alt="미리보기" />
           <button
             type="button"
             onClick={removeImage}
