@@ -50,3 +50,9 @@
   text-align: center;
   margin-top: 20px;
 }
+
+.submit-button:disabled {
+  background-color: #ccc; /* 회색으로 표시 */
+  cursor: not-allowed;    /* 마우스 커서 변경 */
+  color: #666;            /* 글자 색 변경 */
+}

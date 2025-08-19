@@ -35,39 +35,36 @@ function SchoolVerification() {
       .catch(() => alert("인증 코드 전송 실패"));
   };
 
-  const handleVerify = () => {
-    axios
-      .post("/api/verify-code", {
-        email: email,
-        code: verificationCode,
-      })
-      .then(() => {
-        alert("인증 완료되었습니다.");
-        setVerified(true);
-      })
-      .catch(() => alert("인증 실패. 코드를 다시 확인하세요."));
+  const handleSelectSchool = (school) => {
+    navigate("/CreateAccount", {
+      state: { 
+        ...location.state, 
+        school: school,
+       },
+    });
   };
 
   return (
-    <div className="school-verification-container">
-      <h2>학교 이메일 인증</h2>
-
-      <div className="school-form-group">
-        <label>학교 선택</label>
-        <select
-          value={selectedSchool}
-          onChange={(e) => setSelectedSchool(e.target.value)}
-          required
-        >
-          <option value="">학교를 선택하세요</option>
-          {Array.isArray(schools) &&
-            schools.map((school) => (
-              <option key={school.id} value={school.name}>
-                {school.name}
-              </option>
-            ))}
-        </select>
+    <div className="school-search-container">
+      <h2>학교 검색</h2>
+      <form          
+      onSubmit={(e) => {
+        e.preventDefault();  // 기본 새로고침 방지
+        handleSearch()
+        // 🔹 여기서 서버 요청이나 검색 함수 실행        
+        }}
+      >
+      <div className="school-search-form">          
+        <input           
+          type="text"
+          value={query}
+          placeholder="학교 이름을 입력하세요"
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button onClick={handleSearch} >검색</button>
+        
       </div>
+      </form>
 
       <div className="school-form-group">
         <label>학교 이메일 주소</label>
@@ -80,28 +77,18 @@ function SchoolVerification() {
         />
       </div>
 
-      <button className="verify-button" onClick={handleSendCode}>
-        인증 코드 전송
-      </button>
-
-      {codeSent && (
-        <>
-          <div className="school-form-group">
-            <label>인증 코드 입력</label>
-            <input
-              type="text"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-            />
-          </div>
-          <button className="verify-button" onClick={handleVerify}>
-            코드 확인
-          </button>
-        </>
-      )}
-
-      {verified && (
-        <p className="verified-text">인증 완료</p>
+      {!loading && schools.length > 0 && (
+        <ul className="school-list">
+          {schools.map((school) => (
+            <li
+              key={school.id}
+              onClick={() => handleSelectSchool(school)}
+              style={{ cursor: "pointer" }}
+            >
+              {school.name}({school.location})
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
