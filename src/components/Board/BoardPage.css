@@ -1,0 +1,54 @@
+#board-page .board-page-container {
+  padding: 20px;
+}
+
+#board-page .post-list {
+  list-style: none;
+  padding: 0;
+}
+
+#board-page .post-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+#board-page .post-title {
+  font-weight: bold;
+}
+
+#board-page .post-time {
+  font-size: 0.9em;
+  color: gray;
+}
+
+#board-page .pagination {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+/* 게시글 상세 페이지용 스타일 */
+
+#board-page .post-detail-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#board-page .post-detail-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+#board-page .post-detail-meta {
+  color: gray;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+#board-page .post-detail-content {
+  margin-top: 20px;
+}
+

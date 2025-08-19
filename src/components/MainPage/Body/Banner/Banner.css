@@ -1,0 +1,80 @@
+/* banner */
+#banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+#banner>.banner-container {
+    background-color: #838383;
+    border-radius: 5px;
+}
+#banner .banner-arrow {
+    position: absolute;
+    background-color: #C4C4C4;
+    width: 40px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+#banner>.banner-arrow.left {
+    left: 2.5%;
+    transform: scaleY(4);
+}
+#banner>.banner-arrow.right {
+    right: 2.5%;
+    transform: scaleY(4);
+}
+#banner .banner-container {
+    overflow: hidden;
+    position: relative;
+}
+#banner .banner-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+}
+#banner .banner-slide {
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+#banner .banner-content {
+    width: 75%;
+    height: 100%;
+    background-color: rgba(44, 44, 44, 0.336);
+    font-size: 100px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#banner #indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display:flex;
+    gap: 5px;
+}
+#banner .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0.5;
+    cursor: pointer;
+
+    box-shadow: 0 2px 4px rgba(0, 128, 0, 0.2);
+    transition: all 0.2s ease;
+}
+#banner .dot.active{
+    opacity: 1;
+    background-color: #3f9763;
+}

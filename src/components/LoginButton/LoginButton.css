@@ -1,17 +1,17 @@
 /*네이버 카카오 구글 로그인 버튼 CSS*/
-.logo-header {
+#login-page .logo-header {
   display: flex;
   justify-content: flex-start;
   padding: 20px;
 }
 
-.logo-img {
+#login-page .logo-img {
   width: 255px;
   height: 98px;
   cursor: pointer;
 }
 
-.login-wrapper {
+#login-page .login-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +27,7 @@
   justify-content: center;            /* 로그인 창 세로 중앙 정렬 */
 }
 
-.login-content {
+#login-page .login-content {
   display: flex;
   flex-direction: row;  /* 🔁 좌우 배치 */
   justify-content: center;
@@ -35,24 +35,24 @@
   margin-top: 20px;
 }
 
-.login-title {
+#login-page .login-title {
   margin-bottom: 10px;
 }
 
-.jwt-status {
+#login-page .jwt-status {
   margin-bottom: 10px;
   font-size: 14px;
   color: #555;
 }
 
-.login-button {
+#login-page .login-button {
   width: 200px;
   height: 50px;
   margin: 10px 0;
   cursor: pointer;
 }
 
-.social-login {
+#login-page .social-login {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -60,7 +60,7 @@
 }
 
 /*아이디 비밀번호 CSS*/
-.idpw-login {
+#login-page .idpw-login {
   margin-top: 25px;
   display: flex;
   flex-direction: column;
@@ -69,7 +69,7 @@
 }
 
 
-.input-box {
+#login-page .input-box {
   width: 200px;
   height: 40px;
   margin-bottom: 5px;
@@ -79,7 +79,7 @@
   border-radius: 8px;
 }
 
-.submit-button {
+#login-page .submit-button {
   margin-top: 10px;
   width: 200px;
   height: 50px;
@@ -92,27 +92,27 @@
   transition: background-color 0.2s;
 }
 
-.submit-button:hover {
+#login-page .submit-button:hover {
   background-color: #cfd4d8;
 }
 
 
 /*회원가입 버튼*/
-.signup-link-wrapper {
+#login-page .signup-link-wrapper {
   text-align: center;
   margin-top: 20px;
 }
 
-.signup-text {
+#login-page .signup-text {
   font-size: 14px;
   color: #555;
 }
 
-.signup-link {
+#login-page .signup-link {
   color: #007bff;
   text-decoration: none;
 }
 
-.signup-link:hover {
+#login-page .signup-link:hover {
   text-decoration: underline;
 }

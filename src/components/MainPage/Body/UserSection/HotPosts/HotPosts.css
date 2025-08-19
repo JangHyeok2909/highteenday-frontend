@@ -1,0 +1,62 @@
+#hot-posts .hotposts-container {
+  
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+#hot-posts .hotposts-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  display: block;
+  width: 100%;
+}
+
+/* 표 스타일 시작 */
+#hot-posts .hotposts-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.6rem;
+}
+
+#hot-posts .hotposts-table tbody {
+  width: 100%;
+}
+
+#hot-posts .hotpost-row {
+  border-top: 1px solid #f0f0f0;
+}
+
+#hot-posts .hotpost-row:first-child {
+  border-top: none;
+}
+
+#hot-posts .hotpost-row td {
+  padding: 0.6rem 0;
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+/* 제목 셀 */
+#hot-posts .post-title {
+  text-align: left;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+  color: #222;
+}
+
+/* 날짜 셀 */
+#hot-posts .post-date {
+  text-align: right;
+  font-size: 0.8rem;
+  color: #777;
+  white-space: nowrap;
+}

@@ -1,0 +1,22 @@
+/* body */
+
+#body #body-top {
+    box-sizing: border-box;
+    width: 1220px;
+}
+
+#body #body-bottom {
+    width: 1220px;
+    padding: 10px 0 0 0;
+
+}
+
+#body .body-left, .body-right {
+    vertical-align: top;
+}
+
+
+/* 삭제 / 확인용임 */
+/* #body #body-bottom {
+    background-color: yellow;
+} */

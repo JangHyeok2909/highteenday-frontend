@@ -1,69 +1,65 @@
-name: React CI/CD with Port 80
+name: React Build & Deploy to Ubuntu Server
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  deploy-react:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Remove old app directory before upload
+        # warning 도 막아버려서 CI=false 는 임시로 한거 
+      - name: Install Dependencies and Build React App
+        run: |
+          npm install --legacy-peer-deps
+          CI=false npm run build
+
+      - name: Compress build folder
+        run: zip -r build.zip build
+
+      - name: Remove existing front-end folder on server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{ secrets.RASP_HOST }}
+          username: ${{ secrets.RASP_USER }}
+          key: ${{ secrets.RASP_SSH_KEY }}
+          port: ${{ secrets.RASP_PORT }}
           script: |
-            cp ~/highteenday-front-server/.env ~/.env || true
-            sudo rm -rf ~/highteenday-front-server
-            sudo rm -rf /home/ubuntu/front-end
+            sudo rm -rf /home/rasp-user/front-end
 
-      - name: Upload React App to EC2
+      - name: Upload build.zip to server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: "./*"
-          target: "~/highteenday-front-server"
-          rm: false
-          overwrite: true
-          strip_components: 0
-          # exclude: ".git" 
+          host: ${{ secrets.RASP_HOST }}
+          username: ${{ secrets.RASP_USER }}
+          key: ${{ secrets.RASP_SSH_KEY }}
+          port: ${{ secrets.RASP_PORT }}
+          source: "build.zip"
+          target: "/home/rasp-user"
 
-      - name: Install & Start React App on EC2
+      - name: Unzip and move to front-end directory
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{ secrets.RASP_HOST }}
+          username: ${{ secrets.RASP_USER }}
+          key: ${{ secrets.RASP_SSH_KEY }}
+          port: ${{ secrets.RASP_PORT }}
           script: |
-            mkdir -p ~/highteenday-front-server
-            cd ~/highteenday-front-server
-            mv ~/.env ~/highteenday-front-server/.env
+            unzip -o /home/rasp-user/build.zip -d /home/rasp-user/
+            mv /home/rasp-user/build /home/rasp-user/front-end
+            rm /home/rasp-user/build.zip
 
-            # 의존성 설치
-            npm install --legacy-peer-deps
+            sudo chmod o+x /home/rasp-user
+            sudo chmod -R o+rx /home/rasp-user/front-end
 
-            # 빌드 파일 생성
-            npm run build
-            
-            # nginx 폴더로 서빙
-            cp -r ~/highteenday-front-server/build/ /home/ubuntu/front-end
-
-            # 권한 주기 
-            sudo chmod o+x /home/ubuntu
-            sudo chmod -R o+rx /home/ubuntu/front-end
-
-            # nginx 재시작
             sudo systemctl restart nginx
+            echo "✅ React 서버 실행 완료"
