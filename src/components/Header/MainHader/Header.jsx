@@ -47,9 +47,6 @@ function Header({ isMainPage }) {
       )}
 
       <div className="function">
-        <Link to="/">
-          <UserAddIcon size={32} color={"#3f9763"} />
-        </Link>
         <Link to="/friend" className="padding-minus">
           <UsersOverlayIcon size={32} color={"#3f9763"} />
         </Link>

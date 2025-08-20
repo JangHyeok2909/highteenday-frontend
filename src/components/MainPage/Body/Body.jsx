@@ -8,13 +8,9 @@ import NoticeSection from "./NoticeSection/NoticeSection";
 import UserSection from "./UserSection/UserSection";
 
 function Body() {
-
   return (
-   <div id="body">    
+    <div id="body">
       <div id="body-top">
-        <div className="searchSection">
-          <SearchSection />
-        </div>
         <div className="banner">
           <Banner />
         </div>
@@ -24,7 +20,7 @@ function Body() {
         <div className="body-left inline-block">
           <div className="NoticeSection">
             <NoticeSection />
-          </div>  
+          </div>
 
           <BoardSection />
         </div>
@@ -33,7 +29,7 @@ function Body() {
           <UserSection />
         </div>
       </div>
-   </div>
+    </div>
   );
 }
 
