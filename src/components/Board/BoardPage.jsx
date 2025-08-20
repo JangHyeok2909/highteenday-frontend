@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "./BoardPage.css";
-import Header from "../Header/Header";
+import Header from "../Header/MainHader/Header";
 
 const POSTS_PER_PAGE = 10;
 
@@ -18,7 +18,6 @@ export default function BoardPage() {
     params: { page, sortType },
   });
 
-
   useEffect(() => {
     setPage(0); // board 바뀌면 1페이지로
     setIsInitialLoad(false);
@@ -30,11 +29,11 @@ export default function BoardPage() {
     const fetchPosts = async () => {
       try {
         const res = await axios.get(`/api/boards/${boardId}/posts`, {
-         params: {
-          page,
-          size: 10, // ✅ 이거 추가!!
-          sortType: "RECENT",
-        },
+          params: {
+            page,
+            size: 10, // ✅ 이거 추가!!
+            sortType: "RECENT",
+          },
           withCredentials: true,
         });
 
@@ -52,7 +51,7 @@ export default function BoardPage() {
   }, [page, boardId, isInitialLoad]);
 
   return (
-    <div id="board-page" className="default-root-value">   
+    <div id="board-page" className="default-root-value">
       <div className="header">
         <Header isMainPage={false} />
       </div>
@@ -67,12 +66,12 @@ export default function BoardPage() {
                   <span className="post-title">{post.title}</span>
                   <span className="post-time">
                     {new Date(post.createdAt).toLocaleString("ko-KR", {
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
                 </Link>
               </li>
             ))
@@ -82,7 +81,10 @@ export default function BoardPage() {
         </ul>
 
         <div className="pagination">
-          <button onClick={() => setPage((p) => Math.max(p - 1, 0))} disabled={page === 0}>
+          <button
+            onClick={() => setPage((p) => Math.max(p - 1, 0))}
+            disabled={page === 0}
+          >
             이전
           </button>
           <span>{page + 1} 페이지</span>

@@ -5,17 +5,17 @@
 
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Node",            
+    "moduleResolution": "Node",
 
     "strict": true,
-    "allowJs": true,                      
+    "allowJs": true,
     "checkJs": false,
 
-    "noEmit": true,                        
+    "noEmit": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-
+    "baseUrl": "src"
   },
   
   "include": ["src"]

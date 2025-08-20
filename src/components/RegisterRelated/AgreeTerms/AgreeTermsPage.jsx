@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./FormRegisterPage.css";
+import "./AgreeTermsPage.css";
 
-function FormRegisterPage() {
+function AgreeTermsPage() {
   const navigate = useNavigate();
 
   const [allAgree, setAllAgree] = useState(false);
@@ -147,4 +147,4 @@ function FormRegisterPage() {
   );
 }
 
-export default FormRegisterPage;
+export default AgreeTermsPage;
