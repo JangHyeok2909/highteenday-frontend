@@ -24,7 +24,7 @@ import CreateAccountPage from "./components/RegisterRelated/Account/CreateAccoun
 import SchoolRegisterPage from './components/RegisterRelated/School/SchoolRegisterPage';
 import RegisterProfilePage from './components/RegisterRelated/Profile/RegisterProfilePage';
 import LoginPage from './components/LoginPage/LoginPage';
-
+import ProfileEditPage from './components/MyPage/ProfileEditPage';
   function App() {
     return (
       <Routes>
@@ -37,6 +37,7 @@ import LoginPage from './components/LoginPage/LoginPage';
         <Route path="/FormRegisterPage" element={<AgreeTermsPage />} />
         <Route path="/CreateAccount" element={<CreateAccountPage />} />
         <Route path="/user-profile" element={<UserProfilePage />} />
+        <Route path="/profile/edit" element={<ProfileEditPage />} />
         {/* school */}
         <Route path="/register/school" element={<SchoolRegisterPage />} />
         <Route path="/register/profile" element={<RegisterProfilePage />} />
