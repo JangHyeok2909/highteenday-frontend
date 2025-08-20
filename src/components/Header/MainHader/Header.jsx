@@ -19,7 +19,7 @@ function Header({ isMainPage }) {
       </div>
 
     <div className="logo" onClick={() => navigate("/")}>
-        <img src="/images/highteenLogo.jpg" alt="하이틴데이 로고" className="logo-img" />
+        <img src="/images/highteenLogo.png" alt="하이틴데이 로고" className="logo-img" />
     </div>
 
       {isMainPage ? null : isLogin ? (
