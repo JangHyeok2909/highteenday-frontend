@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import "./CreateAccount.css";
+import "components/Default.css"
 
 
 const formatDate = (date) => date.toISOString().split("T")[0];
@@ -210,10 +211,8 @@ function CreateAccount() {
     console.log("Submit called!", data);
     try {
       const res = await axios.post("/api/user/register", data);
-
-      alert("회원가입 성공!");
       console.log("회원가입 성공:", res.data);
-      navigate("/school");
+      navigate("/register/school");
     } catch (err) {
       console.error("회원가입 실패:", err);
       alert(err.response?.data?.message || "회원가입 중 오류가 발생했습니다.");
@@ -228,90 +227,92 @@ function CreateAccount() {
   
 
   return (
-    <div className="form-container">
-      <form
-        className="account-form"
-        onSubmit={handleSubmit(onSubmit)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") e.preventDefault();
-        }}
-      >
-        <label>이름</label>
-        <input {...register("name")} placeholder="이름을 입력하세요." />
-        {errors.name && <p>{errors.name.message}</p>}
+    <div id="CreateAccount">
+      <div className="form-container">
+        <form
+          className="account-form"
+          onSubmit={handleSubmit(onSubmit)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") e.preventDefault();
+          }}
+        >
+          <label>이름</label>
+          <input {...register("name")} placeholder="이름을 입력하세요." />
+          {errors.name && <p>{errors.name.message}</p>}
 
-        <label>닉네임</label>
-        <input {...register("nickname")} onBlur={handleNicknameBlur} />
-        {errors.nickname && <p>{errors.nickname.message}</p>}
+          <label>닉네임</label>
+          <input {...register("nickname")} onBlur={handleNicknameBlur} />
+          {errors.nickname && <p>{errors.nickname.message}</p>}
 
-        <label>휴대폰 번호</label>
-        <input
-          type="tel"
-          {...register("phone")}
-          onChange={handlePhone}
-          maxLength={13}
-        />
-        {errors.phone && <p>{errors.phone.message}</p>}
-        <button type="button" onClick={handleSendCode}>
-          인증번호 전송
-        </button>
-
-        <label>이메일</label>
-        <input {...register("email")} onBlur={handleEmailBlur} />
-        {errors.email && <p>{errors.email.message}</p>}
-
-        <label>비밀번호 설정</label>
-        <input
-          type={showPassword ? "text" : "password"}
-          {...register("password")}
-        />
-        {errors.password && <p>{errors.password.message}</p>}
-        <label>비밀번호 확인</label>
-        <input 
-          type={showConfirmPassword?"text":"password"} 
-          {...register("confirmPassword")}
-        />
-        {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
-
-        <label>생년월일</label>
-        <input
-          type="date"
-          {...register("birth")}
-          max={formatDate(maxBirthDate)}
-          min={formatDate(minBirthDate)}
-          onKeyDown={(e) => e.preventDefault()}
-        />
-        {errors.birth && <p>{errors.birth.message}</p>}
-
-        <label>학년</label>
-        <select {...register("grade")}>
-          <option value="">선택</option>
-          <option value="SOPHOMORE">1학년</option>
-          <option value="JUNIOR">2학년</option>
-          <option value="SENIOR">3학년</option>
-        </select>
-        {errors.grade && <p>{errors.grade.message}</p>}
-
-        <label>성별</label>
-        <select {...register("gender")}>
-          <option value="">선택</option>
-          <option value="MALE">남자</option>
-          <option value="FEMALE">여자</option>
-          <option value="OTHER">공개 안함</option>
-        </select>
-        {errors.gender && <p>{errors.gender.message}</p>}
-
-        <div className="button-wrapper">
-          <button
-            type="submit"
-            className="submit-button"
-            onClick={handleSubmit(onSubmit)}
-            disabled={!isFormValid}
-          >
-            완료
+          <label>휴대폰 번호</label>
+          <input
+            type="tel"
+            {...register("phone")}
+            onChange={handlePhone}
+            maxLength={13}
+          />
+          {errors.phone && <p>{errors.phone.message}</p>}
+          <button type="button" onClick={handleSendCode}>
+            인증번호 전송
           </button>
-        </div>
-      </form>
+
+          <label>이메일</label>
+          <input {...register("email")} onBlur={handleEmailBlur} />
+          {errors.email && <p>{errors.email.message}</p>}
+
+          <label>비밀번호 설정</label>
+          <input
+            type={showPassword ? "text" : "password"}
+            {...register("password")}
+          />
+          {errors.password && <p>{errors.password.message}</p>}
+          <label>비밀번호 확인</label>
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            {...register("confirmPassword")}
+          />
+          {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+
+          <label>생년월일</label>
+          <input
+            type="date"
+            {...register("birth")}
+            max={formatDate(maxBirthDate)}
+            min={formatDate(minBirthDate)}
+            onKeyDown={(e) => e.preventDefault()}
+          />
+          {errors.birth && <p>{errors.birth.message}</p>}
+
+          <label>학년</label>
+          <select {...register("grade")}>
+            <option value="">선택</option>
+            <option value="SOPHOMORE">1학년</option>
+            <option value="JUNIOR">2학년</option>
+            <option value="SENIOR">3학년</option>
+          </select>
+          {errors.grade && <p>{errors.grade.message}</p>}
+
+          <label>성별</label>
+          <select {...register("gender")}>
+            <option value="">선택</option>
+            <option value="MALE">남자</option>
+            <option value="FEMALE">여자</option>
+            <option value="OTHER">공개 안함</option>
+          </select>
+          {errors.gender && <p>{errors.gender.message}</p>}
+
+          <div className="button-wrapper">
+            <button
+              type="submit"
+              className="submit-button"
+              onClick={handleSubmit(onSubmit)}
+              disabled={!isFormValid}
+            >
+              완료
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,87 @@
+/* src/components/CreateAccount.css */
+#CreateAccount {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  background-color: #ffffff;
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.account-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-form label {
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.account-form input,
+.account-form select {
+  padding: 10px 12px;
+  font-size: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.account-form input:focus,
+.account-form select:focus {
+  border-color: #10b981;
+}
+
+.account-form p {
+  color: #dc2626; /* 빨강색 에러 */
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.account-form button {
+  margin-top: 10px;
+  padding: 10px 0;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.account-form button[type="submit"] {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.account-form button[type="submit"]:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.account-form button[type="submit"]:hover:not(:disabled) {
+  background-color: #059669;
+}
+
+.account-form button[type="button"] {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.account-form button[type="button"]:hover {
+  background-color: #d1d5db;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
