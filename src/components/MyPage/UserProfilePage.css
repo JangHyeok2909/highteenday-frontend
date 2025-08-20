@@ -1,3 +1,4 @@
+
 #user-profile .profile-container {
   max-width: 480px;
   margin: 80px auto;
@@ -51,4 +52,71 @@
 
 #user-profile .back-button:hover {
   background-color: #ddd;
+}
+
+#user-profile .user-profile-header {
+  text-align: left;
+  padding: 20px 0 5px 20px;
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: white;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#user-profile .header-title {
+  margin: 0;
+}
+
+#user-profile .header-divider {
+  margin-top: 5px;
+  border: none;
+  border-top: 2px solid black;
+  width: 100%;
+}
+
+#user-profile .profile-edit-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: black;
+}
+
+#user-profile .profile-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#user-profile .profile-image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+#user-profile .profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;   
+  object-fit: cover;
+  border: 1px solid #000;
+}
+
+#user-profile .change-photo-btn {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 10px;
+  padding: 3px 6px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#user-profile .change-photo-btn:hover {
+  background: rgba(0,0,0,0.8);
 }

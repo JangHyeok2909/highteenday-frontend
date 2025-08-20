@@ -1,0 +1,74 @@
+#profile-edit {
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.pe-header {
+  text-align: left;
+  padding: 10px 20px;
+}
+
+.pe-title {
+  font-size: 18px;
+  margin: 0;
+}
+
+.pe-divider {
+  margin-top: 8px;
+}
+
+.pe-container {
+  margin-top: 30px;
+}
+
+.pe-heading {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.pe-avatar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.pe-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid #333;
+  object-fit: cover;
+}
+
+.pe-camera-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: white;
+  border-radius: 50%;
+  padding: 4px 6px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #333;
+}
+
+.pe-submit-btn {
+  margin-top: 40px;
+  padding: 10px 40px;
+  background: #3b855b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pe-submit-btn:disabled {
+  background: #9bb9a8;
+}
+
+.pe-message {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #444;
+}
