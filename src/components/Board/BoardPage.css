@@ -52,3 +52,11 @@
   margin-top: 20px;
 }
 
+#board-page .board-name {
+  border-bottom: 1px solid black;
+  padding-bottom:15px;
+}
+
+#board-page .post-meta {
+  padding: 0 2px;
+}

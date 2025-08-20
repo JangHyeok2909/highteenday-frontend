@@ -38,9 +38,14 @@
     top: 10px;
     right: 150px;
 }
-#header .user-section>.function button{
-    border: none;
+
+#header .user-section .function button{
+    border: solid 1px gray;
     background-color: #fff;
-    padding: 0 2px;
     cursor: pointer;
+    padding: 0 2px;
+    margin: 0 2px;;
+}
+#header .user-section .function button:hover{
+    background-color: #f0f0f0;
 }

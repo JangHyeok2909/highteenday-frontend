@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SearchSection.css";
-import Search_Icon from "../../../Icons/Search_Icon";
+import Search_Icon from "../../../../Icons/Search_Icon";
 import "../../../Default.css"
 
 function SearchSection() {

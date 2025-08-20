@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom"
-import NotificationBellIcons from "../Icons/NotificationBellIcon";
-import UserAddIcon from "../Icons/UserAddIcon";
-import UsersOverlayIcon from "../Icons/UsersOverlayIcon";
+import NotificationBellIcons from "../../Icons/NotificationBellIcon";
+import UserAddIcon from "../../Icons/UserAddIcon";
+import UsersOverlayIcon from "../../Icons/UsersOverlayIcon";
 import "./Header.css";
 import SidebarMenu from "./SideBar/SidebarMenu";
 import "../Default.css"
@@ -23,24 +23,26 @@ function Header({ isMainPage }) {
         logo
     </div>
 
-    { isMainPage ? null : (
-        isLogin ? (
-            <div className="user-section">
-                <div className="user-name">
-                    {user.nickname} 님
+    <div className="user-section">
+        { isMainPage ? null : (
+            isLogin ? (
+                <div className="container">
+                    <div className="user-name">
+                        {user.nickname} 님
+                    </div>
+                    <div className="function">
+                        <button className="my-info" type="button" onClick={() => navigate("/#")}>내 정보</button>
+                        <button className="logout-btn" type="button" onClick={() => void logout()}>로그아웃</button>
+                    </div>
                 </div>
-                <div className="function">
-                    <button className="my-info" type="button" onClick={() => navigate("/#")}>내 정보</button>
-                    <button className="logout-btn" type="button" onClick={() => logout}>로그아웃</button>
-                </div>
-            </div>
-            ) : (
-                <div className="function">
-                    <button type="button" onClick={() => navigate("/loginTest")}>로그인하쇼</button>
-                </div>
-            )
-        )  
-    }
+                ) : (
+                    <div className="function">
+                        <button type="button" onClick={() => navigate("/loginTest")}>로그인하쇼</button>
+                    </div>
+                )
+            )  
+        }
+    </div>
 
     <div className="function">
         <Link to="/"><UserAddIcon size={32} color={"#3f9763"} /></Link>

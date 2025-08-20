@@ -56,9 +56,15 @@ export default function BoardPage() {
       <div className="header">
         <Header isMainPage={false} />
       </div>
-      <div className="board-page-container">
-        <h2>{boardName}</h2>
 
+      <div className="board-page-container">
+        <h2 className="board-name">{boardName}</h2>
+        <div className="post-list-header">
+          <span className="post-header-title">제목</span>
+          <span className="post-header-date">날짜</span>
+          <span className="post-header-view">조회</span>
+          <span className="post-header-like">좋아요 수</span>
+        </div>
         <ul className="post-list">
           {Array.isArray(posts) && posts.length > 0 ? (
             posts.map((post) => (
@@ -72,7 +78,15 @@ export default function BoardPage() {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
-                </span>
+                  </span>
+                
+                  <span className="view-count post-meta">
+                    {post.viewCount}
+                  </span>
+                  <span className="like-count post-meta">
+                    {post.likeCount}
+                  </span>
+
                 </Link>
               </li>
             ))
