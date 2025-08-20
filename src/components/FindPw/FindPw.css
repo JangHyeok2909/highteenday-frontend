@@ -1,0 +1,103 @@
+/* FindPw */
+.find-pw-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 50px;
+}
+
+.find-pw-modal {
+  position: relative;
+  width: 350px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+/* 탭 헤더 */
+.find-pw-modal .tab-header {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.find-pw-modal .tab-button {
+  flex: 1;
+  padding: 15px 20px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.find-pw-modal .tab-button.active {
+  color: #333;
+  border-bottom-color: #4caf50;
+  background-color: #f8f9fa;
+}
+
+.find-pw-modal .tab-button:hover {
+  background-color: #f5f5f5;
+}
+
+/* 모달 컨텐츠 */
+.find-pw-modal .modal-content {
+  padding: 30px 25px;
+}
+
+.find-pw-modal .description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.find-pw-modal .input-section {
+  margin-bottom: 20px;
+}
+
+.find-pw-modal .email-input {
+  width: 100%;
+  height: 50px;
+  padding: 0 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: #f0f8f0;
+}
+
+.find-pw-modal .email-input:focus {
+  outline: none;
+  border-color: #4caf50;
+}
+
+.find-pw-modal .find-button {
+  width: 120px;
+  height: 40px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 auto;
+  display: block;
+  transition: background-color 0.2s;
+}
+
+.find-pw-modal .find-button:hover {
+  background-color: #45a049;
+}

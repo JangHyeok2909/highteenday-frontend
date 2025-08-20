@@ -23,7 +23,7 @@ import UserProfilePage from "components/MyPage/UserProfilePage.jsx";
 import CreateAccountPage from "./components/RegisterRelated/Account/CreateAccountPage"; 
 import SchoolRegisterPage from './components/RegisterRelated/School/SchoolRegisterPage';
 import RegisterProfilePage from './components/RegisterRelated/Profile/RegisterProfilePage';
-
+import LoginPage from './components/LoginPage/LoginPage';
 
   function App() {
     return (
@@ -32,6 +32,7 @@ import RegisterProfilePage from './components/RegisterRelated/Profile/RegisterPr
         {/* <Route path="login" element={< />}/> */}
         {/* user related */}
         <Route path="/loginTest" element={<LoginButton />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/FormRegisterPage" element={<AgreeTermsPage />} />
         <Route path="/CreateAccount" element={<CreateAccountPage />} />
