@@ -18,9 +18,9 @@ function Header({ isMainPage }) {
         <SidebarMenu size={40} color={"#3f9763"} />
       </div>
 
-      <div className="logo" onClick={() => navigate("/")}>
-        logo
-      </div>
+    <div className="logo" onClick={() => navigate("/")}>
+        <img src="/images/highteenLogo.jpg" alt="하이틴데이 로고" className="logo-img" />
+    </div>
 
       {isMainPage ? null : isLogin ? (
         <div className="user-section">
@@ -40,9 +40,7 @@ function Header({ isMainPage }) {
         </div>
       ) : (
         <div className="function">
-          <button type="button" onClick={() => navigate("/loginTest")}>
-            로그인하쇼
-          </button>
+
         </div>
       )}
 

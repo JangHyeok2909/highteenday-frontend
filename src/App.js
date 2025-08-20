@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import WritePostPage from "./components/Post/Post_Inner/WritePostPage";
-import LoginButton from "./components/LoginButton/LoginButton";
+import LoginButton from './components/LoginPage/LoginButton/LoginButton';
 import NotFound from "./pages/NotFound";
 import Register from "./components/LoginRelated/Register";
 import UserPage from "./components/LoginRelated/UserPage";

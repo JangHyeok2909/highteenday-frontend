@@ -10,12 +10,13 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding-left: 50px;
+  padding-left: 20px;
 }
 
 .find-id-modal {
   position: relative;
-  width: 350px;
+  width: 270px;
+  height: 370px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -30,10 +31,10 @@
 
 .find-id-modal .tab-button {
   flex: 1;
-  padding: 15px 20px;
+  padding: 12px 10px;
   background: none;
   border: none;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   color: #666;
   cursor: pointer;
@@ -53,27 +54,27 @@
 
 /* 모달 컨텐츠 */
 .find-id-modal .modal-content {
-  padding: 30px 25px;
+  padding: 20px 15px;
 }
 
 /* 인증 옵션 버튼들 */
 .find-id-modal .auth-options {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 }
 
 .find-id-modal .auth-button {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 15px 20px;
+  padding: 12px 15px;
   background-color: #f8f9fa;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
 }
 
@@ -83,6 +84,6 @@
 }
 
 .find-id-modal .auth-icon {
-  font-size: 20px;
-  margin-right: 15px;
+  font-size: 16px;
+  margin-right: 10px;
 }

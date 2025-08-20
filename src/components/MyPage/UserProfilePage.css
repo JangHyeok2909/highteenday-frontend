@@ -1,54 +1,193 @@
-#user-profile .profile-container {
-  max-width: 480px;
-  margin: 80px auto;
-  padding: 30px;
+/* ProfileEditPage */
+#profile-edit-page {
+  position: relative;
   background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  font-family: 'Arial', sans-serif;
+  min-height: 100vh;
+}
+
+#profile-edit-page > .profile-container {
+  position: relative;
+  width: 100%;
+  padding: 20px 0;
+}
+
+/* 프로필 컨텐츠 */
+#profile-edit-page .profile-content {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+#profile-edit-page .section-title {
+  position: relative;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333333;
   text-align: center;
+  margin: 0 0 60px 0;
+  text-decoration: underline;
+  text-underline-offset: 10px;
+  text-decoration-thickness: 2px;
 }
 
-#user-profile .profile-container h2 {
-  font-size: 22px;
-  color: #333;
-  margin-bottom: 24px;
+/* 프로필 이미지 섹션 */
+#profile-edit-page .profile-image-section {
+  position: relative;
+  text-align: center;
+  margin-bottom: 80px;
 }
 
-#user-profile .profile-card {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  border: 1px solid #eee;
-  text-align: left;
+#profile-edit-page .profile-image-container {
+  position: relative;
+  display: inline-block;
 }
 
-#user-profile .profile-card p {
-  font-size: 16px;
-  margin: 10px 0;
-  color: #444;
+#profile-edit-page .profile-image {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 15px auto;
 }
 
-#user-profile .profile-card strong {
-  color: #222;
+#profile-edit-page .default-avatar {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#user-profile .profile-error {
-  font-size: 18px;
-  color: crimson;
-  margin-bottom: 20px;
+#profile-edit-page .avatar-icon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  color: #4a5c5a;
+  stroke-width: 1.5;
 }
 
-#user-profile .back-button {
-  margin-top: 20px;
-  padding: 10px 18px;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+#profile-edit-page .profile-image-btn {
+  position: relative;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  text-decoration: underline;
 }
 
-#user-profile .back-button:hover {
-  background-color: #ddd;
+#profile-edit-page .profile-image-btn:hover {
+  color: #333;
+}
+
+#profile-edit-page .user-avatar {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+/* 프로필 정보 섹션 */
+#profile-edit-page .profile-info-section {
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+#profile-edit-page .info-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding: 25px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#profile-edit-page .info-row:last-child {
+  border-bottom: none;
+}
+
+#profile-edit-page .info-left {
+  position: relative;
+  width: 150px;
+  flex-shrink: 0;
+}
+
+#profile-edit-page .info-label {
+  position: relative;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+#profile-edit-page .info-right {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 40px;
+}
+
+#profile-edit-page .info-text {
+  position: relative;
+  font-size: 16px;
+  color: #333;
+  flex: 1;
+}
+
+#profile-edit-page .school-info {
+  position: relative;
+  flex: 1;
+}
+
+#profile-edit-page .school-detail {
+  position: relative;
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+
+#profile-edit-page .change-btn {
+  position: relative;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px 10px;
+  text-decoration: underline;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+#profile-edit-page .change-btn:hover {
+  color: #333;
+}
+
+#profile-edit-page .change-arrow {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  color: #666;
+  stroke-width: 2;
+}
+
+#profile-edit-page .change-btn:hover .change-arrow {
+  color: #333;
+}
+
+#profile-edit-page .no-user-message {
+  position: relative;
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  margin-top: 50px;
 }
