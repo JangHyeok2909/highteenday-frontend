@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./ProfileUploader.css"; 
-import defaultImg from "assets/default-profile-image.jpg";
+import defaultImg from "assets/default_profile_image.jpg";
 
 
 function ProfileUploader() {

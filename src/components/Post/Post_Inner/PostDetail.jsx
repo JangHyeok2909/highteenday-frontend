@@ -133,6 +133,8 @@ function PostDetail() {
           👎 {post.disliked ? '싫어요 취소' : '싫어요'} ({post.dislikeCount})
         </button>
       </div>
+
+      <CommentSection postId={postId} />
     </div>
   );
 }

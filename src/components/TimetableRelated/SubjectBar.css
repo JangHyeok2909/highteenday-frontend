@@ -1,0 +1,113 @@
+.subject-bar {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  background: #fff;
+  animation: slideUp 0.2s ease-out;
+  gap: 8px;
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(10px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+/* 할당된 과목을 보여주는 알약 모양 */
+.pill {
+  background: #e8f5e8;
+  border: 1px solid #28a745;
+  border-radius: 20px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #155724;
+  font-weight: 500;
+}
+
+/* 과목 제거 버튼 (× 버튼) */
+.remove-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  color: #dc3545;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* 과목 추가 버튼 (+ 버튼) */
+.add-btn {
+  font-size: 14px;
+  border: 1px solid #007bff;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.add-btn:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+}
+
+/* 드롭다운 컨테이너 */
+.dropdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 8px;
+}
+
+.dropdown select {
+  padding: 6px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+  min-width: 150px;
+}
+
+.dropdown select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* 취소 버튼 */
+.cancel-btn {
+  border: 1px solid #6c757d;
+  background: transparent;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: #6c757d;
+  color: white;
+}
