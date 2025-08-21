@@ -73,8 +73,8 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
   const refresh = async () => {
     try {
-      const { data } = await axios.get<User>("/api/user/userInfo", {
-        withCredentials: true,
+      const { data } = await axios.get<User>('/api/user/userInfo', {
+        withCredentials: true
       });
       setUser(data);
     } catch {
@@ -92,10 +92,10 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth(){
+export function useAuth() {
   const ctx = useContext(AuthContext);
-  if(!ctx) throw new Error("AuthProvider ㅇㅇ");
+  if (!ctx) throw new Error('AuthProvider 안에서만 사용 가능합니다.');
   return ctx;
 }
