@@ -1,12 +1,12 @@
 /* src/components/Header.css */
 
-.header {
+#register-header .header {
     width: 100%;
     background-color: white;
     padding: 24px;
   }
   
-  .header-title {
+  #register-header .header-title {
     font-size: 2.5rem; /* 크게 표시 */
     font-weight: bold;
     text-align: left;
@@ -14,7 +14,7 @@
     margin: 0;
   }
   
-  .header-divider {
+  #register-header .header-divider {
     margin-top: 8px;
     height: 4px;
     width: 100%;

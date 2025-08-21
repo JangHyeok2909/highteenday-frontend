@@ -39,46 +39,48 @@ function SchoolSearch() {
   };
 
   return (
-    <div className="school-search-container">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSearch();
-        }}
-        className="search-form"
-      >
-        <input
-          type="text"
-          value={query}
-          placeholder="학교 이름을 입력하세요"
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <button type="submit">검색</button>
-      </form>
-
-      {loading && <p className="loading-text">검색 중...</p>}
-
-      {!loading && schools.length > 0 && (
-        <ul className="school-list">
-          {schools.map((school) => (
-            <li
-              key={school.id}
-              className={selectedSchool?.id === school.id ? "selected" : ""}
-              onClick={() => setSelectedSchool(school)}
-            >
-              {school.name} ({school.location})
-            </li>
-          ))}
-        </ul>
-      )}
-      <div className="button-container">
-        <button
-          className="submit-button"
-          onClick={submit}
-          disabled={!selectedSchool}
+    <div id="school-search">
+      <div className="school-search-container">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSearch();
+          }}
+          className="search-form"
         >
-          다음
-        </button>
+          <input
+            type="text"
+            value={query}
+            placeholder="학교 이름을 입력하세요"
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <button type="submit">검색</button>
+        </form>
+
+        {loading && <p className="loading-text">검색 중...</p>}
+
+        {!loading && schools.length > 0 && (
+          <ul className="school-list">
+            {schools.map((school) => (
+              <li
+                key={school.id}
+                className={selectedSchool?.id === school.id ? "selected" : ""}
+                onClick={() => setSelectedSchool(school)}
+              >
+                {school.name} ({school.location})
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className="button-container">
+          <button
+            className="submit-button"
+            onClick={submit}
+            disabled={!selectedSchool}
+          >
+            다음
+          </button>
+        </div>
       </div>
     </div>
   );

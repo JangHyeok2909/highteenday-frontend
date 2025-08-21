@@ -19,7 +19,7 @@ function Header({ isMainPage }) {
       </div>
 
       <div className="logo" onClick={() => navigate("/")}>
-        logo
+        <h1>logo</h1>
       </div>
 
       {isMainPage ? null : isLogin ? (

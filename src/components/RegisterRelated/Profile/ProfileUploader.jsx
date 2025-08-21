@@ -54,40 +54,42 @@ function ProfileUploader() {
   };
 
   return (
-    <div className="profile-uploader-container">
-      {/* 미리보기 */}
-      <div className="profile-preview">
-        <img
-          src={preview || defaultImg}
-          alt="Profile Preview"
-          className="profile-image"
+    <div id="profile">
+      <div className="profile-uploader-container">
+        {/* 미리보기 */}
+        <div className="profile-preview">
+          <img
+            src={preview || defaultImg}
+            alt="Profile Preview"
+            className="profile-image"
+          />
+        </div>
+
+        {/* 파일 선택 */}
+        <input
+          type="file"
+          name="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="profile-input"
         />
-      </div>
 
-      {/* 파일 선택 */}
-      <input
-        type="file"
-        name="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        className="profile-input"
-      />
-
-      {/* 버튼 */}
-      <div className="profile-buttons">
-        <button
-          className="upload-button"
-          onClick={handleUpload}
-          disabled={loading}
-        >
-          {loading ? "업로드 중..." : "사진 업로드"}
-        </button>
-        <button
-          className="skip-button"
-          onClick={() => (window.location.href = "/")}
-        >
-          건너뛰기
-        </button>
+        {/* 버튼 */}
+        <div className="profile-buttons">
+          <button
+            className="upload-button"
+            onClick={handleUpload}
+            disabled={loading}
+          >
+            {loading ? "업로드 중..." : "사진 업로드"}
+          </button>
+          <button
+            className="skip-button"
+            onClick={() => (window.location.href = "/")}
+          >
+            건너뛰기
+          </button>
+        </div>
       </div>
     </div>
   );

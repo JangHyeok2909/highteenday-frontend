@@ -1,0 +1,189 @@
+/* LoginPage */
+#login-page {
+  position: relative;
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+#login-page .login-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0;
+}
+
+/* 사이트 제목 섹션 */
+#login-page .site-title-section {
+  position: relative;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+#login-page .site-title {
+  position: relative;
+  font-size: 32px;
+  font-weight: bold;
+  color: #333333;
+  margin: 0;
+}
+
+#login-page .login-container {
+  position: relative;
+  width: 500px;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* 로그인 폼 */
+#login-page .login-form {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+#login-page .input-field {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  padding: 0 25px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  font-size: 16px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#login-page .input-field::placeholder {
+  color: #aaa;
+}
+
+#login-page .input-field:focus {
+  outline: none;
+  border-color: #4caf50;
+}
+
+#login-page .login-button {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  background-color: #a8e6a1;
+  color: #333;
+  border: none;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 25px;
+  transition: background-color 0.2s;
+}
+
+#login-page .login-button:hover {
+  background-color: #95d18c;
+}
+
+#login-page .remember-me {
+  position: relative;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+#login-page .remember-me input {
+  position: relative;
+  margin-right: 8px;
+}
+
+/* 하단 링크 */
+#login-page .auth-links {
+  position: relative;
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 14px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+#login-page .auth-link {
+  position: relative;
+  color: #666;
+  text-decoration: none;
+  padding: 0 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#login-page .auth-link:hover {
+  color: #4caf50;
+  text-decoration: underline;
+}
+
+#login-page .divider {
+  position: relative;
+  color: #ccc;
+  margin: 0 10px;
+}
+
+/* 소셜 로그인 */
+#login-page .social-login {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+}
+
+#login-page .social-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: opacity 0.2s;
+  text-align: center;
+}
+
+#login-page .social-btn:hover {
+  opacity: 0.8;
+}
+
+#login-page .social-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+}
+
+#login-page .social-btn.kakao {
+  background-color: #fee500;
+  color: #000;
+}
+
+#login-page .social-btn.naver {
+  background-color: #03c75a;
+  color: white;
+}
+
+#login-page .social-btn.google {
+  background-color: #ffffff;
+  color: #757575;
+  border: 1px solid #dadce0;
+}

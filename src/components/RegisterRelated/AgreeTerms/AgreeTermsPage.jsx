@@ -43,7 +43,7 @@ function AgreeTermsPage() {
   };
 
   return (
-    <>
+    <div id="agree-terms">
       <div className="agreement-container">
         <h2>약관 동의</h2>
 
@@ -143,7 +143,7 @@ function AgreeTermsPage() {
           다음으로
         </button>
       </div>
-    </>
+    </div>
   );
 }
 

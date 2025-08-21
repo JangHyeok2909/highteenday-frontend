@@ -1,5 +1,5 @@
 /* 약관 전체 박스 */
-.agreement-container {
+#agree-terms .agreement-container {
   max-width: 600px;
   margin: 60px auto 30px auto;  /* 아래 여백 확보 */
   padding: 30px 24px;
@@ -10,7 +10,7 @@
 }
 
 /* 개별 체크박스 항목 */
-.checkbox {
+#agree-terms .checkbox {
   display: block;
   margin-bottom: 40px;
   font-size: 16px;
@@ -19,7 +19,7 @@
 }
 
 /* 각 항목 설명 박스 */
-.description-box {
+#agree-terms .description-box {
   margin-top: 10px;
   padding: 12px 16px;
   font-size: 14px;
@@ -31,13 +31,13 @@
 }
 
 /* 다음 버튼 컨테이너 (약관 박스 외부) */
-.next-button-wrapper {
+#agree-terms .next-button-wrapper {
   text-align: center;
   margin-bottom: 60px;
 }
 
 /* 다음 버튼 */
-.next-button {
+#agree-terms .next-button {
   padding: 14px 32px;
   font-size: 16px;
   background-color: #393c3f;
@@ -48,6 +48,6 @@
   transition: background-color 0.2s ease;
 }
 
-.next-button:hover {
+#agree-terms .next-button:hover {
   background-color: #2c2f32;
 }
