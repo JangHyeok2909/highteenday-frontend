@@ -2,7 +2,6 @@ import React from "react";
 import "../MainPage.css";
 import "./Body.css";
 import Banner from "./Banner/Banner";
-import SearchSection from "./SearchSection/SearchSection";
 import BoardSection from "./BoardSection/BoardSection";
 import NoticeSection from "./NoticeSection/NoticeSection";
 import UserSection from "./UserSection/UserSection";

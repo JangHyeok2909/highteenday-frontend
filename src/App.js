@@ -36,12 +36,10 @@ import Terms from 'pages/Terms';
           {/* user related */}
           <Route path="/loginTest" element={<LoginButton />}/>
           <Route path="/register" element={<Register />} />
-          <Route path="/FormRegisterPage" element={<FormRegisterPage />} />
-          <Route path="/CreateAccount" element={<CreateAccount />} /> 
           <Route path="/user-profile" element={<UserProfilePage />} />
 
           {/* school */}
-          <Route path="/school" element={<SchoolVerification />} />
+          {/* <Route path="/school" element={<SchoolVerification />} /> */}
           <Route path="/register/school" element={<SchoolRegisterPage />} />
           <Route path="/register/profile" element={<RegisterProfilePage />} />
 
