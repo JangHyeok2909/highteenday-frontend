@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import WritePostPage from "./components/Post/Post_Inner/WritePostPage";
 import LoginButton from './components/LoginPage/LoginButton/LoginButton';
 import NotFound from "./pages/NotFound";
@@ -26,6 +25,8 @@ import RegisterProfilePage from "./components/RegisterRelated/Profile/RegisterPr
 import LoginPage from "./components/LoginPage/LoginPage";
 import ProfileEditPage from "./components/MyPage/ProfileEditPage";
 import RegisterHeader from "components/Header/RegisterHeader/RegisterHeader";
+import TimetablePage from './pages/TimetablePage';
+
 
 import Privacy from "pages/Privacy";
 import Terms from "pages/Terms";
@@ -64,7 +65,8 @@ function App() {
       {/* 약관 페이지 (필수로 필요한 페이지임) */}
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
-
+      {/*timetable*/}
+      <Route path="/timetable" element={<TimetablePage />} />
 
       <Route path="*" element={<NotFound />} />
       <Route path="/#" />

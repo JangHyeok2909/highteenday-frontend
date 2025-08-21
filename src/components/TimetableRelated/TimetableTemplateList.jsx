@@ -15,38 +15,30 @@ function TimetableTemplateList({ onSelectTemplate }) {
   const [templates, setTemplates] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
 
+  // 신규 생성용
   const [newName, setNewName] = useState('');
   const [newGrade, setNewGrade] = useState('SOPHOMORE');
   const [newSemester, setNewSemester] = useState('FIRST');
-  const [newDefault, setNewDefault] = useState(false);
 
+  // 수정 모드용 - 🔧 초기값 수정
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState('');
-  const [editGrade, setEditGrade] = useState('SOPHOMORE');
+  const [editGrade, setEditGrade] = useState('SOPHOMORE'); // FRESHMAN → SOPHOMORE
   const [editSemester, setEditSemester] = useState('FIRST');
-  const [editDefault, setEditDefault] = useState(false);
 
-  const API_BASE = '/api';
-
+  // API로부터 템플릿 목록 불러오기
   const fetchTemplates = () => {
     axios
-      .get(`${API_BASE}/timetableTemplates`, { withCredentials: true })
+      .get('/api/timetableTemplates', { withCredentials: true })
       .then(res => {
-        let templates = Array.isArray(res.data) ? res.data : [];
+        console.log('템플릿 목록:', res.data);
+        setTemplates(Array.isArray(res.data) ? res.data : []);
         
-        templates = templates.sort((a, b) => {
-          if (a.default && !b.default) return -1;
-          if (!a.default && b.default) return 1;
-          return 0;
-        });
-        
-        setTemplates(templates);
-        
-        if (templates.length > 0 && !templates.find(t => t.id === selectedId)) {
-          const defaultTemplate = templates.find(t => t.default);
-          const templateToSelect = defaultTemplate || templates[0];
-          setSelectedId(templateToSelect.id);
-          onSelectTemplate(templateToSelect.id);
+        // 최초 로드 혹은 삭제 후 선택이 사라졌을 때
+        if (res.data.length > 0 && !res.data.find(t => t.id === selectedId)) {
+          const first = res.data[0].id;
+          setSelectedId(first);
+          onSelectTemplate(first);
         }
       })
       .catch(err => {
@@ -57,35 +49,25 @@ function TimetableTemplateList({ onSelectTemplate }) {
 
   useEffect(fetchTemplates, [onSelectTemplate, selectedId]);
 
+  // 🔧 수정: 원래 작동하던 query string 방식으로 되돌림
   function handleCreate() {
     if (!newName.trim()) return alert('템플릿 이름을 입력하세요');
 
+    // 원래 작동하던 query string 방식 사용
     axios.post(
-      `${API_BASE}/timetableTemplates`,
-      {
-        templateName: newName.trim(),
-        grade: newGrade,
-        semester: newSemester,
-        default: newDefault
-      },
-      { 
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
+      `/api/timetableTemplates?templateName=${encodeURIComponent(newName.trim())}&grade=${newGrade}&semester=${newSemester}`,
+      null, // 바디는 비워둠
+      { withCredentials: true }
     )
-    .then((response) => {
+    .then(() => {
       setNewName('');
       setNewGrade('SOPHOMORE');
       setNewSemester('FIRST');
-      setNewDefault(false);
-      fetchTemplates();
-      alert('템플릿이 성공적으로 생성되었습니다!');
+      fetchTemplates(); // 리스트 새로 불러오기
     })
     .catch(err => {
       console.error('템플릿 생성 실패:', err);
-      alert('템플릿 생성에 실패했습니다.');
+      alert('템플릿 생성 중 오류가 발생했습니다.');
     });
   }
 
@@ -95,28 +77,21 @@ function TimetableTemplateList({ onSelectTemplate }) {
     onSelectTemplate(id);
   };
 
+  // 템플릿 삭제
   const handleDelete = id => {
-    if (!window.confirm('정말 이 템플릿을 삭제하시겠습니까?\n관련된 모든 시간표 데이터가 함께 삭제됩니다.')) return;
-    
-    if (id === selectedId) {
-      setSelectedId(null);
-      onSelectTemplate(null);
-    }
-
+    if (!window.confirm('정말 이 템플릿을 삭제하시겠습니까?')) return;
     axios
-      .delete(`${API_BASE}/timetableTemplates/${id}`, { 
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+      .delete(`/api/timetableTemplates/${id}`, { withCredentials: true })
       .then(() => {
+        if (id === selectedId) {
+          setSelectedId(null);
+          onSelectTemplate(null);
+        }
         fetchTemplates();
-        alert('템플릿이 성공적으로 삭제되었습니다.');
       })
       .catch(err => {
         console.error('템플릿 삭제 실패:', err);
-        alert('템플릿 삭제에 실패했습니다.');
+        alert('템플릿 삭제 중 오류가 발생했습니다.');
       });
   };
 
@@ -126,45 +101,36 @@ function TimetableTemplateList({ onSelectTemplate }) {
     setEditName(tpl.templateName);
     setEditGrade(tpl.grade);
     setEditSemester(tpl.semester);
-    setEditDefault(tpl.default || false);
   };
 
+  // 수정 취소
   const cancelEdit = () => {
     setEditingId(null);
     setEditName('');
     setEditGrade('SOPHOMORE');
     setEditSemester('FIRST');
-    setEditDefault(false);
   };
 
-  // 템플릿 수정
+  // 수정 저장
   const handleSave = id => {
     if (!editName.trim()) return alert('템플릿 이름을 입력하세요.');
-    
     axios
       .put(
-        `${API_BASE}/timetableTemplates/${id}`,
+        `/api/timetableTemplates/${id}`,
         { 
           templateName: editName.trim(), 
           grade: editGrade, 
-          semester: editSemester,
-          default: editDefault
+          semester: editSemester 
         },
-        { 
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
+        { withCredentials: true }
       )
-      .then((response) => {
+      .then(() => {
         setEditingId(null);
         fetchTemplates();
-        alert('템플릿이 성공적으로 수정되었습니다!');
       })
       .catch(err => {
         console.error('템플릿 수정 실패:', err);
-        alert('템플릿 수정에 실패했습니다.');
+        alert('템플릿 수정 중 오류가 발생했습니다.');
       });
   };
 
@@ -179,6 +145,7 @@ function TimetableTemplateList({ onSelectTemplate }) {
         시간표 템플릿
       </h3>
       
+      {/* 템플릿 목록 */}
       <div style={{ marginBottom: 20 }}>
         {templates.length === 0 ? (
           <div style={{
@@ -201,28 +168,11 @@ function TimetableTemplateList({ onSelectTemplate }) {
                 border: tpl.id === selectedId ? '2px solid #007bff' : '1px solid #dee2e6',
                 borderRadius: 6,
                 background: tpl.id === selectedId ? '#e3f2fd' : '#fff',
-                transition: 'all 0.2s ease',
-                position: 'relative'
+                transition: 'all 0.2s ease'
               }}
             >
-              {/* 기본 템플릿 표시 */}
-              {tpl.default && (
-                <div style={{
-                  position: 'absolute',
-                  top: -8,
-                  left: 8,
-                  backgroundColor: '#28a745',
-                  color: 'white',
-                  fontSize: 10,
-                  padding: '2px 6px',
-                  borderRadius: 3,
-                  fontWeight: 'bold'
-                }}>
-                  기본
-                </div>
-              )}
-
               {editingId === tpl.id ? (
+                // **수정 모드**
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <input
                     value={editName}
@@ -267,22 +217,6 @@ function TimetableTemplateList({ onSelectTemplate }) {
                       ))}
                     </select>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <label style={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: 4,
-                      fontSize: 14,
-                      color: '#495057'
-                    }}>
-                      <input
-                        type="checkbox"
-                        checked={editDefault}
-                        onChange={e => setEditDefault(e.target.checked)}
-                      />
-                      기본 템플릿으로 설정
-                    </label>
-                  </div>
                   <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
                     <button 
                       onClick={() => handleSave(tpl.id)}
@@ -315,6 +249,7 @@ function TimetableTemplateList({ onSelectTemplate }) {
                   </div>
                 </div>
               ) : (
+                // **일반 모드**
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div
                     onClick={() => handleClick(tpl.id)}
@@ -373,6 +308,7 @@ function TimetableTemplateList({ onSelectTemplate }) {
         )}
       </div>
 
+      {/* 신규 템플릿 추가 영역 */}
       <div style={{ 
         borderTop: '1px solid #dee2e6', 
         paddingTop: 16 
@@ -431,24 +367,6 @@ function TimetableTemplateList({ onSelectTemplate }) {
             ))}
           </select>
         </div>
-        
-        <div style={{ marginBottom: 8 }}>
-          <label style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 8,
-            fontSize: 14,
-            color: '#495057'
-          }}>
-            <input
-              type="checkbox"
-              checked={newDefault}
-              onChange={e => setNewDefault(e.target.checked)}
-            />
-            기본 템플릿으로 설정
-          </label>
-        </div>
-        
         <button
           onClick={handleCreate}
           style={{ 

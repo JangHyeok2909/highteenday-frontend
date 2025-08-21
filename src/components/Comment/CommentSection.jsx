@@ -4,7 +4,7 @@ import Comment from "./Comment";
 import CreateComment from "./CreateComment";
 import "./CommentSystem.css";
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL || "/api";
+const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
 
 const CommentSection = ({ postId }) => {
   const [comments, setComments] = useState([]);
@@ -72,16 +72,18 @@ const CommentSection = ({ postId }) => {
   const handleCreate = async (content, imageUrl, parentId, anonymous) => {
     try {
       const requestData = {
-        content: content ?? "",
+        content: content ?? '',
         parentId: parentId ?? null,
         anonymous: Boolean(anonymous),
-        url: imageUrl || "",
+        url: imageUrl || '',
         userId,
       };
 
-      await axios.post(`${API_BASE}/posts/${postId}/comments`, requestData, {
-        withCredentials: true,
-      });
+      await axios.post(
+        `${API_BASE}/posts/${postId}/comments`,
+        requestData,
+        { withCredentials: true }
+      );
 
       await fetchComments();
 
@@ -91,10 +93,10 @@ const CommentSection = ({ postId }) => {
 
       return { success: true };
     } catch (err) {
-      console.error("댓글 작성 실패:", err);
+      console.error('댓글 작성 실패:', err);
       return {
         success: false,
-        error: err.response?.data?.message || "댓글 작성에 실패했습니다.",
+        error: err.response?.data?.message || '댓글 작성에 실패했습니다.',
       };
     }
   };
@@ -104,20 +106,20 @@ const CommentSection = ({ postId }) => {
       await axios.put(
         `${API_BASE}/posts/${postId}/comments/${commentId}`,
         {
-          content: content ?? "",
-          url: url || "",
+          content: content ?? '',
+          url: url || '',
           anonymous: false,
         },
         { withCredentials: true }
       );
       fetchComments();
     } catch (err) {
-      console.error("댓글 수정 실패:", err);
+      console.error('댓글 수정 실패:', err);
     }
   };
 
   const handleDelete = async (commentId) => {
-    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+    if (!window.confirm('정말 삭제하시겠습니까?')) return;
 
     try {
       await axios.delete(`${API_BASE}/posts/${postId}/comments/${commentId}`, {
@@ -125,7 +127,7 @@ const CommentSection = ({ postId }) => {
       });
       fetchComments();
     } catch (err) {
-      console.error("댓글 삭제 실패:", err);
+      console.error('댓글 삭제 실패:', err);
     }
   };
 
@@ -137,14 +139,12 @@ const CommentSection = ({ postId }) => {
         { withCredentials: true }
       );
       setLikedComments((prev) =>
-        prev.includes(commentId)
-          ? prev.filter((id) => id !== commentId)
-          : [...prev, commentId]
+        prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
       );
       setDislikedComments((prev) => prev.filter((id) => id !== commentId));
       fetchComments();
     } catch (err) {
-      console.error("좋아요 실패:", err);
+      console.error('좋아요 실패:', err);
     }
   };
 
@@ -156,14 +156,12 @@ const CommentSection = ({ postId }) => {
         { withCredentials: true }
       );
       setDislikedComments((prev) =>
-        prev.includes(commentId)
-          ? prev.filter((id) => id !== commentId)
-          : [...prev, commentId]
+        prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
       );
       setLikedComments((prev) => prev.filter((id) => id !== commentId));
       fetchComments();
     } catch (err) {
-      console.error("싫어요 실패:", err);
+      console.error('싫어요 실패:', err);
     }
   };
 
@@ -183,9 +181,7 @@ const CommentSection = ({ postId }) => {
 
   return (
     <div id="comment-section-container" className="comment-section">
-      <h3 className="comment-section-title">
-        댓글 ({getTotalCommentCount(comments)})
-      </h3>
+      <h3 className="comment-section-title">댓글 ({getTotalCommentCount(comments)})</h3>
 
       <CreateComment
         postId={postId}

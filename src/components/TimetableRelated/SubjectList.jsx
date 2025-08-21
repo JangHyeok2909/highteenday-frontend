@@ -1,152 +1,329 @@
 import React, { useState } from 'react';
 
-export default function SubjectList({ subjects = [], onSubjectCreate, onSubjectUpdate, onSubjectDelete, onRefresh }) {
+export default function SubjectList({ 
+  subjects = [], 
+  onSubjectCreate, 
+  onSubjectUpdate, 
+  onSubjectDelete,
+  onRefresh 
+}) {
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [formData, setFormData] = useState({ new: '', edit: '' });
-  const [isLoading, setIsLoading] = useState(false);
+  const [newSubjectName, setNewSubjectName] = useState('');
+  const [editSubjectName, setEditSubjectName] = useState('');
 
-  const handleAction = async (action, ...args) => {
-    setIsLoading(true);
-    try {
-      const actions = {
-        create: async () => {
-          if (!formData.new.trim()) return alert('과목명을 입력해주세요.');
-          await onSubjectCreate(formData.new.trim());
-          setFormData(prev => ({ ...prev, new: '' }));
-          setIsCreating(false);
-        },
-        update: async () => {
-          if (!formData.edit.trim()) return alert('과목명을 입력해주세요.');
-          await onSubjectUpdate(editingId, formData.edit.trim());
-          setEditingId(null);
-          setFormData(prev => ({ ...prev, edit: '' }));
-        },
-        delete: async (id, name) => {
-          if (!window.confirm(`'${name}' 과목을 삭제하시겠습니까?\n시간표에서도 함께 제거됩니다.`)) return;
-          await onSubjectDelete(id);
-        }
-      };
-      
-      await actions[action](...args);
-      onRefresh?.();
-    } catch (err) {
-      console.error(`과목 ${action} 실패:`, err);
-      alert(`과목 ${action === 'create' ? '생성' : action === 'update' ? '수정' : '삭제'} 중 오류가 발생했습니다.`);
-    } finally {
-      setIsLoading(false);
+  // 새 과목 생성
+  const handleCreate = () => {
+    if (!newSubjectName.trim()) {
+      alert('과목명을 입력해주세요.');
+      return;
     }
+
+    onSubjectCreate(newSubjectName.trim())
+      .then(() => {
+        setNewSubjectName('');
+        setIsCreating(false);
+        onRefresh();
+      })
+      .catch(err => {
+        console.error('과목 생성 실패:', err);
+        alert('과목 생성 중 오류가 발생했습니다.');
+      });
   };
 
+  // 과목 수정 시작
   const startEdit = (subject) => {
     setEditingId(subject.id);
-    setFormData(prev => ({ ...prev, edit: subject.subjectName }));
+    setEditSubjectName(subject.subjectName);
   };
 
-  const handleKeyPress = (e, action) => e.key === 'Enter' && action();
+  // 과목 수정 저장
+  const handleUpdate = () => {
+    if (!editSubjectName.trim()) {
+      alert('과목명을 입력해주세요.');
+      return;
+    }
 
-  const InputForm = ({ type, placeholder, onSubmit, onCancel }) => (
-    <div style={{ marginBottom: 16, padding: 16, backgroundColor: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 6 }}>
-      {type === 'new' && <h5 style={{ margin: '0 0 12px 0', fontSize: 14, color: '#495057', fontWeight: 600 }}>새 과목 추가</h5>}
-      <input
-        type="text"
-        value={formData[type]}
-        onChange={(e) => setFormData(prev => ({ ...prev, [type]: e.target.value }))}
-        placeholder={placeholder}
-        disabled={isLoading}
-        style={{ width: '100%', padding: 10, border: '1px solid #ced4da', borderRadius: 4, fontSize: 14, boxSizing: 'border-box', marginBottom: type === 'new' ? 12 : 0 }}
-        autoFocus
-        onKeyPress={(e) => handleKeyPress(e, onSubmit)}
-      />
-      {type === 'new' && (
-        <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-          <button onClick={onSubmit} disabled={isLoading || !formData[type].trim()} style={{ padding: '8px 16px', backgroundColor: isLoading || !formData[type].trim() ? '#ccc' : '#007bff', color: 'white', border: 'none', borderRadius: 4, fontSize: 13, cursor: isLoading || !formData[type].trim() ? 'not-allowed' : 'pointer', fontWeight: 500 }}>
-            {isLoading ? '생성 중...' : '생성'}
-          </button>
-          <button onClick={onCancel} disabled={isLoading} style={{ padding: '8px 16px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: 4, fontSize: 13, cursor: isLoading ? 'not-allowed' : 'pointer' }}>
-            취소
-          </button>
-        </div>
-      )}
-    </div>
-  );
+    onSubjectUpdate(editingId, editSubjectName.trim())
+      .then(() => {
+        setEditingId(null);
+        setEditSubjectName('');
+        onRefresh();
+      })
+      .catch(err => {
+        console.error('과목 수정 실패:', err);
+        alert('과목 수정 중 오류가 발생했습니다.');
+      });
+  };
+
+  // 과목 삭제
+  const handleDelete = (subjectId, subjectName) => {
+    if (!window.confirm(`'${subjectName}' 과목을 삭제하시겠습니까?`)) {
+      return;
+    }
+
+    onSubjectDelete(subjectId)
+      .then(() => {
+        onRefresh();
+      })
+      .catch(err => {
+        console.error('과목 삭제 실패:', err);
+        alert('과목 삭제 중 오류가 발생했습니다.');
+      });
+  };
+
+  // 수정 취소
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditSubjectName('');
+  };
 
   return (
-    <div style={{ marginTop: 24 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <h4 style={{ margin: 0, fontSize: 16, color: '#495057', fontWeight: 600 }}>
-          과목 관리 ({subjects.length}개)
+    <div className="subject-list" style={{ marginTop: 24 }}>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: 16
+      }}>
+        <h4 style={{ 
+          margin: 0,
+          fontSize: 16,
+          color: '#495057',
+          fontWeight: 600
+        }}>
+          나의 과목 목록 ({subjects.filter(s => !s.isDefault).length + 3}개)
         </h4>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button onClick={onRefresh} disabled={isLoading} style={{ padding: '6px 12px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: 4, fontSize: 12, cursor: isLoading ? 'not-allowed' : 'pointer', fontWeight: 500 }}>
-            {isLoading ? '로딩...' : '새로고침'}
+        
+        {!isCreating && (
+          <button
+            onClick={() => setIsCreating(true)}
+            style={{
+              padding: '6px 12px',
+              backgroundColor: '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: 4,
+              fontSize: 12,
+              cursor: 'pointer',
+              fontWeight: 500
+            }}
+          >
+            + 과목 추가
           </button>
-          {!isCreating && (
-            <button onClick={() => setIsCreating(true)} disabled={isLoading} style={{ padding: '6px 12px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: 4, fontSize: 12, cursor: isLoading ? 'not-allowed' : 'pointer', fontWeight: 500 }}>
-              + 과목 추가
-            </button>
-          )}
-        </div>
+        )}
       </div>
 
+      {/* 과목 생성 폼 */}
       {isCreating && (
-        <InputForm
-          type="new"
-          placeholder="과목명을 입력하세요 (예: 수학, 영어, 과학)"
-          onSubmit={() => handleAction('create')}
-          onCancel={() => { setIsCreating(false); setFormData(prev => ({ ...prev, new: '' })); }}
-        />
+        <div style={{
+          marginBottom: 16,
+          padding: 12,
+          backgroundColor: '#f8f9fa',
+          border: '1px solid #dee2e6',
+          borderRadius: 6
+        }}>
+          <div style={{ marginBottom: 8 }}>
+            <input
+              type="text"
+              value={newSubjectName}
+              onChange={(e) => setNewSubjectName(e.target.value)}
+              placeholder="새 과목명을 입력하세요"
+              style={{
+                width: '100%',
+                padding: 8,
+                border: '1px solid #ced4da',
+                borderRadius: 4,
+                fontSize: 14,
+                boxSizing: 'border-box'
+              }}
+              autoFocus
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleCreate();
+                }
+              }}
+            />
+          </div>
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+            <button
+              onClick={handleCreate}
+              style={{
+                padding: '6px 12px',
+                backgroundColor: '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: 4,
+                fontSize: 12,
+                cursor: 'pointer'
+              }}
+            >
+              생성
+            </button>
+            <button
+              onClick={() => {
+                setIsCreating(false);
+                setNewSubjectName('');
+              }}
+              style={{
+                padding: '6px 12px',
+                backgroundColor: '#6c757d',
+                color: 'white',
+                border: 'none',
+                borderRadius: 4,
+                fontSize: 12,
+                cursor: 'pointer'
+              }}
+            >
+              취소
+            </button>
+          </div>
+        </div>
       )}
 
-      {subjects.length === 0 ? (
-        <div style={{ padding: 32, textAlign: 'center', color: '#6c757d', fontSize: 14, border: '1px dashed #dee2e6', borderRadius: 4, backgroundColor: '#f8f9fa' }}>
-          <div style={{ fontSize: 24, marginBottom: 8 }}>📚</div>
-          <p style={{ margin: '0 0 4px 0' }}>아직 등록된 과목이 없습니다.</p>
-          <p style={{ margin: 0, fontSize: 12, color: '#adb5bd' }}>위의 '+ 과목 추가' 버튼을 눌러 과목을 추가해보세요!</p>
-        </div>
-      ) : (
-        <div style={{ display: 'grid', gap: 8 }}>
-          {subjects.map(subject => (
-            <div key={subject.id} style={{ padding: 12, backgroundColor: '#fff', border: '1px solid #dee2e6', borderRadius: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'center', transition: 'all 0.2s ease', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-              {editingId === subject.id ? (
+      {/* 과목 목록 */}
+      <div>
+        {subjects.length === 0 ? (
+          <div style={{
+            padding: 20,
+            textAlign: 'center',
+            color: '#6c757d',
+            fontSize: 14,
+            border: '1px dashed #dee2e6',
+            borderRadius: 4
+          }}>
+            아직 과목이 없습니다.<br/>
+            과목을 추가해보세요!
+          </div>
+        ) : (
+          subjects.map(subject => (
+            <div
+              key={subject.id}
+              style={{
+                marginBottom: 8,
+                padding: 12,
+                backgroundColor: '#fff',
+                border: '1px solid #dee2e6',
+                borderRadius: 4,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              {editingId === subject.id && !subject.isDefault ? (
+                // 수정 모드
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
-                  <InputForm
-                    type="edit"
-                    onSubmit={() => handleAction('update')}
-                    onCancel={() => { setEditingId(null); setFormData(prev => ({ ...prev, edit: '' })); }}
+                  <input
+                    type="text"
+                    value={editSubjectName}
+                    onChange={(e) => setEditSubjectName(e.target.value)}
+                    style={{
+                      flex: 1,
+                      padding: 6,
+                      border: '1px solid #ced4da',
+                      borderRadius: 4,
+                      fontSize: 14
+                    }}
+                    autoFocus
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        handleUpdate();
+                      }
+                    }}
                   />
-                  <button onClick={() => handleAction('update')} disabled={isLoading || !formData.edit.trim()} style={{ padding: '6px 12px', fontSize: 12, cursor: isLoading || !formData.edit.trim() ? 'not-allowed' : 'pointer', fontWeight: 500, backgroundColor: isLoading || !formData.edit.trim() ? '#ccc' : '#28a745', color: 'white', border: 'none', borderRadius: 4 }}>
-                    {isLoading ? '저장 중...' : '저장'}
+                  <button
+                    onClick={handleUpdate}
+                    style={{
+                      padding: '4px 8px',
+                      backgroundColor: '#28a745',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: 3,
+                      fontSize: 11,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    저장
                   </button>
-                  <button onClick={() => { setEditingId(null); setFormData(prev => ({ ...prev, edit: '' })); }} disabled={isLoading} style={{ padding: '6px 12px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: 4, fontSize: 12, cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+                  <button
+                    onClick={cancelEdit}
+                    style={{
+                      padding: '4px 8px',
+                      backgroundColor: '#6c757d',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: 3,
+                      fontSize: 11,
+                      cursor: 'pointer'
+                    }}
+                  >
                     취소
                   </button>
                 </div>
               ) : (
+                // 일반 모드
                 <>
-                  <span style={{ fontSize: 14, color: '#495057', fontWeight: 500, flex: 1 }}>
+                  <span style={{
+                    fontSize: 14,
+                    color: '#495057',
+                    fontWeight: 500,
+                    flex: 1
+                  }}>
                     {subject.subjectName}
                   </span>
-                  <div style={{ display: 'flex', gap: 6 }}>
-                    <button onClick={() => startEdit(subject)} disabled={isLoading} style={{ padding: '4px 8px', backgroundColor: '#ffc107', color: '#212529', border: 'none', borderRadius: 3, fontSize: 11, cursor: isLoading ? 'not-allowed' : 'pointer', fontWeight: 500 }}>
-                      수정
-                    </button>
-                    <button onClick={() => handleAction('delete', subject.id, subject.subjectName)} disabled={isLoading} style={{ padding: '4px 8px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: 3, fontSize: 11, cursor: isLoading ? 'not-allowed' : 'pointer', fontWeight: 500 }}>
-                      삭제
-                    </button>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    {/* 기본 과목(국어/수학/영어)은 수정/삭제 불가 */}
+                    {!subject.isDefault && (
+                      <>
+                        <button
+                          onClick={() => startEdit(subject)}
+                          style={{
+                            padding: '4px 8px',
+                            backgroundColor: '#ffc107',
+                            color: '#212529',
+                            border: 'none',
+                            borderRadius: 3,
+                            fontSize: 11,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          수정
+                        </button>
+                        <button
+                          onClick={() => handleDelete(subject.id, subject.subjectName)}
+                          style={{
+                            padding: '4px 8px',
+                            backgroundColor: '#dc3545',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: 3,
+                            fontSize: 11,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          삭제
+                        </button>
+                      </>
+                    )}
+                    {subject.isDefault && (
+                      <span style={{
+                        padding: '4px 8px',
+                        backgroundColor: '#e9ecef',
+                        color: '#6c757d',
+                        borderRadius: 3,
+                        fontSize: 10,
+                        fontWeight: 500
+                      }}>
+                        기본과목
+                      </span>
+                    )}
                   </div>
                 </>
               )}
             </div>
-          ))}
-        </div>
-      )}
-
-      {subjects.length > 0 && (
-        <div style={{ marginTop: 16, padding: 12, backgroundColor: '#e7f3ff', border: '1px solid #b3d9ff', borderRadius: 4, fontSize: 12, color: '#0066cc' }}>
-          💡 <strong>팁:</strong> 과목을 삭제하면 해당 과목이 배정된 시간표에서도 함께 제거됩니다.
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 }

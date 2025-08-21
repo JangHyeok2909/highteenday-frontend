@@ -1,5 +1,6 @@
 import React from 'react';
 
+// 요일, 교시 상수
 const DAYS = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'];
 const DAY_LABELS = {
   'MONDAY': '월',
@@ -17,18 +18,21 @@ export default function TimetableGrid({
   selectedCell 
 }) {
   
+  // 특정 요일/교시에 해당하는 과목 찾기
   const findSubject = (day, period) => {
     return timetableData.find(
       entry => entry.day === day && entry.period === String(period)
     );
   };
 
+  // 셀 클릭 핸들러
   const handleCellClick = (day, period) => {
     if (isEditMode && onCellClick) {
       onCellClick(day, period);
     }
   };
 
+  // 셀이 선택되었는지 확인
   const isCellSelected = (day, period) => {
     return selectedCell && 
            selectedCell.day === day && 
@@ -145,6 +149,7 @@ export default function TimetableGrid({
         </tbody>
       </table>
       
+      {/* 수정모드 안내문구 */}
       {isEditMode && (
         <div style={{
           marginTop: 12,
