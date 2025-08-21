@@ -23,40 +23,55 @@ import UserProfilePage from "components/MyPage/UserProfilePage.jsx";
 import CreateAccountPage from "./components/RegisterRelated/Account/CreateAccountPage"; 
 import SchoolRegisterPage from './components/RegisterRelated/School/SchoolRegisterPage';
 import RegisterProfilePage from './components/RegisterRelated/Profile/RegisterProfilePage';
+import Privacy from 'pages/Privacy';
+import Terms from 'pages/Terms';
 
 
   function App() {
     return (
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        {/* <Route path="login" element={< />}/> */}
-        {/* user related */}
-        <Route path="/loginTest" element={<LoginButton />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/FormRegisterPage" element={<AgreeTermsPage />} />
-        <Route path="/CreateAccount" element={<CreateAccountPage />} />
-        <Route path="/user-profile" element={<UserProfilePage />} />
-        {/* school */}
-        <Route path="/register/school" element={<SchoolRegisterPage />} />
-        <Route path="/register/profile" element={<RegisterProfilePage />} />
+        <Route path="/" element={<MainPage />}/>
+          {/* <Route path="login" element={< />}/> */}
 
-        {/* board & post */}
-        {/* board */}
-        <Route path="/board-overview" element={<BoardOverview />} />{" "}
-        {/* main page 의 게시판 4개 나중에 삭제 */}
-        <Route path="/board/:boardId" element={<BoardPage />} />
-        {/* post */}
-        <Route path="/board/:boardId/post/:postId" element={<PostSection />} />
-        <Route path="/post/write" element={<WritePostPage />} />
-        <Route path="/board/:boardId/post/:postId" element={<PostDetail />} />
-        {/* my page */}
-        <Route path="/mypage/posts" element={<MyPostsPage />} />
-        <Route path="/mypage/comments" element={<MyCommentsPage />} />
-        <Route path="/mypage/scraps" element={<MyScrapsPage />} />
-        {/* friend */}
-        <Route path="/friend" element={<FriendList />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/#" />
+          {/* user related */}
+          <Route path="/loginTest" element={<LoginButton />}/>
+          <Route path="/register" element={<Register />} />
+          <Route path="/FormRegisterPage" element={<FormRegisterPage />} />
+          <Route path="/CreateAccount" element={<CreateAccount />} /> 
+          <Route path="/user-profile" element={<UserProfilePage />} />
+
+          {/* school */}
+          <Route path="/school" element={<SchoolVerification />} />
+          <Route path="/register/school" element={<SchoolRegisterPage />} />
+          <Route path="/register/profile" element={<RegisterProfilePage />} />
+
+          {/* board & post */}
+          {/* board */}
+          <Route path="/board-overview" element={<BoardOverview />} /> {/* main page 의 게시판 4개 나중에 삭제 */}
+          <Route path="/board/:boardId/post/:postId" element={<PostSection />} />
+          <Route path="/board/:boardId" element={<BoardPage />} />
+          {/* post */}
+          <Route path="/post/write" element={<WritePostPage />} />
+
+          {/* my page */}
+          <Route path="/mypage/posts" element={<MyPostsPage />} />
+          <Route path="/mypage/comments" element={<MyCommentsPage />} />
+          <Route path="/mypage/scraps" element={<MyScrapsPage />} />
+          
+
+
+          {/* friend */}
+          <Route path="/friend" element={<FriendList />} />
+
+
+          {/* 약관 페이지 (필수로 필요한 페이지임) */}
+          <Route path='/privacy' element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+
+          <Route path="*" element={<NotFound />} />
+          
+
+          <Route path="/#" />
       </Routes>
     );
   }
