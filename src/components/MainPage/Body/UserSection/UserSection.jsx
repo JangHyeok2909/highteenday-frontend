@@ -1,6 +1,6 @@
 import React from "react";
 import "../../MainPage.css";
-import UserInfo from "./UserInfo/UserInfo";
+import MainUserInfo from "./UserInfo/MainUserInfo";
 import "../../../Default.css";
 import "./UserSection.css";
 import HotPosts from "./HotPosts/HotPosts";
@@ -12,7 +12,7 @@ function UserSection() {
   return (
    <div id="user-section">    
         <div className="user-info">
-            <UserInfo />
+            <MainUserInfo />
         </div>
         <div className="time-table">
           <TimetableMeal />

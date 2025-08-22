@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import "./UserInfoPage.css";
+import "./UserInfo.css";
+import defaultImg from "assets/default_profile_image.jpg";
 
-export default function UserInfoPage() {
+
+export default function UserInfo() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
@@ -40,9 +42,7 @@ export default function UserInfoPage() {
   const school = user?.schoolName || "학교 정보 없음";
   const grade = Number.isFinite(user?.userGrade) ? `${user.userGrade}학년` : "";
   const klass = Number.isFinite(user?.userClass) ? `${user.userClass}반` : "";
-  const profileUrl =
-    user?.profileUrl ||
-    "https://static-00.iconduck.com/assets.00/user-avatar-profile-icon-2048x2048-cqe5466q.png";
+
 
   if (loading) {
     return (
@@ -70,11 +70,10 @@ export default function UserInfoPage() {
       <section className="account-card" aria-label="계정 정보">
         <div className="account-avatar">
           <img
-            src={profileUrl}
+            src={user.profileUrl || defaultImg}
             alt="프로필"
-            onError={(e) => {
-              e.currentTarget.src =
-                "https://static-00.iconduck.com/assets.00/user-avatar-profile-icon-2048x2048-cqe5466q.png";
+            onError={(e)=>{
+              e.currentTarget.src = defaultImg;
             }}
           />
         </div>
