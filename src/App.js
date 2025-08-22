@@ -16,8 +16,7 @@ import MyCommentsPage from "./components/MyPage/MyCommentsPage";
 import MyScrapsPage from "./components/MyPage/MyScrapsPage";
 import PostSection from "./components/Post/PostSection";
 import AgreeTermsPage from "./components/RegisterRelated/AgreeTerms/AgreeTermsPage";
-import CommentSection from "./components/Comment/CommentSection";
-// import Timetable from './components/TimetableRelated/Timetable';
+import CommentSection from "./components/CommentRelated/CommentSection";
 import UserProfilePage from "components/MyPage/UserProfilePage.jsx";
 import CreateAccountPage from "./components/RegisterRelated/Account/CreateAccountPage";
 import SchoolRegisterPage from "./components/RegisterRelated/School/SchoolRegisterPage";
@@ -25,7 +24,9 @@ import RegisterProfilePage from "./components/RegisterRelated/Profile/RegisterPr
 import LoginPage from "./components/LoginPage/LoginPage";
 import ProfileEditPage from "./components/MyPage/ProfileEditPage";
 import RegisterHeader from "components/Header/RegisterHeader/RegisterHeader";
-import TimetablePage from './pages/TimetablePage';
+import TimetablePage from './components/TimetableRelated/TimetablePage';
+import MealPage from "components/MealCalendar/MealPage";
+
 
 
 import Privacy from "pages/Privacy";
@@ -39,7 +40,6 @@ function App() {
       {/* user related */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/FormRegisterPage" element={<AgreeTermsPage />} />
       <Route path="/CreateAccount" element={<CreateAccountPage />} />
       <Route path="/user-profile" element={<UserProfilePage />} />
       <Route path="/profile/edit" element={<ProfileEditPage />} />
@@ -54,20 +54,22 @@ function App() {
       {/* post */}
       <Route path="/board/:boardId/post/:postId" element={<PostSection />} />
       <Route path="/post/write" element={<WritePostPage />} />
-      <Route path="/board/:boardId/post/:postId" element={<PostDetail />} />
+      {/* <Route path="/board/:boardId/post/:postId" element={<PostDetail />} /> */}
       {/* my page */}
       <Route path="/mypage/posts" element={<MyPostsPage />} />
       <Route path="/mypage/comments" element={<MyCommentsPage />} />
       <Route path="/mypage/scraps" element={<MyScrapsPage />} />
       {/* friend */}
       <Route path="/friend" element={<FriendList />} />
-
+      {/*약관 페이지*/}
+      <Route path="/FormRegisterPage" element={<AgreeTermsPage />} />
       {/* 약관 페이지 (필수로 필요한 페이지임) */}
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
       {/*timetable*/}
       <Route path="/timetable" element={<TimetablePage />} />
-
+      {/*meal calender */}
+      <Route path="/meal" element={<MealPage />} />
       <Route path="*" element={<NotFound />} />
       <Route path="/#" />
     </Routes>

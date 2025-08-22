@@ -6,7 +6,7 @@ const DAY_LABELS = {
   'MONDAY': '월',
   'TUESDAY': '화', 
   'WEDNESDAY': '수',
-  'THURSDAY': '목',
+'THURSDAY': '목',
   'FRIDAY': '금'
 };
 const PERIODS = [1, 2, 3, 4, 5, 6, 7, 8];

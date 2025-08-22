@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import MonthlyMealCalendar from '../components/MealCalendar/MonthlyMealCalendar';
+import MonthlyMealCalendar from './MonthlyMealCalendar';
 import styles from './MealPage.module.css';
+import Header from 'components/Header/MainHader/Header';
+import "components/Default.css"
+
 
 function MealPage() {
   const [schoolName, setSchoolName] = useState('');
@@ -28,8 +31,15 @@ function MealPage() {
   }, []);
 
   return (
-    <div className={styles.mealPageContainer}>
-      <MonthlyMealCalendar schoolId={1} onDateClick={() => {}} />
+    <div id="TimetablePage" className="default-root-value">
+      <div className="content-container">
+        <div className="header">
+          <Header isMainPage={false} />
+        </div>
+        <div className={styles.mealPageContainer}>
+          <MonthlyMealCalendar onDateClick={() => {}} />
+        </div>
+      </div>
     </div>
   );
 }

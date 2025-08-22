@@ -1,6 +1,6 @@
 import React from "react";
 import PostDetail from "./Post_Inner/PostDetail";
-import CommentSection from "../Comment/CommentSection";
+import CommentSection from "../CommentRelated/CommentSection";
 import Header from "../Header/MainHader/Header";
 
 function PostSection() {
@@ -11,7 +11,6 @@ function PostSection() {
       </div>
       <div className="post-container">
         <PostDetail />
-        <CommentSection />
       </div>
     </div>
   );

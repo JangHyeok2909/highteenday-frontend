@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import TimetableTemplateList from '../components/TimetableRelated/TimetableTemplateList';
-import TimetableGrid from '../components/TimetableRelated/TimetableGrid';
-import SubjectBar from '../components/TimetableRelated/SubjectBar';
-import SubjectList from '../components/TimetableRelated/SubjectList';
+import TimetableTemplateList from './TimetableTemplateList';
+import TimetableGrid from './TimetableGrid';
+import SubjectBar from './SubjectBar';
+import SubjectList from './SubjectList';
+import Header from "components/Header/MainHader/Header"
 
 export default function TimetablePage() {
   const [selectedTemplateId, setSelectedTemplateId] = useState(null);

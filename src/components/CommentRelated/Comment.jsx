@@ -1,16 +1,16 @@
-import React, { useState, useRef } from 'react';
-import CreateComment from './CreateComment';
-import axios from 'axios';
+import React, { useState, useRef } from "react";
+import CreateComment from "./CreateComment";
+import axios from "axios";
 import {
   ThumbsUp,
   ThumbsDown,
   MessageSquare,
   Trash2,
   Edit3,
-  X
-} from 'lucide-react';
+  X,
+} from "lucide-react";
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
+const API_BASE = process.env.REACT_APP_API_BASE_URL || "/api";
 
 const Comment = ({
   comment,
@@ -40,32 +40,36 @@ const Comment = ({
   const isDisliked = dislikedComments.includes(comment.id);
   const fileInputRef = useRef(null);
 
-  const anonymousLabel = comment.anonymous ? '익명' : comment.author;
+  const anonymousLabel = comment.anonymous ? "익명" : comment.author;
 
   const isCommentEdited = () => {
     if (comment.updated !== undefined) return comment.updated === true;
     if (!comment.updatedAt) return false;
-    if (comment.createdAt && comment.updatedAt) return comment.createdAt !== comment.updatedAt;
+    if (comment.createdAt && comment.updatedAt)
+      return comment.createdAt !== comment.updatedAt;
     return false;
   };
 
   const getImageUrl = (url) => (url ? url : null);
 
   const handleImageError = (e) => {
-    e.target.style.display = 'none';
-    const errorMsg = document.createElement('div');
-    errorMsg.textContent = '이미지를 불러올 수 없습니다.';
-    errorMsg.style.cssText = 'color:#666;font-size:12px;padding:8px;border:1px dashed #ccc;';
+    e.target.style.display = "none";
+    const errorMsg = document.createElement("div");
+    errorMsg.textContent = "이미지를 불러올 수 없습니다.";
+    errorMsg.style.cssText =
+      "color:#666;font-size:12px;padding:8px;border:1px dashed #ccc;";
     e.target.parentNode.appendChild(errorMsg);
   };
 
   const renderCommentContent = (content) => {
-    if (!content) return '';
+    if (!content) return "";
     const mentionRegex = /@(\S+)/g;
     const parts = content.split(mentionRegex);
     return parts.map((part, index) =>
       index % 2 === 1 ? (
-        <span key={index} className="mention">@{part}</span>
+        <span key={index} className="mention">
+          @{part}
+        </span>
       ) : (
         part
       )
@@ -89,7 +93,7 @@ const Comment = ({
   const handleEdit = async () => {
     const finalContent = editContent.trim();
     if (!finalContent && !editImage) {
-      setError('댓글 내용이나 이미지를 입력해주세요.');
+      setError("댓글 내용이나 이미지를 입력해주세요.");
       return;
     }
 
@@ -101,24 +105,20 @@ const Comment = ({
     try {
       if (editFile) {
         const formData = new FormData();
-        formData.append('file', editFile);
+        formData.append("file", editFile);
 
-        const response = await axios.post(
-          `${API_BASE}/media`,
-          formData,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.post(`${API_BASE}/media`, formData, {
+          withCredentials: true,
+        });
 
         imageUrl =
           response.headers?.location ||
           response.data?.url ||
           response.data?.imageUrl ||
           response.data?.path ||
-          (typeof response.data === 'string' ? response.data : '');
+          (typeof response.data === "string" ? response.data : "");
 
-        if (!imageUrl) throw new Error('이미지 URL을 받을 수 없습니다.');
+        if (!imageUrl) throw new Error("이미지 URL을 받을 수 없습니다.");
       }
 
       await onUpdate(comment.id, finalContent, imageUrl);
@@ -137,11 +137,11 @@ const Comment = ({
     const file = e.target.files[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        setError('파일 크기는 5MB 이하여야 합니다.');
+        setError("파일 크기는 5MB 이하여야 합니다.");
         return;
       }
-      if (!file.type.startsWith('image/')) {
-        setError('이미지 파일만 업로드 가능합니다.');
+      if (!file.type.startsWith("image/")) {
+        setError("이미지 파일만 업로드 가능합니다.");
         return;
       }
       setEditFile(file);
@@ -154,7 +154,7 @@ const Comment = ({
     setEditFile(null);
     setEditImage(null);
     setEditImagePreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = '';
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleReplyClick = () => {
@@ -163,7 +163,7 @@ const Comment = ({
 
   return (
     <>
-      <div className={`comment ${isReply ? 'comment-reply' : ''}`}>
+      <div className={`comment ${isReply ? "comment-reply" : ""}`}>
         <div className="comment-container">
           <div className="comment-content">
             <div className="comment-header">
@@ -172,13 +172,19 @@ const Comment = ({
                 <div className="author-info">
                   <span className="author-name">{anonymousLabel}</span>
                   <span className="comment-date">{comment.createdAt}</span>
-                  {isCommentEdited() && <span className="edited-indicator">(수정됨)</span>}
+                  {isCommentEdited() && (
+                    <span className="edited-indicator">(수정됨)</span>
+                  )}
                 </div>
               </div>
               {isOwner && !isEditing && (
                 <div className="comment-actions">
-                  <button onClick={() => setIsEditing(true)}><Edit3 size={16} /></button>
-                  <button onClick={() => onDelete(comment.id)}><Trash2 size={16} /></button>
+                  <button onClick={() => setIsEditing(true)}>
+                    <Edit3 size={16} />
+                  </button>
+                  <button onClick={() => onDelete(comment.id)}>
+                    <Trash2 size={16} />
+                  </button>
                 </div>
               )}
             </div>
@@ -198,7 +204,10 @@ const Comment = ({
                       alt="preview"
                       onError={handleImageError}
                     />
-                    <button className="remove-image-btn" onClick={handleRemoveImage}>
+                    <button
+                      className="remove-image-btn"
+                      onClick={handleRemoveImage}
+                    >
                       <X size={16} />
                     </button>
                   </div>
@@ -212,7 +221,7 @@ const Comment = ({
                 {error && <div className="error-message">{error}</div>}
                 <div className="edit-actions">
                   <button onClick={handleEdit} disabled={isSubmitting}>
-                    {isSubmitting ? '수정 중...' : '수정 완료'}
+                    {isSubmitting ? "수정 중..." : "수정 완료"}
                   </button>
                   <button
                     onClick={() => {
@@ -231,14 +240,16 @@ const Comment = ({
               </div>
             ) : (
               <>
-                <div className="comment-text">{renderCommentContent(comment.content)}</div>
-                {comment.url && comment.url !== '' && (
+                <div className="comment-text">
+                  {renderCommentContent(comment.content)}
+                </div>
+                {comment.url && comment.url !== "" && (
                   <div className="comment-image">
                     <img
                       src={getImageUrl(comment.url)}
                       alt="comment"
                       onError={handleImageError}
-                      style={{ maxWidth: '100%', height: 'auto' }}
+                      style={{ maxWidth: "100%", height: "auto" }}
                     />
                   </div>
                 )}
@@ -249,13 +260,13 @@ const Comment = ({
               <div className="comment-footer">
                 <div className="comment-stats">
                   <button
-                    className={`like-button ${isLiked ? 'liked' : ''}`}
+                    className={`like-button ${isLiked ? "liked" : ""}`}
                     onClick={() => onLike(comment.id)}
                   >
                     <ThumbsUp size={14} /> {comment.likeCount || 0}
                   </button>
                   <button
-                    className={`dislike-button ${isDisliked ? 'disliked' : ''}`}
+                    className={`dislike-button ${isDisliked ? "disliked" : ""}`}
                     onClick={() => onDislike(comment.id)}
                   >
                     <ThumbsDown size={14} /> {comment.dislikeCount || 0}

@@ -4,7 +4,11 @@ import Calendar from 'react-calendar';
 import axios from 'axios';
 import './MealCalendar.css';
 
+
+
 function MonthlyMealCalendar({ onDateClick }) {
+  const [schoolName,setSchoolName] = useState("");
+
   const [date, setDate] = useState(new Date());
   const [currentMonthKey, setCurrentMonthKey] = useState(() => {
     const d = new Date();
@@ -38,8 +42,8 @@ function MonthlyMealCalendar({ onDateClick }) {
         });
 
         console.log("✅ res.data 응답 확인용 로그:", res.data);
-
-        const list = Array.isArray(res.data) ? res.data : [];
+        setSchoolName(res.data.schoolName);
+        const list = Array.isArray(res.data.mealdtos) ? res.data.mealdtos : [];
 
         const byDate = {};
         for (const item of list) {
@@ -135,8 +139,8 @@ function MonthlyMealCalendar({ onDateClick }) {
 
   const title = useMemo(() => {
     const m = date.getMonth() + 1;
-    return `가락고등학교 ${m}월 급식표`;
-  }, [date]);
+    return `${schoolName} ${m}월 급식표`;
+  }, [date,schoolName]);
 
   return (
   <div className="meal-calendar-container">
