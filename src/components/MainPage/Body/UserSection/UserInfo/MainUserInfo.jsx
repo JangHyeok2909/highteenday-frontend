@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./UserInfo.css";
+import "./MainUserInfo.css";
 import "../../../../Default.css";
 import Circle_user_Icon from "../../../../Icons/Circle_user_Icon";
 import axios from "axios";
 
-function UserInfo() {
+function MainUserInfo() {
   const [login, setLogin] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -85,4 +85,4 @@ function UserInfo() {
   );
 }
 
-export default UserInfo;
+export default MainUserInfo;

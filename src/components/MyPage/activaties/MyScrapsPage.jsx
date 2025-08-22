@@ -47,7 +47,7 @@ function MyScrapsPage() {
             <span className="views">조회수</span>
           </li>
           {scraps.map((scrap) => (
-            <li key={scrap.id} className="post-item" onClick={() => navigate(`/post/${scrap.id}`)}>
+            <li key={scrap.id} className="post-item" onClick={() => navigate(`/board/post/${scrap.id}`)}>
               <span className="title">{scrap.title}</span>
               <span className="author">{scrap.author || "-"}</span>
               <span className="date">{scrap.createdAt.slice(0, 10)}</span>

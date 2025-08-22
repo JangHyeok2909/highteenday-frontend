@@ -8,12 +8,11 @@ import UserPage from "./components/LoginRelated/UserPage";
 import BoardOverview from "./components/MainPage/Body/BoardSection/BoardSection";
 import BoardPage from "./components/Board/BoardPage";
 import PostDetail from "./components/Post/Post_Inner/PostDetail";
-import UserInfo from "./components/MainPage/Body/UserSection/UserInfo/UserInfo";
 import MainPage from "./components/MainPage/MainPage";
 import FriendList from "./components/Friend/FriendList";
-import MyPostsPage from "./components/MyPage/MyPostsPage";
-import MyCommentsPage from "./components/MyPage/MyCommentsPage";
-import MyScrapsPage from "./components/MyPage/MyScrapsPage";
+import MyPostsPage from "./components/MyPage/activaties/MyPostsPage";
+import MyCommentsPage from "./components/MyPage/activaties/MyCommentsPage";
+import MyScrapsPage from "./components/MyPage/activaties/MyScrapsPage";
 import PostSection from "./components/Post/PostSection";
 import AgreeTermsPage from "./components/RegisterRelated/AgreeTerms/AgreeTermsPage";
 import CommentSection from "./components/CommentRelated/CommentSection";
@@ -29,8 +28,12 @@ import MealPage from "components/MealCalendar/MealPage";
 
 
 
+
 import Privacy from "pages/Privacy";
 import Terms from "pages/Terms";
+import MyActivity from "components/MyPage/activaties/MyActivity";
+import Mypage from "components/MyPage/MyPage";
+
 
 
 function App() {
@@ -41,7 +44,6 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<Register />} />
       <Route path="/CreateAccount" element={<CreateAccountPage />} />
-      <Route path="/user-profile" element={<UserProfilePage />} />
       <Route path="/profile/edit" element={<ProfileEditPage />} />
       {/* school */}
       <Route path="/register/school" element={<SchoolRegisterPage />} />
@@ -52,10 +54,10 @@ function App() {
       {/* main page 의 게시판 4개 나중에 삭제 */}
       <Route path="/board/:boardId" element={<BoardPage />} />
       {/* post */}
-      <Route path="/board/:boardId/post/:postId" element={<PostSection />} />
+      <Route path="/board/post/:postId" element={<PostSection />} />
       <Route path="/post/write" element={<WritePostPage />} />
-      {/* <Route path="/board/:boardId/post/:postId" element={<PostDetail />} /> */}
       {/* my page */}
+      <Route path="/mypage" element={<Mypage />}/>
       <Route path="/mypage/posts" element={<MyPostsPage />} />
       <Route path="/mypage/comments" element={<MyCommentsPage />} />
       <Route path="/mypage/scraps" element={<MyScrapsPage />} />
@@ -70,8 +72,11 @@ function App() {
       <Route path="/timetable" element={<TimetablePage />} />
       {/*meal calender */}
       <Route path="/meal" element={<MealPage />} />
+      {/*mypages */}
+      {/* <Route path="/mypage" element ={<MyActivity />}/> */}
       <Route path="*" element={<NotFound />} />
       <Route path="/#" />
+  
     </Routes>
   );
 }
