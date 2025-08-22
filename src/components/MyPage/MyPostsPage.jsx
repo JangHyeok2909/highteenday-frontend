@@ -56,7 +56,7 @@ function MyPostsPage() {
             <li
               key={post.id}
               className="post-item"
-              onClick={() => navigate(`/post/${post.id}`)}
+              onClick={() => navigate(`/board/post/${post.id}`)}
             >
               <span className="title">{post.title}</span>
               <span className="author">{post.author}</span>

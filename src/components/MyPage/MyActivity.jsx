@@ -37,36 +37,40 @@ function MyActivity({myActivityType}) { // myActivityType = [ scraps, comments, 
 
   return (
     <div id="my-activity">
-        {/*  밑에 모든 내용 수정 예정  */}
-        <div className="list-page-container">
+      {/*  밑에 모든 내용 수정 예정  */}
+      <div className="list-page-container">
         <h2>🗨️ 내가 쓴 {type[myActivityType]}</h2>
         <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
-            <option value="RECENT">최신순</option>
-            <option value="LIKE">좋아요순</option>
-            <option value="VIEW">조회수순</option>
+          <option value="RECENT">최신순</option>
+          <option value="LIKE">좋아요순</option>
+          <option value="VIEW">조회수순</option>
         </select>
 
-        {comments.length === 0 ? (
-            <p>🫥 {type[myActivityType]}이 없습니다.</p>
+        {data.length === 0 ? (
+          <p>🫥 {type[myActivityType]}이 없습니다.</p>
         ) : (
-            <ul className="post-list">
+          <ul className="post-list">
             <li className="list-header">
-                <span className="title">내용</span>
-                <span className="author">작성자</span>
-                <span className="date">작성일</span>
-                <span className="views">조회수</span>
+              <span className="title">내용</span>
+              <span className="author">작성자</span>
+              <span className="date">작성일</span>
+              <span className="views">조회수</span>
             </li>
-            {comments.map((comment) => (
-                <li key={comment.id} className="post-item" onClick={() => navigate(`/post/${comment.postId}`)}>
+            {data.map((comment) => (
+              <li
+                key={comment.id}
+                className="post-item"
+                onClick={() => navigate(`/post/${comment.postId}`)}
+              >
                 <span className="title">{comment.content}</span>
                 <span className="author">{comment.author || "-"}</span>
                 <span className="date">{comment.createdAt.slice(0, 10)}</span>
                 <span className="views">{comment.viewCount || "-"}</span>
-                </li>
+              </li>
             ))}
-            </ul>
+          </ul>
         )}
-        </div>
+      </div>
     </div>
   );
 }

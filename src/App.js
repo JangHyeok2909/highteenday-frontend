@@ -31,6 +31,7 @@ import MealPage from "components/MealCalendar/MealPage";
 
 import Privacy from "pages/Privacy";
 import Terms from "pages/Terms";
+import MyActivity from "components/MyPage/MyActivity";
 
 
 function App() {
@@ -52,7 +53,7 @@ function App() {
       {/* main page 의 게시판 4개 나중에 삭제 */}
       <Route path="/board/:boardId" element={<BoardPage />} />
       {/* post */}
-      <Route path="/board/:boardId/post/:postId" element={<PostSection />} />
+      <Route path="/board/post/:postId" element={<PostSection />} />
       <Route path="/post/write" element={<WritePostPage />} />
       {/* <Route path="/board/:boardId/post/:postId" element={<PostDetail />} /> */}
       {/* my page */}
@@ -70,8 +71,11 @@ function App() {
       <Route path="/timetable" element={<TimetablePage />} />
       {/*meal calender */}
       <Route path="/meal" element={<MealPage />} />
+      {/*mypages */}
+      {/* <Route path="/mypage" element ={<MyActivity />}/> */}
       <Route path="*" element={<NotFound />} />
       <Route path="/#" />
+  
     </Routes>
   );
 }

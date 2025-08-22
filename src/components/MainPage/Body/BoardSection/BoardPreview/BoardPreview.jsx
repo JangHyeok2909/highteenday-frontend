@@ -92,7 +92,7 @@ function BoardPreview({ boardId, customBoardName = null }) {
 
     return posts.slice(0, 4).map((post) => (
       <li key={post.id} className="post-item">
-        <Link to={`/board/${boardId}/post/${post.id}`} className="post-link">
+        <Link to={`/board/post/${post.id}`} className="post-link">
           <span className="post-title" title={post.title}>
             {post.title}
           </span>
@@ -115,7 +115,7 @@ function BoardPreview({ boardId, customBoardName = null }) {
           {posts.length > 0 ? (
             posts.slice(0, 4).map((post) => (
               <li key={post.id} className="post-item">
-                <Link to={`/board/${boardId}/post/${post.id}`} className="post-link">
+                <Link to={`/board/post/${post.id}`} className="post-link">
                   <span className="post-title">{post.title}</span>
                   <span className="post-time">{formatDate(post.createdAt)}</span>
                 </Link>
