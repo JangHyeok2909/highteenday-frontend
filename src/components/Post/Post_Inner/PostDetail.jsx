@@ -2,6 +2,9 @@ import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CommentSection from '../../CommentRelated/CommentSection';
+import '../PostDetail.css';
+
+const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
 
 function PostDetail() {
   const { postId } = useParams();
@@ -11,11 +14,11 @@ function PostDetail() {
 
   const fetchPost = async () => {
     setLoading(true);
+    setError(null);
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`,
-        { withCredentials: true }
-      );
+      const res = await axios.get(`${API_BASE}/posts/${postId}`, {
+        withCredentials: true,
+      });
       setPost(res.data);
     } catch (err) {
       console.error(err);
@@ -31,10 +34,10 @@ function PostDetail() {
 
   const handleScrap = async () => {
     try {
-      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/posts/${postId}/scraps`, null, {
+      await axios.post(`${API_BASE}/posts/${postId}/scraps`, null, {
         withCredentials: true,
       });
-      await fetchPost(); 
+      await fetchPost();
     } catch (err) {
       console.error(err);
     }
@@ -42,98 +45,95 @@ function PostDetail() {
 
   const handleLike = async () => {
     if (!post) return;
+    const prev = { ...post };
 
-    const prevPost = { ...post };
+    const liked = !post.liked;
+    const disliked = false;
+    const likeCount = post.likeCount + (liked ? 1 : -1);
+    const dislikeCount = post.disliked ? post.dislikeCount - 1 : post.dislikeCount;
 
-    const newLiked = !post.liked;
-    const newDisliked = false;
-
-    const newLikeCount = post.likeCount + (newLiked ? 1 : -1);
-    const newDislikeCount = post.disliked ? post.dislikeCount - 1 : post.dislikeCount;
-
-    setPost({
-      ...post,
-      liked: newLiked,
-      disliked: newDisliked,
-      likeCount: newLikeCount,
-      dislikeCount: newDislikeCount,
-    });
+    setPost({ ...post, liked, disliked, likeCount, dislikeCount });
 
     try {
-      await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/posts/${post.id}/like`,
-        null,
-        { withCredentials: true }
-      );
-    } catch (error) {
-      console.error('좋아요 요청 실패:', error);
-      setPost(prevPost); // 실패 시 롤백
+      await axios.post(`${API_BASE}/posts/${post.id}/like`, null, {
+        withCredentials: true,
+      });
+    } catch (e) {
+      console.error(e);
+      setPost(prev);
     }
   };
-
 
   const handleDislike = async () => {
     if (!post) return;
+    const prev = { ...post };
 
-    const prevPost = { ...post };
+    const disliked = !post.disliked;
+    const liked = false;
+    const dislikeCount = post.dislikeCount + (disliked ? 1 : -1);
+    const likeCount = post.liked ? post.likeCount - 1 : post.likeCount;
 
-    const newDisliked = !post.disliked;
-    const newLiked = false;
-
-    const newDislikeCount = post.dislikeCount + (newDisliked ? 1 : -1);
-    const newLikeCount = post.liked ? post.likeCount - 1 : post.likeCount;
-
-    setPost({
-      ...post,
-      liked: newLiked,
-      disliked: newDisliked,
-      likeCount: newLikeCount,
-      dislikeCount: newDislikeCount,
-    });
+    setPost({ ...post, liked, disliked, likeCount, dislikeCount });
 
     try {
-      await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/posts/${post.id}/dislike`,
-        null,
-        { withCredentials: true }
-      );
-    } catch (error) {
-      console.error('싫어요 요청 실패:', error);
-      setPost(prevPost); // 실패 시 롤백
+      await axios.post(`${API_BASE}/posts/${post.id}/dislike`, null, {
+        withCredentials: true,
+      });
+    } catch (e) {
+      console.error(e);
+      setPost(prev);
     }
   };
 
-
-  if (loading) return <p>불러오는 중...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p className="loading-message">불러오는 중...</p>;
+  if (error) return <p className="error-message">{error}</p>;
   if (!post) return null;
 
   return (
-    <div>
-      <h1 className="post-detail-title">{post.title}</h1>
-      <p className="post-detail-meta">
-        작성자: {post.author} | 조회수: {post.viewCount} | 작성일: {post.createdAt}
-      </p>
+    <div className="post-container">
+      {/* 헤더 */}
+      <div className="post-header">
+        <h1 className="post-title">{post.title}</h1>
+        <div className="post-category">
+          {post.boardName || post.board || '게시판'}
+        </div>
+      </div>
 
+      {/* 메타 */}
+      <div className="post-meta">
+        <span>작성자: {post.author || '익명'}</span>
+        <span>·</span>
+        <span>조회수: {post.viewCount}</span>
+        <span>·</span>
+        <span>작성일: {post.createdAt}</span>
+      </div>
+
+      {/* 본문 */}
       <div
-        className="post-detail-content"
+        className="post-content"
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
 
-      <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-        <button onClick={handleScrap}>
+      {/* 액션 */}
+      <div className="post-toolbar">
+        <button className="chip" onClick={handleScrap}>
           {post.scrapped ? '스크랩 취소' : '스크랩'}
         </button>
-
-        <button onClick={handleLike}>
-          👍 {post.liked ? '좋아요 취소' : '좋아요'} ({post.likeCount})
+        <button
+          className={`chip ${post.liked ? 'chip--primary' : ''}`}
+          onClick={handleLike}
+        >
+          👍 좋아요 ({post.likeCount || 0})
         </button>
-
-        <button onClick={handleDislike}>
-          👎 {post.disliked ? '싫어요 취소' : '싫어요'} ({post.dislikeCount})
+        <button
+          className={`chip ${post.disliked ? 'chip--danger' : ''}`}
+          onClick={handleDislike}
+        >
+          👎 싫어요 ({post.dislikeCount || 0})
         </button>
       </div>
 
+      {/* 댓글 */}
       <CommentSection postId={postId} />
     </div>
   );
