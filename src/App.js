@@ -24,7 +24,7 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import ProfileEditPage from "./components/MyPage/ProfileEditPage";
 import RegisterHeader from "components/Header/RegisterHeader/RegisterHeader";
 import TimetablePage from './components/TimetableRelated/TimetablePage';
-import MealPage from "components/MealCalendar/MealPage";
+import MealPage from "components/MealCalendarPage/MealPage";
 
 
 
