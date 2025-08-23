@@ -13,13 +13,12 @@
 
 /* 각 날짜 칸 */
 .meal-calendar-container .react-calendar__tile {
-  min-height: 200px; 
+  min-height: 240px;  /* ✅ 높이 조금 더 늘림 (석식 대비) */
   padding: 8px;
   background: #f8f9fa; 
   border: 1px solid #dee2e6; 
   transition: background 0.2s ease-in-out;
 
-  /* 날짜/중식 위로 올리기 */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -38,29 +37,9 @@
   font-weight: bold;
 }
 
-/* 네비게이션 버튼 */
-.meal-calendar-container .react-calendar__navigation button {
-  background: #d4edda; 
-  color: #155724;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 12px;
-  margin: 0 4px;
-  cursor: pointer;
-  transition: background 0.2s ease-in-out;
-}
-
-/* 버튼 hover 시 */
-.meal-calendar-container .react-calendar__navigation button:hover {
-  background: #c3e6cb; 
-}
-
-/* 버튼 disabled */
-.meal-calendar-container .react-calendar__navigation button:disabled {
-  background: #eee;
-  color: #666;
-  cursor: not-allowed;
+/* ✅ 네비게이션 없애기 (JSX에서 showNavigation={false} 적용 후에도 혹시 모를 UI 제거) */
+.meal-calendar-container .react-calendar__navigation {
+  display: none;
 }
 
 /* 중식 */
@@ -75,6 +54,20 @@
   color: #28a745; 
   font-size: 0.85rem;
 }
+
+.meal-calendar-container .meal-text {
+  text-align: center;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.meal-calendar-container .meal-line {
+  display: block;    /* ✅ span도 줄바꿈되게 */
+  text-align: center;    /* ✅ span도 중앙 정렬 */
+  margin: 2px 0;         /* ✅ 위아래 여백 조금 줘서 간격 맞춤 */
+}
+
 
 /* 제목 스타일 */
 .meal-calendar-container .meal-title {

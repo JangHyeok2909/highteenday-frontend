@@ -1,0 +1,65 @@
+
+#mypage-list .list-page-container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+#mypage-list h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#mypage-list .list-header,
+#mypage-list .post-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#mypage-list .list-header {
+  font-weight: bold;
+  background-color: #f7f7f7;
+}
+
+#mypage-list .title {
+  flex-basis: 40%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#mypage-list .author,
+#mypage-list .date,
+#mypage-list .views {
+  flex-basis: 20%;
+  text-align: center;
+}
+
+#mypage-list .sort-select {
+  margin-left: auto;
+  margin-bottom: 1rem;
+}
+
+#mypage-list .post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#mypage-list .post-item {
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#mypage-list .post-item:hover {
+  background-color: #f0f0f0;
+}

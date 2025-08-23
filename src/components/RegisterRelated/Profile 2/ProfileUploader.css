@@ -1,0 +1,82 @@
+  #profile .profile-uploader-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  
+  #profile .profile-preview {
+    margin-bottom: 20px;
+    width: 150px;  /* img와 동일하게 맞춰야 함 */
+    height: 150px;
+    margin: 0 auto 20px auto;
+  }
+  
+  #profile .profile-image {
+    object-fit: cover; 
+    width: 150px;
+    height: 150px; /* width와 height가 동일해야 원형 */
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  #profile .profile-input {
+    display: block;
+    margin: 0 auto 20px auto;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 2px solid #10b981;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  #profile .profile-input:hover {
+    background-color: #10b981;
+    color: #ffffff;
+  }
+  
+  #profile .profile-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  #profile .upload-button, .skip-button {
+    flex: 1;
+    padding: 10px 0;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+  }
+  
+  #profile .upload-button {
+    background-color: #10b981;
+    color: #ffffff;
+  }
+  
+  #profile .upload-button:hover:not(:disabled) {
+    background-color: #059669;
+  }
+  
+  #profile .upload-button:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+  }
+  
+  #profile .skip-button {
+    background-color: #e5e7eb;
+    color: #374151;
+  }
+  
+  #profile .skip-button:hover {
+    background-color: #d1d5db;
+  }
+  

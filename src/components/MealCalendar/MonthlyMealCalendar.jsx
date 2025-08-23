@@ -103,38 +103,51 @@ function MonthlyMealCalendar({ onDateClick }) {
   const renderMealPreview = (day) => {
     const key = toYMD(day);
     const meals = mealMap[key];
-
-    // 급식 데이터 없을 때
-    if (
-      !meals ||
-      (!meals.lunch?.length && !meals.dinner?.length)
-    ) {
+  
+    if (!meals || (!meals.lunch?.length && !meals.dinner?.length)) {
       return <div className="meal-preview">급식 없음</div>;
     }
-
+  
     const lunchList = Array.isArray(meals.lunch) ? meals.lunch : [];
     const dinnerList = Array.isArray(meals.dinner) ? meals.dinner : [];
-
+  
     return (
       <div className="meal-preview">
         {/* 중식 */}
         {lunchList.length > 0 && (
           <div className="lunch">
             <strong>[중식]</strong>
-            <div>{lunchList.join(', ')}</div>
+            <div className="meal-text">
+              {lunchList.flatMap(item =>
+                item.split(',').map((dish, idx) => (
+                  <span key={idx} className="meal-line">{dish.trim()}</span>  // ✅ split 적용
+                ))
+              )}
+            </div>
           </div>
         )}
-
+  
         {/* 석식 */}
         {dinnerList.length > 0 && (
           <div className="dinner" style={{ marginTop: '4px' }}>
             <strong>[석식]</strong>
-            <div>{dinnerList.join(', ')}</div>
+            <div className="meal-text">
+              {dinnerList.flatMap(item =>
+                item.split(',').map((dish, idx) => (
+                  <span key={idx} className="meal-line">{dish.trim()}</span>  // ✅ split 적용
+                ))
+              )}
+            </div>
           </div>
         )}
       </div>
     );
   };
+  
+  
+  
+  
+  
 
 
   const title = useMemo(() => {
@@ -153,6 +166,7 @@ function MonthlyMealCalendar({ onDateClick }) {
       onClickDay={handleDateClick}
       onActiveStartDateChange={handleActiveStartDateChange}
       value={date}
+      showNavigation={false} 
       tileContent={({ date: tileDate, view }) =>
         view === 'month' ? renderMealPreview(tileDate) : null
       }
