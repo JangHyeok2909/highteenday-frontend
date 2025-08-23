@@ -57,26 +57,27 @@ function App() {
       <Route path="/board/post/:postId" element={<PostSection />} />
       <Route path="/post/write" element={<WritePostPage />} />
       {/* my page */}
-      <Route path="/mypage" element={<Mypage />}/>
+      <Route path="/mypage" element={<Mypage />} />
       <Route path="/mypage/posts" element={<MyPostsPage />} />
       <Route path="/mypage/comments" element={<MyCommentsPage />} />
       <Route path="/mypage/scraps" element={<MyScrapsPage />} />
       {/* friend */}
       <Route path="/friend" element={<FriendList />} />
-      {/*약관 페이지*/}
-      <Route path="/FormRegisterPage" element={<AgreeTermsPage />} />
-      {/* 약관 페이지 (필수로 필요한 페이지임) */}
-      <Route path="/privacy" element={<Privacy />} />
-      <Route path="/terms" element={<Terms />} />
       {/*timetable*/}
       <Route path="/timetable" element={<TimetablePage />} />
       {/*meal calender */}
       <Route path="/meal" element={<MealPage />} />
       {/*mypages */}
       {/* <Route path="/mypage" element ={<MyActivity />}/> */}
+
+      {/*약관 페이지*/}
+      <Route path="/FormRegisterPage" element={<AgreeTermsPage />} />
+      {/* 약관 페이지 (필수로 필요한 페이지임) */}
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
+      
       <Route path="*" element={<NotFound />} />
       <Route path="/#" />
-  
     </Routes>
   );
 }
