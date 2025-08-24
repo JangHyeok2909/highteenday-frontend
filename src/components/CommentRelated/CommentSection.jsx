@@ -200,7 +200,6 @@ const CommentSection = ({ postId }) => {
             <Comment
               key={comment.id}
               comment={comment}
-              currentUserId={userId}
               onUpdate={handleUpdate}
               onDelete={handleDelete}
               onSubmitReply={handleCreate}
