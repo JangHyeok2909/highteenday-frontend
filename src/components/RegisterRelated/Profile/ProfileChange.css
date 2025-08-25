@@ -1,88 +1,91 @@
-html {
-  font-size: 125%; /* 전체를 1.25배 확대 */
-}
-
-#profile-edit {
+#P-Change {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   font-family: sans-serif;
+  font-size: 1rem; /* 기본 폰트 크기 상대 단위 */
+  width: 100%;
 }
 
-.pe-header {
+#P-Change .pe-header {
   display: inline-block;
-  padding: 0.625rem 2.5rem; /* 10px 40px → rem 단위 변환 */
+  padding: 1rem 5%;
   border-bottom: 1px solid #333;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.pe-title {
-  font-size: 1.5rem; /* 24px → rem */
+#P-Change .pe-title {
+  font-size: 1.5rem; /* 상대 단위 */
   font-weight: bold;
   margin: 0;
   display: inline-block;
 }
 
-.pe-divider {
+#P-Change .pe-divider {
   display: none;
 }
 
-.pe-container {
+#P-Change .pe-container {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding-top: 5rem; /* 80px → rem */
+  padding-top: 10vh; /* 화면 높이에 따라 */
+  width: 100%;
 }
 
-.pe-heading {
-  font-size: 1.25rem; /* 20px → rem */
+#P-Change .pe-heading {
+  font-size: 1.25rem;
   font-weight: bold;
-  margin-bottom: 1.875rem; /* 30px → rem */
+  margin-bottom: 2rem;
 }
 
-.pe-avatar-wrapper {
+#P-Change .pe-avatar-wrapper {
   position: relative;
   display: inline-block;
 }
 
-.pe-avatar {
-  width: 7.5rem;  /* 120px */
-  height: 7.5rem;
+#P-Change .pe-avatar {
+  width: 20vw;   /* 화면 너비의 20% */
+  height: 20vw;
+  max-width: 150px;  /* 너무 커지지 않게 제한 */
+  max-height: 150px;
   border-radius: 50%;
   border: 1px solid #333;
   object-fit: cover;
 }
 
-.pe-camera-icon {
+#P-Change .pe-camera-icon {
   position: absolute;
   bottom: 0;
   right: 0;
   background: white;
   border-radius: 50%;
-  padding: 0.25rem 0.375rem; /* 4px 6px */
-  font-size: 0.875rem; /* 14px */
+  padding: 0.3rem 0.5rem;
+  font-size: 0.9rem;
   cursor: pointer;
   border: 1px solid #333;
 }
 
-.pe-submit-btn {
-  margin-top: 2.5rem; /* 40px */
-  padding: 0.625rem 2.5rem; /* 10px 40px */
+#P-Change .pe-submit-btn {
+  margin-top: 5vh;
+  padding: 0.8rem 2rem;
   background: #3b855b;
   color: white;
   border: none;
-  border-radius: 0.625rem; /* 10px */
+  border-radius: 0.6rem;
   font-weight: bold;
   cursor: pointer;
 }
 
-.pe-submit-btn:disabled {
+#P-Change .pe-submit-btn:disabled {
   background: #9bb9a8;
 }
 
-.pe-message {
-  margin-top: 0.9375rem; /* 15px */
-  font-size: 0.875rem; /* 14px */
+#P-Change .pe-message {
+  margin-top: 1rem;
+  font-size: 0.9rem;
   color: #444;
 }

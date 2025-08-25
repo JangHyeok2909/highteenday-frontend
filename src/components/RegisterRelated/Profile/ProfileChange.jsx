@@ -28,16 +28,14 @@ function ProfileEdit() {
     setMsg(null);
 
     try {
-      // 1단계: 업로드
       const formData = new FormData();
-      formData.append("profileImage", profileImg); // 서버가 기대하는 키 사용
+      formData.append("profileImage", profileImg);
 
       const uploadRes = await axios.post("/api/media/profileImg-save", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
 
-      // 응답 구조에 맞게 URL 추출
       const imageUrl =
         uploadRes.data.url ||
         (uploadRes.data.data && uploadRes.data.data.url);
@@ -46,7 +44,6 @@ function ProfileEdit() {
         throw new Error("업로드 응답에서 이미지 URL을 찾을 수 없습니다.");
       }
 
-      // 2단계: 프로필 업데이트
       await axios.put(
         "/api/user/updateProfileImage",
         { profileImageUrl: imageUrl },
@@ -54,7 +51,7 @@ function ProfileEdit() {
       );
 
       setMsg("프로필 사진이 변경되었습니다.");
-      setPreview(imageUrl); // 새 URL을 미리보기에도 반영
+      setPreview(imageUrl);
     } catch (err) {
       console.error(err);
       if (err.response && err.response.status === 413) {
@@ -68,7 +65,7 @@ function ProfileEdit() {
   };
 
   return (
-    <div id="profile-edit">
+    <div id="P-Change" className="default-root-value">
       <header className="pe-header">
         <h1 className="pe-title">하이틴데이</h1>
         <hr className="pe-divider" />
