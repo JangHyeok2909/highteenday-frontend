@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect, useRef as useRefAlias } from "react
 import axios from "axios";
 import { X } from "lucide-react";
 import "./CommentSystem.css";
+import { useAuth } from "../../contexts/AuthContext"
+import { useNavigate } from "react-router-dom";
 
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || "/api";
@@ -27,6 +29,8 @@ const CreateComment = ({
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
   const uploadTokenRef = useRefAlias(0);
+  const { isLogin } = useAuth();
+  const navigate = useNavigate();
 
   // 멘션 커서
   useEffect(() => {
@@ -124,6 +128,11 @@ const CreateComment = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if(!isLogin) {
+      navigate("/login");
+      return;
+    }
 
     const actualContent =
       parentId && mentionText
