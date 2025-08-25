@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CommentSection from '../../CommentRelated/CommentSection';
 import '../PostDetail.css';
+import { useAuth } from "../../../contexts/AuthContext";
+import { useNavigate } from 'react-router-dom';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
 
@@ -11,6 +13,10 @@ function PostDetail() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { isLogin } = useAuth();
+  
+
 
   const fetchPost = async () => {
     setLoading(true);
@@ -33,6 +39,10 @@ function PostDetail() {
   }, [postId]);
 
   const handleScrap = async () => {
+    if (!isLogin) {
+      navigate("/login");
+      return;
+    }
     try {
       await axios.post(`${API_BASE}/posts/${postId}/scraps`, null, {
         withCredentials: true,
@@ -44,6 +54,10 @@ function PostDetail() {
   };
 
   const handleLike = async () => {
+    if (!isLogin) {
+      navigate("/login");
+      return;
+    }
     if (!post) return;
     const prev = { ...post };
 
@@ -65,6 +79,11 @@ function PostDetail() {
   };
 
   const handleDislike = async () => {
+    if (!isLogin) {
+      navigate("/login");
+      return;
+    }
+
     if (!post) return;
     const prev = { ...post };
 
