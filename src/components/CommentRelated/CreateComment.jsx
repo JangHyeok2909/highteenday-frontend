@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useRef as useRefAlias } from "react";
 import axios from "axios";
 import { X } from "lucide-react";
+import "./CommentSystem.css";
+
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || "/api";
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
@@ -224,6 +226,7 @@ const CreateComment = ({
 
   return (
     <form
+      id="comment-section-container"
       onSubmit={handleSubmit}
       className={`comment-form ${parentId ? "reply-form" : "main-form"}`}
     >
@@ -277,7 +280,8 @@ const CreateComment = ({
                 type="button"
                 className="toolbar-btn"
                 onClick={() => {
-                  if (!isSubmitting && !uploadingImage) fileInputRef.current?.click();
+                  if (!isSubmitting && !uploadingImage)
+                    fileInputRef.current?.click();
                 }}
                 disabled={isSubmitting || uploadingImage}
                 aria-label="이미지 첨부"

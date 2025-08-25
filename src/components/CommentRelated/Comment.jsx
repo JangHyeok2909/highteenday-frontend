@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import CreateComment from "./CreateComment";
 import axios from "axios";
 import { ThumbsUp, ThumbsDown, MessageSquare, Trash2, Edit3, X, CornerDownRight } from "lucide-react";
+import "./CommentSystem.css";
+
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || "/api";
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
@@ -181,7 +183,10 @@ const Comment = ({
 
   return (
     <>
-      <div className={`comment-item ${isReply ? "comment-reply" : ""}`}>
+      <div
+        id="comment-section-container"
+        className={`comment-item ${isReply ? "comment-reply" : ""}`}
+      >
         {isReply && (
           <div className="reply-icon" aria-hidden>
             <CornerDownRight size={16} />
@@ -197,7 +202,9 @@ const Comment = ({
             <div className="comment-author-info">
               <span className="comment-author-name">{anonymousLabel}</span>
               <span className="comment-date">{comment.createdAt}</span>
-              {isCommentEdited() && <span className="comment-edited">(수정됨)</span>}
+              {isCommentEdited() && (
+                <span className="comment-edited">(수정됨)</span>
+              )}
             </div>
 
             {isOwner && !isEditing && (
@@ -296,11 +303,17 @@ const Comment = ({
             </div>
           ) : (
             <>
-              <div className="comment-content">{renderCommentContent(comment.content)}</div>
+              <div className="comment-content">
+                {renderCommentContent(comment.content)}
+              </div>
 
               {comment.url && (
                 <div className="comment-image">
-                  <img src={comment.url} alt="댓글 이미지" onError={handleImageError} />
+                  <img
+                    src={comment.url}
+                    alt="댓글 이미지"
+                    onError={handleImageError}
+                  />
                 </div>
               )}
 
@@ -324,7 +337,9 @@ const Comment = ({
                   title="싫어요"
                 >
                   <ThumbsDown size={14} />
-                  {comment.dislikeCount > 0 && <span>{comment.dislikeCount}</span>}
+                  {comment.dislikeCount > 0 && (
+                    <span>{comment.dislikeCount}</span>
+                  )}
                 </button>
 
                 {!isReply && !isOwner && (
