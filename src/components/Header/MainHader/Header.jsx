@@ -22,29 +22,35 @@ function Header({ isMainPage }) {
         <h1>logo</h1>
       </div>
 
-      {isMainPage ? null : isLogin ? (
-        <div className="user-section">
-          <div className="user-name">{user.nickname} 님</div>
+      <div className="user-section">
+          {isMainPage ? null : isLogin ? (
+          <div>
+            <div className="user-name">{user.nickname} 님</div>
+            <div className="function">
+              <button
+                className="my-info"
+                type="button"
+                onClick={() => navigate("/#")}
+              >
+                내 정보
+              </button>
+              <button
+                className="logout-btn"
+                type="button"
+                onClick={() => void logout()}
+              >
+                로그아웃
+              </button>
+            </div>
+          </div>
+        ) : (
           <div className="function">
-            <button
-              className="my-info"
-              type="button"
-              onClick={() => navigate("/#")}
-            >
-              내 정보
-            </button>
-            <button className="logout-btn" type="button" onClick={() => logout}>
-              로그아웃
+            <button type="button" onClick={() => navigate("/login")}>
+              로그인하쇼
             </button>
           </div>
-        </div>
-      ) : (
-        <div className="function">
-          <button type="button" onClick={() => navigate("/loginTest")}>
-            로그인하쇼
-          </button>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="function">
         <Link to="/friend" className="padding-minus">
