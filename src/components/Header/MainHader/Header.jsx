@@ -12,6 +12,14 @@ function Header({ isMainPage }) {
   const { user, isLogin, logout } = useAuth();
   const navigate = useNavigate();
 
+  const linkMoveHandler = () => {
+    if (!isLogin) {
+      navigate("/login");
+      return;
+    }
+    navigate("/friend");
+  }
+
   return (
     <div id="header">
       <div className="menu">
@@ -53,9 +61,9 @@ function Header({ isMainPage }) {
       </div>
 
       <div className="function">
-        <Link to="/friend" className="padding-minus">
+        <span onClick={() => linkMoveHandler()} className="padding-minus">
           <UsersOverlayIcon size={32} color={"#3f9763"} />
-        </Link>
+        </span>
         <Link to="/">
           <NotificationBellIcons size={32} color={"#3f9763"} count={0} />
         </Link>
