@@ -1,24 +1,22 @@
 import { useState } from "react";
 import axios from "axios";
 import "./ProfileChange.css";
-import defaultProfile from "../../images/ddd.png"; // ✅ 기본 이미지 import
+import defaultProfile from "../../../assets/default-profile-image.jpg";
 
 function ProfileEdit() {
   const [profileImg, setProfileImg] = useState(null);
-  const [preview, setPreview] = useState(defaultProfile); // ✅ 기본 이미지 적용
+  const [preview, setPreview] = useState(defaultProfile);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState(null);
 
-  // 파일 선택
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setProfileImg(file);
-      setPreview(URL.createObjectURL(file)); // 선택 시 미리보기
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  // 저장 처리
   const handleSave = async (e) => {
     e.preventDefault();
     if (!profileImg) {
@@ -30,19 +28,40 @@ function ProfileEdit() {
     setMsg(null);
 
     try {
+      // 1단계: 업로드
       const formData = new FormData();
-      formData.append("profileImage", profileImg);
+      formData.append("profileImage", profileImg); // 서버가 기대하는 키 사용
 
-      // 실제 API 엔드포인트 연결 필요
-      await axios.post("/api/user/updateProfileImage", formData, {
+      const uploadRes = await axios.post("/api/media/profileImg-save", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
 
+      // 응답 구조에 맞게 URL 추출
+      const imageUrl =
+        uploadRes.data.url ||
+        (uploadRes.data.data && uploadRes.data.data.url);
+
+      if (!imageUrl) {
+        throw new Error("업로드 응답에서 이미지 URL을 찾을 수 없습니다.");
+      }
+
+      // 2단계: 프로필 업데이트
+      await axios.put(
+        "/api/user/updateProfileImage",
+        { profileImageUrl: imageUrl },
+        { withCredentials: true }
+      );
+
       setMsg("프로필 사진이 변경되었습니다.");
+      setPreview(imageUrl); // 새 URL을 미리보기에도 반영
     } catch (err) {
       console.error(err);
-      setMsg("프로필 사진 변경에 실패했습니다.");
+      if (err.response && err.response.status === 413) {
+        setMsg("파일 용량이 너무 커서 업로드할 수 없습니다.");
+      } else {
+        setMsg("프로필 사진 변경에 실패했습니다.");
+      }
     } finally {
       setLoading(false);
     }
@@ -50,22 +69,16 @@ function ProfileEdit() {
 
   return (
     <div id="profile-edit">
-      {/* 상단 헤더 */}
       <header className="pe-header">
         <h1 className="pe-title">하이틴데이</h1>
         <hr className="pe-divider" />
       </header>
 
-      {/* 본문 */}
       <main className="pe-container">
         <h2 className="pe-heading">프로필 변경하기</h2>
 
         <div className="pe-avatar-wrapper">
-          <img
-            src={preview}
-            alt="프로필"
-            className="pe-avatar"
-          />
+          <img src={preview} alt="프로필" className="pe-avatar" />
           <label className="pe-camera-icon">
             <input
               type="file"
