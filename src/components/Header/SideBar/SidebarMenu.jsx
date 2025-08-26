@@ -67,8 +67,8 @@ function SidebarMenu({size, color}) {
         title: "커뮤니티",
         type: "group",
         items: boards.map(board => ({
-            name: board.name,
-            link: `/board/${board.id}`
+            name: board.boardName,
+            link: `/board/${board.boardId}`
         })),
     };
 

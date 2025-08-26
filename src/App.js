@@ -4,7 +4,6 @@ import WritePostPage from "./components/Post/Post_Inner/WritePostPage";
 import LoginButton from './components/LoginPage/LoginButton/LoginButton';
 import NotFound from "./pages/NotFound";
 import Register from "./components/LoginRelated/Register";
-import UserPage from "./components/LoginRelated/UserPage";
 import BoardOverview from "./components/MainPage/Body/BoardSection/BoardSection";
 import BoardPage from "./components/Board/BoardPage";
 import PostDetail from "./components/Post/Post_Inner/PostDetail";
