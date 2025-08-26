@@ -28,39 +28,38 @@ function SidebarMenu({size, color}) {
     }, []);
 
     const staticMenu = [
-        {
-            title: "급식 · 시간표",
-            type: "group",
-            items: [
-                { name: "급식표", link: "/#" },
-                { name: "시간표", link: "/#" },
-            ]
-        },
-        {
-            title: "계정 정보",
-            type: "group",
-            items: [
-                { name: "아이디 변경", link: "/#" },
-                { name: "비밀번호 변경", link: "/#" },
-                { name: "이메일 변경" , link: "/#" }, // 삭제 - 이메일 변경 안됨
-                { name: "학적 처리 내역", link: "/#" } // 이건 뭐징
-            ]
-        },
-        {
-            title: "이용 약관",
-            type: "single",
-            link: "/#"
-        },
-        {
-            title: "1:1 문의",
-            type: "single",
-            link: "/#"
-        },
-        {
-            title: "고객센터",
-            type: "single",
-            link: "/#"
-        },
+      {
+        title: "급식 · 시간표",
+        type: "group",
+        items: [
+          { name: "급식표", link: "/meal" },
+          { name: "시간표", link: "/timetable" },
+        ],
+      },
+      {
+        title: "계정 정보",
+        type: "group",
+        items: [
+          { name: "아이디 변경", link: "/#" },
+          { name: "비밀번호 변경", link: "/#" },
+          { name: "학적 처리 내역", link: "/#" }, // 이건 뭐징
+        ],
+      },
+      {
+        title: "이용 약관",
+        type: "single",
+        link: "/terms",
+      },
+      {
+        title: "1:1 문의",
+        type: "single",
+        link: "/#",
+      },
+      {
+        title: "고객센터",
+        type: "single",
+        link: "/#",
+      },
     ];
 
     const communitySection = {

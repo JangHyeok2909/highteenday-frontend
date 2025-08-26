@@ -43,7 +43,7 @@
 }
 
 /* 제목 셀 */
-#hot-posts .post-title {
+#hot-posts .link>.post-title {
   text-align: left;
   font-weight: 500;
   white-space: nowrap;
@@ -54,7 +54,7 @@
 }
 
 /* 날짜 셀 */
-#hot-posts .post-date {
+#hot-posts .link>.post-date {
   text-align: right;
   font-size: 0.8rem;
   color: #777;
