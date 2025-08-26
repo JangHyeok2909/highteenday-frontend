@@ -1,0 +1,113 @@
+/* 스코프 루트 */
+#pass-change {
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* 고정형 캔버스 */
+#pass-change .pc-wrapper {
+  width: 1200px;        /* 고정형 */
+  margin: 60px auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* 헤더 */
+#pass-change .pc-header {
+  border-top: 2px solid #1a1a1a;
+  padding-top: 24px;
+  margin-bottom: 28px;
+}
+
+#pass-change .pc-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+/* 폼 */
+#pass-change .pc-form {
+  width: 600px;         /* 고정형 폼 폭 */
+  margin: 0 auto;
+}
+
+#pass-change .pc-row {
+  margin-bottom: 18px;
+}
+
+#pass-change .pc-label {
+  display: inline-block;
+  width: 180px;         /* 라벨 고정 폭 */
+  font-size: 16px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+#pass-change .pc-input {
+  width: 380px;         /* 입력창 고정 폭 */
+  height: 44px;
+  padding: 0 12px;
+  font-size: 15px;
+  border: 1px solid #cfd6d9;
+  border-radius: 6px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+#pass-change .pc-input:focus {
+  border-color: #6aa886;
+}
+
+#pass-change .pc-hint {
+  margin-left: 180px;   /* 라벨 폭과 정렬 */
+  margin-top: 6px;
+  color: #8a8f94;
+  font-size: 12px;
+}
+
+/* 메시지 */
+#pass-change .pc-msg {
+  width: 600px;
+  margin: 8px auto 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+#pass-change .pc-error {
+  background: #ffeceb;
+  color: #b5291e;
+  border: 1px solid #ffc9c5;
+}
+
+#pass-change .pc-notice {
+  background: #edf7ef;
+  color: #1d6e41;
+  border: 1px solid #cfe8d7;
+}
+
+/* 제출 버튼 */
+#pass-change .pc-submit {
+  display: block;
+  width: 600px;
+  height: 50px;
+  margin: 22px auto 0;
+  border: none;
+  border-radius: 8px;
+  background: #3c8c5a;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#pass-change .pc-submit[disabled],
+#pass-change .pc-submit[aria-busy="true"] {
+  opacity: 0.7;
+  cursor: default;
+}

@@ -55,8 +55,8 @@ function UserInfo() {
               메세지
             </div>
             <div className="user-function">
-              {/* 닉네임 변경 페이지로 이동 */}
-              <span><Link to="/change-nickname">내 정보</Link></span>
+              {/* 내 정보(비밀번호 변경) 페이지로 이동 */}
+              <span><Link to="/change-password">내 정보</Link></span>
               <span className="logout-btn" onClick={logoutHandler}>로그아웃</span>
             </div>
           </div>

@@ -26,6 +26,9 @@ import SchoolChange from './components/RegisterRelated/Profile/SchoolChange';
 import ProfileChange from './components/RegisterRelated/Profile/ProfileChange';
 import NicknameChange from './components/RegisterRelated/Profile/NicknameChange';
 
+/* ✅ 추가 */
+import PassChange from './components/RegisterRelated/Profile/PassChange';
+
 function App() {
   return (
     <Routes>
@@ -38,15 +41,11 @@ function App() {
       <Route path="/register/school" element={<SchoolRegisterPage />} />
       <Route path="/register/profile" element={<RegisterProfilePage />} />
 
-
       <Route path="/change-school" element={<SchoolChange />} />
-
-
       <Route path="/change-profile" element={<ProfileChange />} />
-
-
       <Route path="/change-nickname" element={<NicknameChange />} />
 
+      <Route path="/change-password" element={<PassChange />} />
 
       <Route path="/board-overview" element={<BoardOverview />} />
       <Route path="/board/:boardId" element={<BoardPage />} />
@@ -54,14 +53,11 @@ function App() {
       <Route path="/post/write" element={<WritePostPage />} />
       <Route path="/board/:boardId/post/:postId" element={<PostDetail />} />
 
-
       <Route path="/mypage/posts" element={<MyPostsPage />} />
       <Route path="/mypage/comments" element={<MyCommentsPage />} />
       <Route path="/mypage/scraps" element={<MyScrapsPage />} />
 
-
       <Route path="/friend" element={<FriendList />} />
-
 
       <Route path="*" element={<NotFound />} />
       <Route path="/#" />
