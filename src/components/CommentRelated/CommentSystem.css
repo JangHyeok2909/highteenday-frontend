@@ -201,8 +201,8 @@
   font-size: 13px; cursor: pointer;
 }
 .reaction-btn:hover { color: var(--text); }
-.reaction-btn.liked { color: var(--accent); }
-.reaction-btn.disliked { color: #e15241; }
+.reaction-btn.liked { color: #dc2626; }
+.reaction-btn.disliked { color: #2563eb; }
 
 /* 수정 폼 */
 .comment-edit-form { margin-top: 8px; }

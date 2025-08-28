@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import CreateComment from "./CreateComment";
+import CreateComment from "./CreateComment.jsx";
 import axios from "axios";
 import { ThumbsUp, ThumbsDown, MessageSquare, Trash2, Edit3, X, CornerDownRight } from "lucide-react";
+import TimeStamp from "../common/TimeStamp.jsx";
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || "/api";
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
@@ -162,7 +163,6 @@ const Comment = ({
 
       await onUpdate(comment.id, finalContent, imageUrl);
 
-      // 정리
       if (editImagePreview && editImagePreview.startsWith("blob:")) {
         URL.revokeObjectURL(editImagePreview);
       }
@@ -196,7 +196,7 @@ const Comment = ({
           <div className="comment-header">
             <div className="comment-author-info">
               <span className="comment-author-name">{anonymousLabel}</span>
-              <span className="comment-date">{comment.createdAt}</span>
+              <TimeStamp value={comment.createdAt} className="comment-date" />
               {isCommentEdited() && <span className="comment-edited">(수정됨)</span>}
             </div>
 

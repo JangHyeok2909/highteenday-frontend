@@ -1,5 +1,5 @@
 import React from 'react';
-import PostEditor from './PostEditor';
+import PostEditor from './PostEditor.jsx';
 
 function WritePostPage() {
   return (

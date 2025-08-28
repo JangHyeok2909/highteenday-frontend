@@ -1,6 +1,6 @@
 import React from "react";
-import PostDetail from "./Post_Inner/PostDetail";
-import CommentSection from "../CommentRelated/CommentSection";
+import PostDetail from "./Post_Inner/PostDetail.jsx";
+import CommentSection from "../CommentRelated/CommentSection.jsx";
 import Header from "../Header/MainHader/Header";
 
 function PostSection() {

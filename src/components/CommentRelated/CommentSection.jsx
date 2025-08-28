@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import Comment from "./Comment";
-import CreateComment from "./CreateComment";
+import Comment from "./Comment.jsx";
+import CreateComment from "./CreateComment.jsx";
 import "./CommentSystem.css";
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
@@ -131,37 +131,80 @@ const CommentSection = ({ postId }) => {
     }
   };
 
+  const updateCommentById = (list, id, updater) =>
+    list.map((c) => {
+      if (c.id === id) return updater(c);
+      if (c.replies && c.replies.length) {
+        return { ...c, replies: updateCommentById(c.replies, id, updater) };
+      }
+      return c;
+    });
+
   const handleLike = async (commentId) => {
+    const wasLiked = likedComments.includes(commentId);
+    const wasDisliked = dislikedComments.includes(commentId);
+
+    const prevComments = comments;
+    const prevLiked = likedComments;
+    const prevDisliked = dislikedComments;
+
+    setLikedComments(wasLiked ? prevLiked.filter(id => id !== commentId) : [...prevLiked, commentId]);
+    if (wasDisliked) setDislikedComments(prevDisliked.filter(id => id !== commentId));
+
+    setComments(updateCommentById(prevComments, commentId, (c) => {
+      let likeCount = c.likeCount ?? 0;
+      let dislikeCount = c.dislikeCount ?? 0;
+
+      if (wasLiked) {
+        likeCount = Math.max(0, likeCount - 1);
+      } else {
+        likeCount += 1;
+        if (wasDisliked && dislikeCount > 0) dislikeCount -= 1;
+      }
+      return { ...c, likeCount, dislikeCount };
+    }));
+
     try {
-      await axios.post(
-        `${API_BASE}/comments/${commentId}/like`,
-        {},
-        { withCredentials: true }
-      );
-      setLikedComments((prev) =>
-        prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
-      );
-      setDislikedComments((prev) => prev.filter((id) => id !== commentId));
-      fetchComments();
+      await axios.post(`${API_BASE}/comments/${commentId}/like`, {}, { withCredentials: true });
     } catch (err) {
       console.error('좋아요 실패:', err);
+      setComments(prevComments);
+      setLikedComments(prevLiked);
+      setDislikedComments(prevDisliked);
     }
   };
 
   const handleDislike = async (commentId) => {
+    const wasLiked = likedComments.includes(commentId);
+    const wasDisliked = dislikedComments.includes(commentId);
+
+    const prevComments = comments;
+    const prevLiked = likedComments;
+    const prevDisliked = dislikedComments;
+
+    setDislikedComments(wasDisliked ? prevDisliked.filter(id => id !== commentId) : [...prevDisliked, commentId]);
+    if (wasLiked) setLikedComments(prevLiked.filter(id => id !== commentId));
+
+    setComments(updateCommentById(prevComments, commentId, (c) => {
+      let likeCount = c.likeCount ?? 0;
+      let dislikeCount = c.dislikeCount ?? 0;
+
+      if (wasDisliked) {
+        dislikeCount = Math.max(0, dislikeCount - 1);
+      } else {
+        dislikeCount += 1;
+        if (wasLiked && likeCount > 0) likeCount -= 1;
+      }
+      return { ...c, likeCount, dislikeCount };
+    }));
+
     try {
-      await axios.post(
-        `${API_BASE}/comments/${commentId}/dislike`,
-        {},
-        { withCredentials: true }
-      );
-      setDislikedComments((prev) =>
-        prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
-      );
-      setLikedComments((prev) => prev.filter((id) => id !== commentId));
-      fetchComments();
+      await axios.post(`${API_BASE}/comments/${commentId}/dislike`, {}, { withCredentials: true });
     } catch (err) {
       console.error('싫어요 실패:', err);
+      setComments(prevComments);
+      setLikedComments(prevLiked);
+      setDislikedComments(prevDisliked);
     }
   };
 

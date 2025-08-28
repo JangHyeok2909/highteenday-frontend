@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import CommentSection from '../../CommentRelated/CommentSection';
+import CommentSection from '../../CommentRelated/CommentSection.jsx';
+import TimeStamp from '../../common/TimeStamp.jsx';
 import '../PostDetail.css';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
@@ -33,13 +34,17 @@ function PostDetail() {
   }, [postId]);
 
   const handleScrap = async () => {
+    if (!post) return;
+    const prev = post;
+    const scrapped = !post.scrapped;
+    setPost({ ...post, scrapped });
     try {
-      await axios.post(`${API_BASE}/posts/${postId}/scraps`, null, {
+      await axios.post(`${API_BASE}/posts/${post.id}/scraps`, null, {
         withCredentials: true,
       });
-      await fetchPost();
     } catch (err) {
-      console.error(err);
+      console.error('스크랩 실패:', err);
+      setPost(prev);
     }
   };
 
@@ -105,7 +110,9 @@ function PostDetail() {
         <span>·</span>
         <span>조회수: {post.viewCount}</span>
         <span>·</span>
-        <span>작성일: {post.createdAt}</span>
+        <span>
+          작성일: <TimeStamp value={post.createdAt} />
+        </span>
       </div>
 
       {/* 본문 */}
@@ -116,17 +123,20 @@ function PostDetail() {
 
       {/* 액션 */}
       <div className="post-toolbar">
-        <button className="chip" onClick={handleScrap}>
+        <button
+          className={`chip chip--scrap ${post.scrapped ? 'is-active' : ''}`}
+          onClick={handleScrap}
+        >
           {post.scrapped ? '스크랩 취소' : '스크랩'}
         </button>
         <button
-          className={`chip ${post.liked ? 'chip--primary' : ''}`}
+          className={`chip chip--like ${post.liked ? 'is-active' : ''}`}
           onClick={handleLike}
         >
           👍 좋아요 ({post.likeCount || 0})
         </button>
         <button
-          className={`chip ${post.disliked ? 'chip--danger' : ''}`}
+          className={`chip chip--dislike ${post.disliked ? 'is-active' : ''}`}
           onClick={handleDislike}
         >
           👎 싫어요 ({post.dislikeCount || 0})
