@@ -1,48 +1,27 @@
 import { useEffect, useState } from "react";
 import "./HotPosts.css";
 import "../../../../Default.css"
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+
 
 const HotPosts = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 실제 API 요청 (현재는 주석 처리)
-    // axios
-    //   .get("/api/hotposts/daily")
-    //   .then((res) => {
-    //     setPosts(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.error("Hot posts fetch error:", err);
-    //     setError(true);
-    //   });
+    axios
+      .get("/api/hotposts/daily")
+      .then((res) => {
+        setPosts(res.data);
+      })
+      .catch((err) => {
+        console.error("Hot posts fetch error:", err);
+        setError(true);
+      });
 
-    // 디자인 확인용 임시 데이터
-    const dummyPosts = [
-      {
-        id: 1,
-        author: "망고",
-        title: "첫 번째 임시 게시글",
-        content: "임시로 만든 게시글 내용. 디자인 확인용.",
-        viewCount: 123,
-        likeCount: 42,
-        commentCount: 7,
-        createdAt: "2025-07-30T14:23:00Z",
-      },
-      {
-        id: 2,
-        author: "망고",
-        title: "두 번째 게시글 제목",
-        content: "확인용",
-        viewCount: 56,
-        likeCount: 13,
-        commentCount: 2,
-        createdAt: "2025-07-29T10:02:00Z",
-      },
-    ];
-
-    setPosts(dummyPosts);
   }, []);
 
   // 날짜 포맷 함수 (MM.DD HH:MM)
@@ -56,6 +35,11 @@ const HotPosts = () => {
     });
   };
 
+  const movePostHandler = ({postId}) => {
+    navigate(`/board/post/${postId}`);
+  }
+  
+
   return (
     <div id="hot-posts">
       <div className="hotposts-container">
@@ -67,7 +51,10 @@ const HotPosts = () => {
           <table className="hotposts-table">
             <tbody>
               {posts.map((post) => (
-                <tr key={post.id} className="hotpost-row">
+                <tr 
+                  key={post.id} className="hotpost-row"
+                  onClick={() => void movePostHandler(post.id)}
+                >
                   <td className="post-title">{post.title}</td>
                   <td className="post-date">{formatDate(post.createdAt)}</td>
                 </tr>

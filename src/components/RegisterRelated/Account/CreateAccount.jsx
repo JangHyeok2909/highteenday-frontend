@@ -1,12 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate, useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import "./CreateAccount.css";
-import "components/Default.css"
-
+import "components/Default.css";
 
 const formatDate = (date) => date.toISOString().split("T")[0];
 const today = new Date();
@@ -25,7 +24,7 @@ const schema = yup.object().shape({
   name: yup
     .string()
     .required("이름을 입력해주세요.")
-    .max(8,"이름은 최대 8자 입니다.")
+    .max(8, "이름은 최대 8자 입니다.")
     .min(2, "이름은 최소 2자 이상이어야 합니다."),
 
   nickname: yup
@@ -89,16 +88,47 @@ const schema = yup.object().shape({
     .required("비밀번호 확인은 필수입니다."),
 });
 
+//중복체크 요청 함수
+async function requestCheck(field,value){
+  try{
+    let res;
+    switch (field) {
+
+      case "nickname":
+        res = await axios.get(
+          `/api/user/check/nickname?nickname=${value}`
+        );
+        return res.data;
+      case "email":
+        res = await axios.get(
+          `/api/user/check/email?email=${value}`
+        );
+        return res.data;
+      case "phone":
+        res = await axios.get(
+          `/api/user/check/phone?phone=${encodeURIComponent(value)}`
+        );
+        return res.data;
+      default:
+        return false;
+    }
+  } catch(err){
+    return false;
+    console.log("서버에러")
+  }
+}
 
 function CreateAccount() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isNicknameChecked,setNicknameChecked] = useState(false);
-  const [isPhoneAutehnticated,setPhoneAutehnticated] = useState(true);
+  const [isNicknameChecked, setNicknameChecked] = useState(false);
   const [isEmailChecked, setEmailChecked] = useState(false);
+  const [isPhoneChecked,setPhoneChecked] = useState(false);
+  const [isPhoneAutehnticated, setPhoneAutehnticated] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
+
   // useEffect(() => {
   //   if (location.state) {
   //     setForm((prev) => ({
@@ -114,7 +144,7 @@ function CreateAccount() {
     setValue,
     setError,
     clearErrors,
-    formState: { errors,isValid },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -128,74 +158,43 @@ function CreateAccount() {
     if (!valid) return;
 
     //서버 중복 체크
-    const isAvailable = await checkNickname(nickname);
-    if (!isAvailable) {
+    const res = await requestCheck("nickname", nickname);
+    if (res) {
+      setNicknameChecked(true);
+      clearErrors("nickname");
+    } else {
+      setNicknameChecked(false);
       setError("nickname", {
         type: "manual",
         message: "이미 사용 중인 닉네임입니다.",
       });
-    } else {
-      clearErrors("nickname");
+      
     }
   };
-  const isFormValid =
-    isValid & isNicknameChecked && isEmailChecked && isPhoneAutehnticated;
 
   const handleEmailBlur = async (e) => {
     const email = e.target.value;
 
     //유효성 체크(통과시에만 중복체크)
-    const valid = await trigger("email"); 
-    if (!valid) return; 
+    const valid = await trigger("email");
+    if (!valid) return;
 
     //서버 중복 체크
-    const isAvailable = await checkEmail(email);
-    if (!isAvailable) {
+    const res = await requestCheck("email", email);
+    if (res) {
+      setEmailChecked(true);
+      clearErrors("email");
+    } else {
+      setEmailChecked(false);
       setError("email", {
         type: "manual",
         message: "이미 사용 중인 이메일입니다.",
       });
-    } else {
-      setEmailChecked(true);
-      clearErrors("email");
     }
   };
 
-  const checkNickname = async (value)=>{
-    try{
-      const res = await axios.get(
-        `/api/user/check/nickname?nickname=${value}`
-      );
-      if(res.data){
-        setNicknameChecked(true);
-        return true;
-      } else{
-        setNicknameChecked(false);
-        return false;
-      }
-      
-    } catch(err){
-      alert("서버에러");
-    }
-  }
-  const checkEmail = async (value) => {
-    try {
-      const res = await axios.get(
-        `/api/user/check/email?email=${value}`
-      );
-      if (res.data) {
-        setEmailChecked(true);
-        return true;
-      } else {
-        setEmailChecked(false);
-        return false;
-      }
-    } catch (err) {
-      alert("서버에러");
-    }
-  };
-
-  const handlePhone =(e) =>{
+  const handlePhoneChange = async (e) => {
+    //입력폼 제한(010-xxxx-xxxx 형식)
     let value = e.target.value.replace(/\D/g, ""); // 숫자만
     if (!value.startsWith("010")) value = "010" + value.slice(3);
     if (value.length > 3 && value.length <= 7)
@@ -205,12 +204,36 @@ function CreateAccount() {
 
     setValue("phone", value); // RHF 상태 업데이트
     trigger("phone"); // yup 유효성 체크
-  }
+
+    //서버 중복 체크
+    const formattedPhone = formattingPhone(value);
+    const res = await requestCheck("phone", formattedPhone);
+    if (res) {
+      setPhoneChecked(true);
+      clearErrors("phone");
+    } else {
+      setPhoneChecked(false);
+      setError("phone", {
+        type: "manual",
+        message: "이미 가입된 전화번호 입니다.",
+      });
+    }
+  };
+
+  const isFormValid =
+    isValid & isNicknameChecked && isEmailChecked && isPhoneAutehnticated;
 
   const onSubmit = async (data) => {
     console.log("Submit called!", data);
+    // 전송되는 phone +82 형식으로 변환
+    const payload = {
+      ...data,
+      phone:formattingPhone(data.phone),
+    }
+
+    
     try {
-      const res = await axios.post("/api/user/register", data);
+      const res = await axios.post("/api/user/register", payload);
       console.log("회원가입 성공:", res.data);
       navigate("/register/school");
     } catch (err) {
@@ -223,8 +246,10 @@ function CreateAccount() {
     // 서버로 인증번호 요청
     console.log("인증번호 전송 API 호출!");
   };
-
   
+  const formattingPhone = (phone) =>{
+    return phone.replace(/-/g, "").replace(/^0/, "+82");
+  }
 
   return (
     <div id="CreateAccount">
@@ -248,11 +273,11 @@ function CreateAccount() {
           <input
             type="tel"
             {...register("phone")}
-            onChange={handlePhone}
+            onChange={handlePhoneChange}
             maxLength={13}
           />
           {errors.phone && <p>{errors.phone.message}</p>}
-          <button type="button" onClick={handleSendCode}>
+          <button type="button" onBlur={handleSendCode}>
             인증번호 전송
           </button>
 
@@ -282,7 +307,7 @@ function CreateAccount() {
             onKeyDown={(e) => e.preventDefault()}
           />
           {errors.birth && <p>{errors.birth.message}</p>}
-
+          
           <label>학년</label>
           <select {...register("grade")}>
             <option value="">선택</option>

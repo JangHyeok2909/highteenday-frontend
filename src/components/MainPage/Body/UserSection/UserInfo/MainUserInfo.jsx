@@ -4,46 +4,14 @@ import "./MainUserInfo.css";
 import "../../../../Default.css";
 import Circle_user_Icon from "../../../../Icons/Circle_user_Icon";
 import axios from "axios";
+import { useAuth } from "../../../../../contexts/AuthContext";
 
 function MainUserInfo() {
-  const [login, setLogin] = useState(false);
-  const [user, setUser] = useState(null);
-
-  const loginUser = async () => {
-    try {
-      const res = await axios.get(`/api/user/userInfo`, {
-        withCredentials: true,
-      });
-      setUser(res.data);
-      setLogin(true);
-    } catch (err) {
-      setLogin(false);
-    }
-  };
-
-  useEffect(() => {
-    loginUser();
-  }, []);
-
-  const logoutHandler = async () => {
-    try {
-      await axios.get("/api/user/logout", {
-        withCredentials: true,
-      });
-    } catch (err) {
-      console.log("로그아웃 실패", err);
-    } finally {
-      console.log("로그아웃 성공");
-      setUser(null);
-      setLogin(false);
-
-      window.location.reload();
-    }
-  };
+  const { isLogin, user, logout } = useAuth();
 
   return (
     <div id="user-profile-section">
-      {login ? (
+      {isLogin ? (
         <div className="logged-in-state">
           <div className="User-Info">
             <div className="user-icon inline-block">
@@ -53,9 +21,9 @@ function MainUserInfo() {
             <div className="message-icon inline-block">메세지</div>
             <div className="user-function">
               <span>
-                <Link to="/">내 정보</Link>
+                <Link to="/mypage">내 정보</Link>
               </span>
-              <span className="logout-btn" onClick={logoutHandler}>
+              <span className="logout-btn" onClick={() => void logout}>
                 로그아웃
               </span>
             </div>

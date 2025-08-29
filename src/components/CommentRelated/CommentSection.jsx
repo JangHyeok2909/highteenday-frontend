@@ -3,6 +3,8 @@ import axios from "axios";
 import Comment from "./Comment";
 import CreateComment from "./CreateComment";
 import "./CommentSystem.css";
+import { useAuth } from "../../contexts/AuthContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
 
@@ -13,7 +15,9 @@ const CommentSection = ({ postId }) => {
   const [dislikedComments, setDislikedComments] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const { isLogin } = useAuth();
+  const navigate = useNavigate();
+  
   const userId = parseInt(localStorage.getItem("loginUserId"), 10);
 
   const buildCommentTree = (flatComments) => {
@@ -132,6 +136,10 @@ const CommentSection = ({ postId }) => {
   };
 
   const handleLike = async (commentId) => {
+    if(!isLogin) {
+      navigate("/login");
+      return;
+    }
     try {
       await axios.post(
         `${API_BASE}/comments/${commentId}/like`,
@@ -149,6 +157,11 @@ const CommentSection = ({ postId }) => {
   };
 
   const handleDislike = async (commentId) => {
+    if (!isLogin) {
+      navigate("/login");
+      return;
+    }
+
     try {
       await axios.post(
         `${API_BASE}/comments/${commentId}/dislike`,
@@ -200,7 +213,6 @@ const CommentSection = ({ postId }) => {
             <Comment
               key={comment.id}
               comment={comment}
-              currentUserId={userId}
               onUpdate={handleUpdate}
               onDelete={handleDelete}
               onSubmitReply={handleCreate}

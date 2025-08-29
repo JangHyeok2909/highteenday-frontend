@@ -4,7 +4,6 @@ import WritePostPage from "./components/Post/Post_Inner/WritePostPage";
 import LoginButton from './components/LoginPage/LoginButton/LoginButton';
 import NotFound from "./pages/NotFound";
 import Register from "./components/LoginRelated/Register";
-import UserPage from "./components/LoginRelated/UserPage";
 import BoardOverview from "./components/MainPage/Body/BoardSection/BoardSection";
 import BoardPage from "./components/Board/BoardPage";
 import PostDetail from "./components/Post/Post_Inner/PostDetail";
@@ -24,10 +23,7 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import ProfileEditPage from "./components/MyPage/ProfileEditPage";
 import RegisterHeader from "components/Header/RegisterHeader/RegisterHeader";
 import TimetablePage from './components/TimetableRelated/TimetablePage';
-import MealPage from "components/MealCalendar/MealPage";
-
-
-
+import MealPage from "components/MealCalendarPage/MealPage";
 
 import Privacy from "pages/Privacy";
 import Terms from "pages/Terms";
@@ -58,7 +54,6 @@ function App() {
       {/* post */}
       <Route path="/board/post/:postId" element={<PostSection />} />
       <Route path="/post/write" element={<WritePostPage />} />
-      
       {/* my page */}
       <Route path="/mypage" element={<Mypage />}/>
       <Route path="/mypage/posts" element={<MyPostLikeActivity type="posts" />} />
@@ -66,20 +61,21 @@ function App() {
       <Route path="/mypage/scraps" element={<MyPostLikeActivity type="scraps" />} />
       {/* friend */}
       <Route path="/friend" element={<FriendList />} />
-      {/*약관 페이지*/}
-      <Route path="/FormRegisterPage" element={<AgreeTermsPage />} />
-      {/* 약관 페이지 (필수로 필요한 페이지임) */}
-      <Route path="/privacy" element={<Privacy />} />
-      <Route path="/terms" element={<Terms />} />
       {/*timetable*/}
       <Route path="/timetable" element={<TimetablePage />} />
       {/*meal calender */}
       <Route path="/meal" element={<MealPage />} />
       {/*mypages */}
       {/* <Route path="/mypage" element ={<MyActivity />}/> */}
+
+      {/*약관 페이지*/}
+      <Route path="/FormRegisterPage" element={<AgreeTermsPage />} />
+      {/* 약관 페이지 (필수로 필요한 페이지임) */}
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
+      
       <Route path="*" element={<NotFound />} />
       <Route path="/#" />
-  
     </Routes>
   );
 }

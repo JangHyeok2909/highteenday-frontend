@@ -39,7 +39,7 @@
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* ✅ 게시글 위로 정렬 */
+  justify-content: flex-start; 
   height: 100%;
   overflow: hidden;
   
@@ -61,7 +61,6 @@
   display: flex;
   justify-content: space-between;
   text-decoration: none;
-  color: inherit;
   width: 100%;
 }
 
@@ -71,19 +70,10 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 180px;
+  max-width: 90%;
+  font-weight: 400;
   
 }
-
-/* 임마 때문에 터짐 */
-/* #board-preview .post-title {
-  width: 50%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 0.9rem;
-} */
-
 #board-preview .post-time {
   font-size: 0.75rem;
   color: #999;

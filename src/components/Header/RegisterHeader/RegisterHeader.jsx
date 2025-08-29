@@ -1,7 +1,6 @@
 // src/components/RegisterHeader.jsx
 import React from "react";
 import "./RegisterHeader.css";
-import Tile from "react-calendar/dist/Tile";
 
 const RegisterHeader = ({ title }) => {
   return (

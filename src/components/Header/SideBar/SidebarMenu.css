@@ -15,8 +15,8 @@
 #Sidebar-menu>.sidebar-container {
     position: fixed;
     top: 0;
-    left: -40%;
-    width: 40%;
+    left: -480px;
+    width: 480px;
     height: 100%;
     background-color: white;
     z-index: 1000;
@@ -34,12 +34,13 @@
     /* padding-left: 15%; */
 }
 #Sidebar-menu .menu-section-title {
-    font-size: 2em;
+    font-size: 25px;
     font-weight: bold;
     padding: 5% 0 0 0;
 }
 #Sidebar-menu .menu-item {
     font-size: 1.3em;
+    padding-left: 30px;
 }
 #Sidebar-menu .sidebar-back-button {
     align-self: flex-start;

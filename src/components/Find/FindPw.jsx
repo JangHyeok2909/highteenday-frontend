@@ -16,35 +16,31 @@ function FindPw({ isOpen, onClose, onSwitchToId }) {
   if (!isOpen) return null;
 
   return (
-    <div className="find-pw-overlay" onClick={handleOverlayClick}>
-      <div className="find-pw-modal">
-        {/* 탭 헤더 */}
-        <div className="tab-header">
-          <button className="tab-button" onClick={onSwitchToId}>
-            아이디 찾기
-          </button>
-          <button className="tab-button active">
-            비밀번호 찾기
-          </button>
-        </div>
-
-        {/* 컨텐츠 */}
-        <div className="modal-content">
-          <p className="description">
-            비밀번로 찾기 위해 사용자의 아이디를 입력해 주세요
-          </p>
-          
-          <div className="input-section">
-            <input
-              type="email"
-              placeholder=""
-              className="email-input"
-            />
+    <div id="find-pw">
+      <div className="find-pw-overlay" onClick={handleOverlayClick}>
+        <div className="find-pw-modal">
+          {/* 탭 헤더 */}
+          <div className="tab-header">
+            <button className="tab-button" onClick={onSwitchToId}>
+              아이디 찾기
+            </button>
+            <button className="tab-button active">비밀번호 찾기</button>
           </div>
-          
-          <button className="find-button" onClick={handleFindPassword}>
-            찾기
-          </button>
+
+          {/* 컨텐츠 */}
+          <div className="modal-content">
+            <p className="description">
+              비밀번로 찾기 위해 사용자의 아이디를 입력해 주세요
+            </p>
+
+            <div className="input-section">
+              <input type="email" placeholder="" className="email-input" />
+            </div>
+
+            <button className="find-button" onClick={handleFindPassword}>
+              찾기
+            </button>
+          </div>
         </div>
       </div>
     </div>
