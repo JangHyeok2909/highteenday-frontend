@@ -33,6 +33,8 @@ import Privacy from "pages/Privacy";
 import Terms from "pages/Terms";
 import MyActivity from "components/MyPage/activaties/MyActivity";
 import Mypage from "components/MyPage/MyPage";
+import MyPostLikeActivity from "./components/MyPage/MyPostLikeActivity";
+
 
 
 
@@ -56,11 +58,12 @@ function App() {
       {/* post */}
       <Route path="/board/post/:postId" element={<PostSection />} />
       <Route path="/post/write" element={<WritePostPage />} />
+      
       {/* my page */}
       <Route path="/mypage" element={<Mypage />}/>
-      <Route path="/mypage/posts" element={<MyPostsPage />} />
-      <Route path="/mypage/comments" element={<MyCommentsPage />} />
-      <Route path="/mypage/scraps" element={<MyScrapsPage />} />
+      <Route path="/mypage/posts" element={<MyPostLikeActivity type="posts" />} />
+      <Route path="/mypage/comments" element={<MyCommentsPage/>} />
+      <Route path="/mypage/scraps" element={<MyPostLikeActivity type="scraps" />} />
       {/* friend */}
       <Route path="/friend" element={<FriendList />} />
       {/*약관 페이지*/}
