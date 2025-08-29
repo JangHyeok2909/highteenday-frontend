@@ -73,54 +73,54 @@ function SidebarMenu({size, color}) {
 
     const menuData = [communitySection, ...staticMenu];
 
-    return(
-        <div id="Sidebar-menu">
-            <div className="side-open-button" onClick={() => setIsOpen(true)} >
-                <Menubar color={color} size={size} />
-            </div>
-
-            {/* 뒷 배경을 투명한 회색 으로 바꾸는거 */}
-            {isOpen && <div className="overlay" onClick={() => setIsOpen(false)} />}
-
-            
-            <div className={`sidebar-container ${isOpen ? "open" : ""}`}>
-                <div className="sidebar-content ">
-                    <div className="sidebar-back-button inline-block" onClick={() => setIsOpen(false)}>
-                        <Arrow_Left_Icon size={size} color={color} strokeWidth={1.5} />
-                    </div>
-                    <div className="menu-content inline-block">
-                        <ul>
-                            {menuData.map((section, idx) => (
-                                section.type === "group" ? (
-                                <li key={idx}>
-                                    <div className="menu-section-title">
-                                        {section.title}
-                                    </div>
-                                    {section.items && (
-                                        <ul>
-                                            {section.items.map((item, idx2) => (
-                                                <li className="menu-item" key={idx2}>
-                                                    <Link to={item.link}>{item.name}</Link>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </li>
-                                ) : (
-                                    <li key={idx} className="menu-section-title">
-                                        <Link to={section.link}>{section.title}</Link>
-                                    </li>
-                                )
-                                
-                            ))}
-                        </ul>
-
-                    </div>
-                </div>
-
-
-            </div>
+    return (
+      <div id="Sidebar-menu">
+        <div className="side-open-button" onClick={() => setIsOpen(true)}>
+          <Menubar color={color} size={size} />
         </div>
+
+        {/* 뒷 배경을 투명한 회색 으로 바꾸는거 */}
+        {isOpen && <div className="overlay" onClick={() => setIsOpen(false)} />}
+
+        <div className={`sidebar-container ${isOpen ? "open" : ""}`}>
+          <div className="sidebar-content ">
+            <div
+              className="sidebar-back-button inline-block"
+              onClick={() => setIsOpen(false)}
+            >
+              <Arrow_Left_Icon size={size} color={color} strokeWidth={1.5} />
+            </div>
+            <div className="menu-content inline-block">
+              <ul>
+                {menuData.map((section, idx) =>
+                  section.type === "group" ? (
+                    <li key={idx}>
+                      <div className="menu-section-title">{section.title}</div>
+                      {section.items && (
+                        <ul>
+                          {section.items.map((item, idx2) => (
+                            <Link to={item.link} className="menu-item block" onClick={() => setIsOpen(false)}>
+                              {item.name}
+                            </Link>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ) : (
+                    <li
+                      key={idx}
+                      className="menu-section-title"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <Link to={section.link}>{section.title}</Link>
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     );
 }
 

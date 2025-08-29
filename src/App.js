@@ -25,9 +25,6 @@ import RegisterHeader from "components/Header/RegisterHeader/RegisterHeader";
 import TimetablePage from './components/TimetableRelated/TimetablePage';
 import MealPage from "components/MealCalendarPage/MealPage";
 
-
-
-
 import Privacy from "pages/Privacy";
 import Terms from "pages/Terms";
 import MyActivity from "components/MyPage/activaties/MyActivity";

@@ -43,6 +43,10 @@
 }
 
 /* 제목 셀 */
+
+#hot-posts tr {
+  cursor: pointer;
+}
 #hot-posts .link>.post-title {
   text-align: left;
   font-weight: 500;

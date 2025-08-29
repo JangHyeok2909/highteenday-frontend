@@ -14,6 +14,9 @@
 .inline-block {
     display: inline-block;
 }
+.block { 
+    display: block;
+}
 ul, li {
     list-style: none;
 }

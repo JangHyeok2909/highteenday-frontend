@@ -53,7 +53,7 @@ const HotPosts = () => {
               {posts.map((post) => (
                 <tr 
                   key={post.id} className="hotpost-row"
-                  onClick={() => movePostHandler(post.id)}
+                  onClick={() => void movePostHandler(post.id)}
                 >
                   <td className="post-title">{post.title}</td>
                   <td className="post-date">{formatDate(post.createdAt)}</td>

@@ -40,6 +40,7 @@
 }
 #Sidebar-menu .menu-item {
     font-size: 1.3em;
+    padding-left: 30px;
 }
 #Sidebar-menu .sidebar-back-button {
     align-self: flex-start;
