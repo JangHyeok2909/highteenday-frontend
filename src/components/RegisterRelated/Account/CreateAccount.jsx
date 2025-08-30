@@ -218,7 +218,7 @@ function CreateAccount() {
   };
 
   const isFormValid =
-    isValid & isNicknameChecked && isEmailChecked && isPhoneAutehnticated;
+    isValid && isNicknameChecked && isEmailChecked && isPhoneAutehnticated;
 
   const onSubmit = async (data) => {
     console.log("Submit called!", data);
