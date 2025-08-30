@@ -39,7 +39,7 @@ function AgreeTermsPage() {
       alert("필수 약관에 모두 동의해주세요.");
       return;
     }
-    navigate("/CreateAccount");
+    navigate("/register");
   };
 
   return (

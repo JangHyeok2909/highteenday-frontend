@@ -195,9 +195,9 @@ function CreateAccount() {
     let value = e.target.value.replace(/\D/g, ""); // 숫자만
     if (!value.startsWith("010")) value = "010" + value.slice(3);
     if (value.length > 3 && value.length <= 7)
-      value = value.replace(/(\d{3})(\d+)/, "$1-$2");
+      value = value.replace(/(\d{3})(\d+)/, "$1$2");
     else if (value.length > 7)
-      value = value.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3");
+      value = value.replace(/(\d{3})(\d{4})(\d+)/, "$1$2$3");
 
     setValue("phone", value); // RHF 상태 업데이트
     trigger("phone"); // yup 유효성 체크
