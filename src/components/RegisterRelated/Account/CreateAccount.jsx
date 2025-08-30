@@ -191,7 +191,7 @@ function CreateAccount() {
   };
 
   const handlePhoneChange = async (e) => {
-    //입력폼 제한(010-xxxx-xxxx 형식)
+    //입력폼 제한(010xxxxxxxx 형식)
     let value = e.target.value.replace(/\D/g, ""); // 숫자만
     if (!value.startsWith("010")) value = "010" + value.slice(3);
     if (value.length > 3 && value.length <= 7)
@@ -242,7 +242,7 @@ function CreateAccount() {
   const handleSendCode = async () => {
     // 서버로 인증번호 요청
     await axios.post("/api/verification/cool-sms/start", {
-      "userPhoneNum": getValues("phone")
+      userPhoneNum: getValues("phone")
     },{
       withCredentials: true
     })
