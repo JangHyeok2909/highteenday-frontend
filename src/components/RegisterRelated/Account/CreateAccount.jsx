@@ -260,7 +260,6 @@ function CreateAccount() {
        if (data.mode === 'OAuth') {
          setValue("mode", true);
          setValue("email", data.email, { shouldValidate: true, shouldDirty: false });
-         setValue("name",  data.name,  { shouldValidate: true, shouldDirty: false });
          setValue("provider", data.provider);
        } else {
          setValue("mode", false);
