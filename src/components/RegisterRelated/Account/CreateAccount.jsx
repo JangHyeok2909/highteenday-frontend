@@ -113,8 +113,8 @@ async function requestCheck(field,value){
         return false;
     }
   } catch(err){
-    return false;
-    console.log("서버에러")
+      console.log("서버에러")
+      return false;
   }
 }
 
@@ -138,17 +138,14 @@ function CreateAccount() {
   //   }
   // }, [location.state]);
   const {
-    register,
-    handleSubmit,
-    trigger,
-    setValue,
-    setError,
-    clearErrors,
+    register, handleSubmit, trigger, setValue, setError, clearErrors, watch, getValues,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
+    defaultValues: { mode: false, provider: "LOCAL" }, 
   });
+  const isOAuth = watch("mode");
 
   const handleNicknameBlur = async (e) => {
     const nickname = e.target.value;
@@ -242,14 +239,40 @@ function CreateAccount() {
     }
   };
 
-  const handleSendCode = () => {
+  const handleSendCode = async () => {
     // 서버로 인증번호 요청
-    console.log("인증번호 전송 API 호출!");
+    await axios.post("/api/verification/cool-sms/start", {
+      "userPhoneNum": getValues("phone")
+    },{
+      withCredentials: true
+    })
   };
   
   const formattingPhone = (phone) =>{
     return phone.replace(/-/g, "").replace(/^0/, "+82");
   }
+
+
+  useEffect(() => {
+   (async () => {
+     try {
+       const { data } = await axios.get('/api/user/OAuth2UserInfo', { withCredentials: true });
+       if (data.mode === 'OAuth') {
+         setValue("mode", true);
+         setValue("email", data.email, { shouldValidate: true, shouldDirty: false });
+         setValue("name",  data.name,  { shouldValidate: true, shouldDirty: false });
+         setValue("provider", data.provider);
+       } else {
+         setValue("mode", false);
+         setValue("provider", "LOCAL");
+       }
+     } catch (err) {
+       console.log("마운트 에러", err);
+       setValue("mode", false);
+       setValue("provider", "LOCAL");
+     }
+   })();
+ }, []);
 
   return (
     <div id="CreateAccount">
@@ -257,9 +280,6 @@ function CreateAccount() {
         <form
           className="account-form"
           onSubmit={handleSubmit(onSubmit)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") e.preventDefault();
-          }}
         >
           <label>이름</label>
           <input {...register("name")} placeholder="이름을 입력하세요." />
@@ -281,8 +301,14 @@ function CreateAccount() {
             인증번호 전송
           </button>
 
+          
+
           <label>이메일</label>
-          <input {...register("email")} onBlur={handleEmailBlur} />
+          <input
+            {...register("email")}
+            readOnly={isOAuth}
+            onBlur={!isOAuth ? handleEmailBlur : undefined}
+          />          
           {errors.email && <p>{errors.email.message}</p>}
 
           <label>비밀번호 설정</label>
@@ -326,11 +352,12 @@ function CreateAccount() {
           </select>
           {errors.gender && <p>{errors.gender.message}</p>}
 
+          <input type="hidden" {...register("provider")} />
+
           <div className="button-wrapper">
             <button
               type="submit"
               className="submit-button"
-              onClick={handleSubmit(onSubmit)}
               disabled={!isFormValid}
             >
               완료

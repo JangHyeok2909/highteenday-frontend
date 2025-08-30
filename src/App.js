@@ -38,8 +38,7 @@ function App() {
       <Route path="/" element={<MainPage />} />
       {/* user related */}
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/CreateAccount" element={<CreateAccountPage />} />
+      <Route path="/register" element={<CreateAccountPage />} />
       <Route path="/profile/edit" element={<ProfileEditPage />} />
       {/* school */}
       <Route path="/register/school" element={<SchoolRegisterPage />} />
