@@ -19,20 +19,23 @@ import PostSection from './components/Post/PostSection';
 import AgreeTermsPage from './components/RegisterRelated/AgreeTerms/AgreeTermsPage';
 import CommentSection from './components/Comment/CommentSection';
 import UserProfilePage from './components/MyPage/UserProfilePage.jsx';
-import CreateAccountPage from "./components/RegisterRelated/Account/CreateAccountPage"; 
+import CreateAccountPage from "./components/RegisterRelated/Account/CreateAccountPage";
 import SchoolRegisterPage from './components/RegisterRelated/School/SchoolRegisterPage';
 import RegisterProfilePage from './components/RegisterRelated/Profile/RegisterProfilePage';
 import SchoolChange from './components/RegisterRelated/Profile/SchoolChange';
 import ProfileChange from './components/RegisterRelated/Profile/ProfileChange';
 import NicknameChange from './components/RegisterRelated/Profile/NicknameChange';
-
-/* ✅ 추가 */
 import PassChange from './components/RegisterRelated/Profile/PassChange';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
+      {/* ✅ 기본 진입(루트)에서 FriendList가 바로 보이도록 변경 */}
+      <Route path="/" element={<FriendList />} />
+
+      {/* 기존 메인 페이지 접근용 별도 라우트(필요 시 유지) */}
+      <Route path="/main" element={<MainPage />} />
+
       <Route path="/loginTest" element={<LoginButton />} />
       <Route path="/register" element={<Register />} />
       <Route path="/FormRegisterPage" element={<AgreeTermsPage />} />
@@ -44,14 +47,14 @@ function App() {
       <Route path="/change-school" element={<SchoolChange />} />
       <Route path="/change-profile" element={<ProfileChange />} />
       <Route path="/change-nickname" element={<NicknameChange />} />
-
       <Route path="/change-password" element={<PassChange />} />
 
       <Route path="/board-overview" element={<BoardOverview />} />
       <Route path="/board/:boardId" element={<BoardPage />} />
       <Route path="/board/:boardId/post/:postId" element={<PostSection />} />
+      {/* 중복 방지 위해 PostDetail 단일 경로만 유지하거나 필요에 맞게 조정하세요 */}
       <Route path="/post/write" element={<WritePostPage />} />
-      <Route path="/board/:boardId/post/:postId" element={<PostDetail />} />
+      <Route path="/post/:postId" element={<PostDetail />} />
 
       <Route path="/mypage/posts" element={<MyPostsPage />} />
       <Route path="/mypage/comments" element={<MyCommentsPage />} />

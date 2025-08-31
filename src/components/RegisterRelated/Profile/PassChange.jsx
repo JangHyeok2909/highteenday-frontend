@@ -38,12 +38,11 @@ function PassChange() {
     try {
       setLoading(true);
 
-      // ✅ 명세: { pastPassword, newPassword } 로 JSON 전송
       const res = await axios.post(
         "/api/user/modify/password",
         {
-          pastPassword: currentPw, // 현재 비밀번호
-          newPassword: newPw,      // 새 비밀번호
+          pastPassword: currentPw, 
+          newPassword: newPw,     
         },
         {
           withCredentials: true,
