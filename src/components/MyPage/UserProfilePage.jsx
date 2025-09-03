@@ -2,12 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./UserProfilePage.css";
+import { useAuth } from "../../contexts/AuthContext"
 
 function UserProfilePage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [profileImage, setProfileImage] = useState(null);
   const fileInputRef = useRef(null);
+
+  const { user, isLogin } = useAuth();
 
   // 예시 유저
   const exampleUser = {
@@ -23,20 +24,6 @@ function UserProfilePage() {
     profileImage: null,
   };
 
-  useEffect(() => {
-    axios
-      .get("/api/user/userInfo", { withCredentials: true })
-      .then((res) => {
-        setUser(res.data);
-        setProfileImage(res.data.profileImage);
-      })
-      .catch(() => {
-        setUser(exampleUser);
-        setProfileImage(exampleUser.profileImage);
-      });
-  }, []);
-
-  const currentUser = user ?? exampleUser;
 
   // 값이 없으면 "정보가 없습니다"
   const displayValue = (value) => {
@@ -109,20 +96,20 @@ function UserProfilePage() {
 
       {/* 프로필 정보 */}
       <div className="profile-container">
-        <h2>{displayValue(currentUser.nickname)}님의 프로필</h2>
+        <h2>{displayValue(user.nickname)}님의 프로필</h2>
         <div className="profile-card">
-          <p><strong>이름:</strong> {displayValue(currentUser.name)}</p>
-          <p><strong>닉네임:</strong> {displayValue(currentUser.nickname)}</p>
+          <p><strong>이름:</strong> {displayValue(user.name)}</p>
+          <p><strong>닉네임:</strong> {displayValue(user.nickname)}</p>
           <p>
             <strong>학교 / 학년 / 반:</strong>{" "}
-            {currentUser.school && currentUser.grade && currentUser.class
-              ? `${currentUser.school} ${currentUser.grade}학년 ${currentUser.class}반`
+            {user.schoolName && user.userGrade && user.userClass
+              ? `${user.schoolName} ${user.userGrade}학년 ${user.userClass}반`
               : "정보가 없습니다"}
           </p>
-          <p><strong>이메일:</strong> {displayValue(currentUser.email)}</p>
-          <p><strong>비밀번호:</strong> {displayValue(currentUser.password)}</p>
-          <p><strong>전화번호:</strong> {displayValue(currentUser.phone)}</p>
-          <p><strong>가입 경로:</strong> {displayValue(currentUser.provider)}</p>
+          <p><strong>이메일:</strong> {displayValue(user.email)}</p>
+          <p><strong>비밀번호:</strong> {"********"}</p>
+          <p><strong>전화번호:</strong> {displayValue(user.phoneNum)}</p>
+          <p><strong>가입 경로:</strong> {displayValue(user.provider)}</p>
         </div>
         <button onClick={() => navigate(-1)} className="back-button">
           ← 뒤로가기
