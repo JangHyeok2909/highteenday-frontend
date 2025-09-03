@@ -1,95 +1,227 @@
 #friend-list .friend-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
 }
 
-#friend-list .friends-container .search-container {
+#friend-list .toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
   display: flex;
   align-items: center;
-  gap: 5px;
-  margin-bottom: 15px;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
 }
 
-#friend-list .friends-container .search-container input {
+#friend-list .search-container {
+  position: relative;
   flex: 1;
-  height: 40px;
-  padding: 0 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  max-width: 480px;
 }
 
-#friend-list button {
+#friend-list .search-container input {
+  width: 100%;
   height: 40px;
-  padding: 0 15px;
-  border: none;
-  border-radius: 8px;
-  background-color: #393c3f;
-  color: white;
+  padding: 0 36px 0 12px;
   font-size: 14px;
+  border: 1px solid #333;
+  border-radius: 6px;
+}
+
+#friend-list .search-container button {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border: 1px solid #333;
+  border-radius: 50%;
+  background: #fff;
   cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-#friend-list button:hover {
-  background-color: #555;
 }
 
 #friend-list .action-buttons {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
+  gap: 12px;
+}
+
+#friend-list .action-buttons button {
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
 }
 
 #friend-list .friend-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 20px 0 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 15px;
 }
 
 #friend-list .friend-card {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px 15px;
+  background-color: #fff;
+}
+
+#friend-list .friend-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+#friend-list .friend-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #eee;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+#friend-list .friend-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#friend-list .friend-avatar .avatar-initials {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #555;
+}
+
+#friend-list .friend-avatar .avatar-initials.show {
+  display: flex;
+}
+
+#friend-list .friend-text {
+  display: flex;
+  flex-direction: column;
 }
 
 #friend-list .friend-name {
-  flex: 1;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+#friend-list .friend-sub {
+  font-size: 13px;
+  color: #0b7a0b;
 }
 
 #friend-list .friend-actions {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
+}
+
+#friend-list .friend-actions button {
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 
 #friend-list .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 #friend-list .modal-content {
-  background-color: white;
-  border-radius: 10px;
+  background-color: #fff;
+  border-radius: 12px;
   padding: 20px;
   width: 400px;
   max-width: 90%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-#friend-list .close-btn {
-  margin-top: 10px;
+@media (max-width: 640px) {
+  #friend-list .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  #friend-list .action-buttons {
+    align-self: flex-end;
+  }
+}
+
+#friend-list .more-wrap {
+  position: relative;
+}
+
+#friend-list .more-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 6px 8px;
+}
+
+#friend-list .more-menu {
+  position: absolute;
+  right: 0;
+  top: 32px;
+  min-width: 120px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  padding: 6px;
+  z-index: 20;
+}
+
+#friend-list .more-item {
+  display: block;
   width: 100%;
+  text-align: left;
+  border: 0;
+  background: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#friend-list .more-item:hover {
+  background: #f3f4f6;
+}
+
+#friend-list .more-item.danger {
+  color: #c0392b;
+}
+
+#friend-list .friend-name.blocked {
+  color: #c0392b;
+  font-weight: 700;
 }

@@ -1,0 +1,91 @@
+#P-Change {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+  font-size: 1rem; /* 기본 폰트 크기 상대 단위 */
+  width: 100%;
+}
+
+#P-Change .pe-header {
+  display: inline-block;
+  padding: 1rem 5%;
+  border-bottom: 1px solid #333;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#P-Change .pe-title {
+  font-size: 1.5rem; /* 상대 단위 */
+  font-weight: bold;
+  margin: 0;
+  display: inline-block;
+}
+
+#P-Change .pe-divider {
+  display: none;
+}
+
+#P-Change .pe-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 10vh; /* 화면 높이에 따라 */
+  width: 100%;
+}
+
+#P-Change .pe-heading {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+#P-Change .pe-avatar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+#P-Change .pe-avatar {
+  width: 20vw;   /* 화면 너비의 20% */
+  height: 20vw;
+  max-width: 150px;  /* 너무 커지지 않게 제한 */
+  max-height: 150px;
+  border-radius: 50%;
+  border: 1px solid #333;
+  object-fit: cover;
+}
+
+#P-Change .pe-camera-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: white;
+  border-radius: 50%;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: 1px solid #333;
+}
+
+#P-Change .pe-submit-btn {
+  margin-top: 5vh;
+  padding: 0.8rem 2rem;
+  background: #3b855b;
+  color: white;
+  border: none;
+  border-radius: 0.6rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#P-Change .pe-submit-btn:disabled {
+  background: #9bb9a8;
+}
+
+#P-Change .pe-message {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #444;
+}

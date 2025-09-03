@@ -10,7 +10,7 @@ const AcceptFriend = ({ onClose }) => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const res = await axios.get("/api/friends/requests/received", {
+        const res = await axios.get("/api/friends/respond", {
           withCredentials: true,
         });
         setRequests(res.data || []);
