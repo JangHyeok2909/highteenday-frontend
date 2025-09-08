@@ -63,29 +63,3 @@
 #mypage-list .post-item:hover {
   background-color: #f0f0f0;
 }
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 16px;
-  gap: 6px;
-}
-
-.pagination button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 6px 10px;
-  font-size: 14px;
-  color: #333;
-}
-
-.pagination button.active {
-  font-weight: bold;
-  color: #2ecc71; /* 초록색 */
-}
-
-.pagination button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
