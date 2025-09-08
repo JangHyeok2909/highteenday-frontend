@@ -7,6 +7,7 @@ import { useAuth } from "../../contexts/AuthContext"
 function UserProfilePage() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const [ profileImage, setProfileImage ] = useState("");
 
   const { user, isLogin } = useAuth();
 
@@ -71,7 +72,7 @@ function UserProfilePage() {
         <div className="profile-image-container">
           <div className="profile-image-wrapper">
             <img
-              src={profileImage || "/images/DefaultPhoto.png"}
+              src={user.profileImage || "/images/DefaultPhoto.png"}
               alt="프로필 사진"
               className="profile-image"
             />
