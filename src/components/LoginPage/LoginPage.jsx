@@ -6,6 +6,7 @@ import LoginButton from "./LoginButton/LoginButton";
 import FindId from "../Find/FindId";
 import FindPw from "../Find/FindPw";
 import "./LoginPage.css";
+import "../Default.css";
 
 function LoginPage() {
   const [showFindId, setShowFindId] = useState(false);
@@ -21,13 +22,16 @@ function LoginPage() {
     <div id="login-page" className="default-root-value">
       {/* 메인 헤더 적용 */}
       <Header isMainPage={false} />
-      
+
       {/* LoginButton 컴포넌트 사용 */}
-      <LoginButton />
+      <LoginButton
+        setShowFindId={setShowFindId}
+        setShowFindPw={setShowFindPw}
+      />
 
       {/* 아이디 찾기 모달 */}
-      <FindId 
-        isOpen={showFindId} 
+      <FindId
+        isOpen={showFindId}
         onClose={() => setShowFindId(false)}
         onSwitchToPw={() => {
           setShowFindId(false);
@@ -36,8 +40,8 @@ function LoginPage() {
       />
 
       {/* 비밀번호 찾기 모달 */}
-      <FindPw 
-        isOpen={showFindPw} 
+      <FindPw
+        isOpen={showFindPw}
         onClose={() => setShowFindPw(false)}
         onSwitchToId={() => {
           setShowFindPw(false);

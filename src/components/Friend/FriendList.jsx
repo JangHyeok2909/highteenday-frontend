@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 // import axios from "axios";
 import "./FriendList.css";
+import "../Default.css";
 import FriendAdd from "./FriendAdd";
 import AcceptFriend from "./AcceptFriend";
+import Header from "components/Header/MainHader/Header";
+import axios from "axios";
 
-const MOCK_FRIENDS = [
-  { id: 1, name: "박박", school: "충렬초등학교", grade: "3학년", profileImageUrl: "", isBlocked: false },
-  { id: 2, name: "김첨지", school: "브니엘고등학교", grade: "3학년", profileImageUrl: "", isBlocked: false },
-  { id: 3, name: "김땅땅", school: "경성고등학교", grade: "3학년", profileImageUrl: "", isBlocked: false },
-  { id: 4, name: "김하늘", school: "경성고등학교", grade: "2학년", profileImageUrl: "", isBlocked: false },
-];
+
+
 
 const getInitials = (name = "") => {
   const t = name.trim();
@@ -28,7 +27,6 @@ const FriendList = () => {
   const menuRef = useRef(null);
 
   useEffect(() => {
-    /* 실제 API 사용 시 주석 해제
     const fetchFriends = async () => {
       try {
         const res = await axios.get("/api/friends/list", { withCredentials: true });
@@ -39,9 +37,7 @@ const FriendList = () => {
       }
     };
     fetchFriends();
-    */
-
-    setFriends(MOCK_FRIENDS); // 더미로 테스트
+    
   }, []);
 
   useEffect(() => {
@@ -68,13 +64,16 @@ const FriendList = () => {
 
   const toggleMenu = (id) => setOpenMenuId((prev) => (prev === id ? null : id));
 
-  const blockFriend = async (friendId) => {
+  const blockFriend = async (id, email) => {
     try {
-      // 실제 차단 API
-      // await axios.post("/api/friends/block", { friendId }, { withCredentials: true });
+      await axios.post(
+        "/api/friends/block",
+        { id, email },
+        { withCredentials: true }
+      );
 
       setFriends((prev) =>
-        prev.map((f) => (f.id === friendId ? { ...f, isBlocked: true } : f))
+        prev.map((f) => (f.id === id ? { ...f, isBlocked: true } : f))
       );
       setOpenMenuId(null);
     } catch (err) {
@@ -83,13 +82,12 @@ const FriendList = () => {
     }
   };
 
-  const unblockFriend = async (friendId) => {
+  const unblockFriend = async (id, email) => {
     try {
-      // 실제 차단 해제 API
-      // await axios.post("/api/friends/unblock", { friendId }, { withCredentials: true });
+      await axios.post("/api/friends/unblock", { id, email }, { withCredentials: true });
 
       setFriends((prev) =>
-        prev.map((f) => (f.id === friendId ? { ...f, isBlocked: false } : f))
+        prev.map((f) => (f.id === id ? { ...f, isBlocked: false } : f))
       );
       setOpenMenuId(null);
     } catch (err) {
@@ -98,12 +96,17 @@ const FriendList = () => {
     }
   };
 
-  const deleteFriend = async (friendId) => {
+  const deleteFriend = async (id, email) => {
     try {
-      // 친구 삭제 
-      // await axios.post("/api/friends/delete", { friendId }, { withCredentials: true });
+      await axios.delete(
+        "/api/friends/delete", {
+          data: { id, email }, 
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" }
+        }
+      );
 
-      setFriends((prev) => prev.filter((f) => f.id !== friendId));
+      setFriends((prev) => prev.filter((f) => f.id !== id));
       setOpenMenuId(null);
     } catch (err) {
       console.error("친구 삭제 실패:", err);
@@ -112,7 +115,12 @@ const FriendList = () => {
   };
 
   return (
-    <div id="friend-list">
+    <div id="friend-list" className="default-root-value">
+
+      <div className="header">
+        <Header isMainPage={false} />
+      </div>
+
       <div className="friend-container">
         <div className="toolbar">
           <form className="search-container" onSubmit={handleSearch}>
@@ -158,7 +166,11 @@ const FriendList = () => {
                     </div>
 
                     <div className="friend-text">
-                      <span className={`friend-name${friend.isBlocked ? " blocked" : ""}`}>
+                      <span
+                        className={`friend-name${
+                          friend.isBlocked ? " blocked" : ""
+                        }`}
+                      >
                         {friend.name}
                       </span>
                       <span className="friend-sub">
@@ -168,8 +180,12 @@ const FriendList = () => {
                   </div>
 
                   <div className="friend-actions">
-                    <button title="채팅" aria-label="채팅">💬</button>
-                    <button title="일정" aria-label="일정">📅</button>
+                    <button title="채팅" aria-label="채팅">
+                      💬
+                    </button>
+                    <button title="일정" aria-label="일정">
+                      📅
+                    </button>
 
                     <div className="more-wrap" ref={menuRef}>
                       <button
@@ -193,7 +209,9 @@ const FriendList = () => {
                               type="button"
                               role="menuitem"
                               className="more-item"
-                              onClick={() => unblockFriend(friend.id)}
+                              onClick={() =>
+                                unblockFriend(friend.id, friend.email)
+                              }
                             >
                               차단 해제
                             </button>
@@ -202,7 +220,9 @@ const FriendList = () => {
                               type="button"
                               role="menuitem"
                               className="more-item danger"
-                              onClick={() => blockFriend(friend.id)}
+                              onClick={() =>
+                                blockFriend(friend.id, friend.email)
+                              }
                             >
                               차단
                             </button>
@@ -212,7 +232,9 @@ const FriendList = () => {
                             type="button"
                             role="menuitem"
                             className="more-item"
-                            onClick={() => deleteFriend(friend.id)}
+                            onClick={() =>
+                              deleteFriend(friend.id, friend.email)
+                            }
                           >
                             친구 삭제
                           </button>
@@ -224,7 +246,7 @@ const FriendList = () => {
               );
             })
           ) : (
-            <li className="friend-empty">검색중 ...</li>
+            <li className="friend-empty">친구를 추가해보세요!</li>
           )}
         </ul>
 

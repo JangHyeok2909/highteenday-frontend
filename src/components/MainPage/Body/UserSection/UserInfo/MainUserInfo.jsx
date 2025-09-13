@@ -44,7 +44,7 @@ function MainUserInfo() {
               <Link to="/#">비밀번호 찾기</Link>
             </span>
             <span>
-              <Link to="/#">회원가입</Link>
+              <Link to="/FormRegisterPage">회원가입</Link>
             </span>
           </div>
         </div>

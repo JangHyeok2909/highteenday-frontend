@@ -137,7 +137,7 @@ export default function BoardPage() {
                 <tr key={post.id}>
                   <td className="title-cell">
                     <Link
-                      to={`/boards/${boardId}/posts/${post.id}`}
+                      to={`/board/post/${post.id}`}
                       className="post-link"
                     >
                       {post.title}

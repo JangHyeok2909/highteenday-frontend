@@ -15,8 +15,9 @@
 
 #find-id .find-id-modal {
   position: relative;
-  width: 270px;
-  height: 370px;
+  
+  width: 450px;
+  height: 500px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);

@@ -7,11 +7,9 @@ import googleBtn from "../../../assets/google-login-btn.png";
 import kakaoBtn from "../../../assets/kakao-login-btn.png";
 import naverBtn from "../../../assets/naver-login-btn.png";
 
-function LoginButton() {
+function LoginButton({ setShowFindId, setShowFindPw }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showFindId, setShowFindId] = useState(false);
-  const [showFindPw, setShowFindPw] = useState(false);
   const navigate = useNavigate();
   const { login, isLogin } = useAuth();
 
