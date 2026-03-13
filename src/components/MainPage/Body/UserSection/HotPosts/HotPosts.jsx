@@ -12,22 +12,21 @@ const HotPosts = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 실제 API 요청 (현재는 주석 처리)
     axios
-      .get("/api/hotposts/daily")
+      .get("/api/hotposts/daily", { withCredentials: true })
       .then((res) => {
-        setPosts(res.data);
+        const list = Array.isArray(res.data) ? res.data : res.data?.content ?? [];
+        setPosts(list.filter((p) => p.id));
       })
       .catch((err) => {
         console.error("Hot posts fetch error:", err);
         setError(true);
       });
-
   }, []);
 
-  const movePostHandler = ({postId}) => {
+  const movePostHandler = (postId) => {
     navigate(`/board/post/${postId}`);
-  }
+  };
   
 
   return (
@@ -41,9 +40,13 @@ const HotPosts = () => {
           <table className="hotposts-table">
             <tbody>
               {posts.map((post) => (
-                <tr 
-                  key={post.id} className="hotpost-row"
-                  onClick={() => void movePostHandler(post.id)}
+                <tr
+                  key={post.id}
+                  className="hotpost-row"
+                  onClick={() => movePostHandler(post.id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === "Enter" && movePostHandler(post.id)}
                 >
                   <td className="post-title">{post.title}</td>
                   <td className="post-date">{formatBoardPreviewDate(post.createdAt)}</td>

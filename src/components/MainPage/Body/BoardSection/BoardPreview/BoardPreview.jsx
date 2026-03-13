@@ -22,8 +22,8 @@ function BoardPreview({ boardId, boardName }) {
         
         console.log(`${boardId} 게시판 응답:`, response.data);
         
-        // API 응답에서 게시글과 게시판 이름 설정
-        setPosts(response.data.postDtos || []);
+        // API 응답에서 게시글 목록: postPreviewDtos 우선, 없으면 postDtos
+        setPosts(response.data.postPreviewDtos ?? response.data.postDtos ?? []);
         
         
       } catch (err) {

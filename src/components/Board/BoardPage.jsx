@@ -50,8 +50,8 @@ export default function BoardPage() {
 
       console.log("서버 응답:", res.data);
 
-      const postList = res.data.postDtos || [];
-      const total = res.data.totalElements || postList.length;
+      const postList = res.data.postPreviewDtos ?? res.data.postDtos ?? [];
+      const total = res.data.totalElements ?? postList.length;
 
       setPosts(Array.isArray(postList) ? postList : []);
       setTotalPosts(total);
