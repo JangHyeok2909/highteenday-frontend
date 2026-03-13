@@ -3,6 +3,7 @@ import "./HotPosts.css";
 import "../../../../Default.css"
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { formatBoardPreviewDate } from "../../../../../utils/dateFormat";
 
 
 const HotPosts = () => {
@@ -23,17 +24,6 @@ const HotPosts = () => {
       });
 
   }, []);
-
-  // 날짜 포맷 함수 (MM.DD HH:MM)
-  const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleString("ko-KR", {
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   const movePostHandler = ({postId}) => {
     navigate(`/board/post/${postId}`);
@@ -56,7 +46,7 @@ const HotPosts = () => {
                   onClick={() => void movePostHandler(post.id)}
                 >
                   <td className="post-title">{post.title}</td>
-                  <td className="post-date">{formatDate(post.createdAt)}</td>
+                  <td className="post-date">{formatBoardPreviewDate(post.createdAt)}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import CreateComment from "./CreateComment";
 import axios from "axios";
-import { ThumbsUp, ThumbsDown, MessageSquare, Trash2, Edit3, X, CornerDownRight } from "lucide-react";
+import { MessageSquare, Trash2, Edit3, X, CornerDownRight } from "lucide-react";
 import "./CommentSystem.css";
+import ReactionButton from "../ReactionButtons/ReactionButton";
+import { formatBoardPreviewDate } from "../../utils/dateFormat";
 
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || "/api";
@@ -201,7 +203,7 @@ const Comment = ({
           <div className="comment-header">
             <div className="comment-author-info">
               <span className="comment-author-name">{anonymousLabel}</span>
-              <span className="comment-date">{comment.createdAt}</span>
+              <span className="comment-date">{formatBoardPreviewDate(comment.createdAt)}</span>
               {isCommentEdited() && (
                 <span className="comment-edited">(수정됨)</span>
               )}
@@ -318,34 +320,27 @@ const Comment = ({
               )}
 
               <div className="comment-footer">
-                <button
-                  type="button"
-                  className={`reaction-btn ${isLiked ? "liked" : ""}`}
+                <ReactionButton
+                  active={isLiked}
+                  tone="like"
                   onClick={() => onLike(comment.id)}
                   aria-label="좋아요"
                   title="좋아요"
-                >
-                  <ThumbsUp size={14} />
-                  {comment.likeCount > 0 && <span>{comment.likeCount}</span>}
-                </button>
-
-                <button
-                  type="button"
-                  className={`reaction-btn ${isDisliked ? "disliked" : ""}`}
+                  count={comment.likeCount}
+                />
+                <ReactionButton
+                  active={isDisliked}
+                  tone="dislike"
                   onClick={() => onDislike(comment.id)}
                   aria-label="싫어요"
                   title="싫어요"
-                >
-                  <ThumbsDown size={14} />
-                  {comment.dislikeCount > 0 && (
-                    <span>{comment.dislikeCount}</span>
-                  )}
-                </button>
+                  count={comment.dislikeCount}
+                />
 
                 {!isReply && !isOwner && (
                   <button
                     type="button"
-                    className="reaction-btn"
+                    className="action-btn"
                     onClick={handleReplyClick}
                     aria-label="답글"
                     title="답글"

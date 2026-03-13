@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./BoardPreview.css";
+import { formatBoardPreviewDate } from "../../../../../utils/dateFormat";
 
 function BoardPreview({ boardId, boardName }) {
   const [posts, setPosts] = useState([]);
@@ -38,23 +39,6 @@ function BoardPreview({ boardId, boardName }) {
     fetchPosts();
   }, []);
 
-  const formatDate = (isoString) => {
-    if (!isoString) return "";
-    
-    try {
-      const date = new Date(isoString);
-      return date.toLocaleString("ko-KR", {
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    } catch (error) {
-      console.error("날짜 포맷팅 오류:", error);
-      return "";
-    }
-  };
-
   const renderPostList = () => {
     if (loading) {
       return <li className="post-item">로딩 중...</li>;
@@ -75,7 +59,7 @@ function BoardPreview({ boardId, boardName }) {
             {post.title}
           </span>
           <span className="post-time">
-            {formatDate(post.createdAt)}
+            {formatBoardPreviewDate(post.createdAt)}
           </span>
         </Link>
       </li>
@@ -99,7 +83,7 @@ function BoardPreview({ boardId, boardName }) {
                 <Link to={`/board/post/${post.id}`} className="post-link">
                   <span className="post-title">{post.title}</span>
                   <span className="post-time">
-                    {formatDate(post.createdAt)}
+                    {formatBoardPreviewDate(post.createdAt)}
                   </span>
                 </Link>
               </li>

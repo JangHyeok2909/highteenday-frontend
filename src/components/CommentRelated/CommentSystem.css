@@ -192,17 +192,7 @@
 #comment-section-container .comment-image { margin: 8px 0; max-width: 300px; }
 #comment-section-container .comment-image img { width: 100%; border-radius: 6px; border: 1px solid var(--line); }
 
-/* 리액션 */
 #comment-section-container .comment-footer { margin-top: 8px; }
-#comment-section-container .reaction-btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 4px 8px; margin-right: 8px;
-  border: none; background: transparent; color: var(--muted);
-  font-size: 13px; cursor: pointer;
-}
-#comment-section-container .reaction-btn:hover { color: var(--text); }
-#comment-section-container .reaction-btn.liked { color: var(--accent); }
-#comment-section-container .reaction-btn.disliked { color: #e15241; }
 
 /* 수정 폼 */
 #comment-section-container .comment-edit-form { margin-top: 8px; }

@@ -52,20 +52,27 @@ const CommentSection = ({ postId }) => {
     return rootComments;
   };
 
-  const fetchComments = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const fetchComments = useCallback(async (silent = false) => {
+    if (!silent) {
+      setLoading(true);
+      setError(null);
+    }
     try {
       const response = await axios.get(`${API_BASE}/posts/${postId}/comments`, {
         withCredentials: true,
       });
+      const flat = Array.isArray(response.data) ? response.data : [];
+      const liked = flat.filter((c) => c.liked === true).map((c) => c.id);
+      const disliked = flat.filter((c) => c.disliked === true).map((c) => c.id);
+      setLikedComments(liked);
+      setDislikedComments(disliked);
       const tree = buildCommentTree(response.data);
       setComments(tree);
     } catch (err) {
       console.error(err);
-      setError("댓글을 불러오는 중 오류가 발생했습니다.");
+      if (!silent) setError("댓글을 불러오는 중 오류가 발생했습니다.");
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, [postId]);
 
@@ -150,7 +157,7 @@ const CommentSection = ({ postId }) => {
         prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
       );
       setDislikedComments((prev) => prev.filter((id) => id !== commentId));
-      fetchComments();
+      fetchComments(true);
     } catch (err) {
       console.error('좋아요 실패:', err);
     }
@@ -172,7 +179,7 @@ const CommentSection = ({ postId }) => {
         prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
       );
       setLikedComments((prev) => prev.filter((id) => id !== commentId));
-      fetchComments();
+      fetchComments(true);
     } catch (err) {
       console.error('싫어요 실패:', err);
     }

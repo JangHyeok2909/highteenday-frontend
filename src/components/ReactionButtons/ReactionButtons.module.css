@@ -1,0 +1,36 @@
+/* 댓글 스타일 - 아이콘+숫자 (게시글/댓글 동일) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  margin-right: 8px;
+  border: none;
+  background: transparent;
+  color: var(--muted, #7a7a7a);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btnLike { }
+.btnDislike { }
+
+.btnScrap { }
+.btnScrapActive,
+.btnScrap.btnScrapActive {
+  color: #2563eb;
+}
+
+.btnActive.btnLike,
+.btnLike.btnActive {
+  color: var(--accent, #6faf5f);
+}
+
+.btnActive.btnDislike,
+.btnDislike.btnActive {
+  color: #e15241;
+}
+
+.count {
+  font-variant-numeric: tabular-nums;
+}

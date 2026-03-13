@@ -114,13 +114,13 @@
     background: #f3f4f6;
     border-color: var(--line);
   }
-  
+
   .chip--primary {
     background: var(--accent-soft);
     border-color: var(--accent);
     color: var(--accent);
   }
-  
+
   .chip--danger {
     background: #fee2e2;
     border-color: #fecaca;

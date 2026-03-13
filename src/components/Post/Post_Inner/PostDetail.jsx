@@ -5,6 +5,9 @@ import CommentSection from '../../CommentRelated/CommentSection';
 import '../PostDetail.css';
 import { useAuth } from "../../../contexts/AuthContext";
 import { useNavigate } from 'react-router-dom';
+import ReactionButton from '../../ReactionButtons/ReactionButton';
+import ScrapButton from '../../ReactionButtons/ScrapButton';
+import { formatBoardPreviewDate } from '../../../utils/dateFormat';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
 
@@ -124,7 +127,7 @@ function PostDetail() {
         <span>·</span>
         <span>조회수: {post.viewCount}</span>
         <span>·</span>
-        <span>작성일: {post.createdAt}</span>
+        <span>작성일: {formatBoardPreviewDate(post.createdAt)}</span>
       </div>
 
       {/* 본문 */}
@@ -135,21 +138,23 @@ function PostDetail() {
 
       {/* 액션 */}
       <div className="post-toolbar">
-        <button className="chip" onClick={handleScrap}>
-          {post.scrapped ? '스크랩 취소' : '스크랩'}
-        </button>
-        <button
-          className={`chip ${post.liked ? 'chip--primary' : ''}`}
+        <ScrapButton active={Boolean(post.scrapped)} onClick={handleScrap} />
+        <ReactionButton
+          active={Boolean(post.liked)}
+          tone="like"
           onClick={handleLike}
-        >
-          👍 좋아요 ({post.likeCount || 0})
-        </button>
-        <button
-          className={`chip ${post.disliked ? 'chip--danger' : ''}`}
+          aria-label="좋아요"
+          title="좋아요"
+          count={post.likeCount || 0}
+        />
+        <ReactionButton
+          active={Boolean(post.disliked)}
+          tone="dislike"
           onClick={handleDislike}
-        >
-          👎 싫어요 ({post.dislikeCount || 0})
-        </button>
+          aria-label="싫어요"
+          title="싫어요"
+          count={post.dislikeCount || 0}
+        />
       </div>
 
       {/* 댓글 */}
