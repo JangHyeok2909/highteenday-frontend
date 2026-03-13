@@ -37,7 +37,7 @@ const Comment = ({
   const isReply = comment.parentId !== null && comment.parentId !== undefined;
   const isLiked = likedComments.includes(comment.id);
   const isDisliked = dislikedComments.includes(comment.id);
-  const anonymousLabel = comment.anonymous ? "익명" : comment.author;
+  const displayAuthor = comment.author ?? "";
 
   useEffect(() => {
     return () => {
@@ -181,7 +181,7 @@ const Comment = ({
     }
   };
 
-  const handleReplyClick = () => onReplyClick(comment.id, anonymousLabel);
+  const handleReplyClick = () => onReplyClick(comment.id, displayAuthor);
 
   return (
     <>
@@ -196,13 +196,13 @@ const Comment = ({
         )}
 
         <div className="comment-avatar" aria-hidden>
-          {anonymousLabel?.[0] || "익"}
+          {displayAuthor?.[0] || "익"}
         </div>
 
         <div className="comment-main">
           <div className="comment-header">
             <div className="comment-author-info">
-              <span className="comment-author-name">{anonymousLabel}</span>
+              <span className="comment-author-name">{displayAuthor}</span>
               <span className="comment-date">{formatBoardPreviewDate(comment.createdAt)}</span>
               {isCommentEdited() && (
                 <span className="comment-edited">(수정됨)</span>
@@ -337,7 +337,7 @@ const Comment = ({
                   count={comment.dislikeCount}
                 />
 
-                {!isReply && !isOwner && (
+                {!isReply && (
                   <button
                     type="button"
                     className="action-btn"
@@ -360,7 +360,7 @@ const Comment = ({
           <CreateComment
             postId={comment.postId}
             parentId={comment.id}
-            mentionText={`@${anonymousLabel}`}
+            mentionText={`@${displayAuthor}`}
             onSubmit={onSubmitReply}
             onCancel={onCancelReply}
           />

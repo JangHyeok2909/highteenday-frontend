@@ -123,7 +123,7 @@ function PostDetail() {
 
       {/* 메타 */}
       <div className="post-meta">
-        <span>작성자: {post.author || '익명'}</span>
+        <span>작성자: {post.author ?? ''}</span>
         <span>·</span>
         <span>조회수: {post.viewCount}</span>
         <span>·</span>
