@@ -93,9 +93,9 @@ export default function UserInfo() {
           </div>
         </div>
 
-        <button type="button" className="edit-btn">
+        <Link to="/profile/edit" className="edit-btn">
           프로필 수정
-        </button>
+        </Link>
       </section>
 
       {/* 본문 3열 섹션 */}

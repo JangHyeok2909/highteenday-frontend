@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Header from "components/Header/MainHader/Header";
+import "components/Default.css";
 import "./MyPageList.css";
 
 function MyCommentsPage() {
@@ -17,14 +19,23 @@ function MyCommentsPage() {
         withCredentials: true,
       })
       .then((res) => {
-        const data = res.data.commentDtos;
+        const data = res.data?.commentDtos ?? [];
+        const arr = Array.isArray(data) ? data : [];
         if (sortType === "RECENT") {
-          data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          arr.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         } else if (sortType === "LIKE") {
-          data.sort((a, b) => (b.likeCount || 0) - (a.likeCount || 0));
+          arr.sort((a, b) => (b.likeCount || 0) - (a.likeCount || 0));
         }
-        setComments(data);
-        setCurrentPage(1); // ✅ 정렬 바꾸면 첫 페이지로 초기화
+        setComments(arr);
+        setCurrentPage(1);
+      })
+      .catch((err) => {
+        if (err.response?.status === 404) {
+          setComments([]);
+        } else {
+          setComments([]);
+        }
+        setCurrentPage(1);
       });
   }, [sortType]);
 
@@ -34,19 +45,25 @@ function MyCommentsPage() {
   const currentComments = comments.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div id="mypage-list">
-      <h2>💬 내가 쓴 댓글</h2>
-      <select
+    <div id="mypage-list" className="default-root-value">
+      <div className="header">
+        <Header isMainPage={false} />
+      </div>
+      <div className="list-page-container">
+        <h2 className="list-page-title">작성한 댓글</h2>
+        <div className="list-page-toolbar">
+          <select
         value={sortType}
         onChange={(e) => setSortType(e.target.value)}
         className="sort-select"
       >
         <option value="RECENT">최신순</option>
         <option value="LIKE">좋아요순</option>
-      </select>
+          </select>
+        </div>
 
-      {comments.length === 0 ? (
-        <p>📭 댓글이 없습니다.</p>
+        {comments.length === 0 ? (
+        <p className="list-empty">댓글이 없습니다.</p>
       ) : (
         <>
           <ul className="post-list">
@@ -98,6 +115,7 @@ function MyCommentsPage() {
           </div>
         </>
       )}
+      </div>
     </div>
   );
 }

@@ -44,8 +44,82 @@
 }
 
 #time-table .contentBox {
-  padding: 8px 12px; /* 아래 여백은 설정 아이콘 여유 */
+  padding: 8px 12px;
   min-height: 260px;
+}
+
+#time-table .contentBox--meal {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+}
+
+/* 급식 전용: 박스 안 채움 레이아웃 */
+#time-table .meal-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 10px 0;
+  transition: background-color 0.15s ease;
+}
+
+#time-table .meal-box:hover {
+  background-color: rgba(63, 150, 115, 0.06);
+}
+
+#time-table .meal-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #3f9673;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+#time-table .meal-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 0;
+}
+
+#time-table .meal-row {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  min-height: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#time-table .meal-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #9ca3af;
+  margin: 0;
+}
+
+#time-table .meal-more {
+  font-size: 11px;
+  color: #3f9673;
+  margin-top: 10px;
+  align-self: flex-end;
+  font-weight: 500;
 }
 
 #time-table .row {
@@ -64,6 +138,17 @@
 #time-table .content {
   flex: 1;
   color: #333;
+}
+
+#time-table .content-clickable {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 2px 4px;
+  transition: background-color 0.15s ease;
+}
+
+#time-table .content-clickable:hover {
+  background-color: rgba(63, 150, 115, 0.1);
 }
 
 #time-table .centered {

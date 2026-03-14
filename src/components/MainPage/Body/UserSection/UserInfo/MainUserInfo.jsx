@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./MainUserInfo.css";
 import "../../../../Default.css";
 import Circle_user_Icon from "../../../../Icons/Circle_user_Icon";
-import axios from "axios";
 import { useAuth } from "../../../../../contexts/AuthContext";
 
 function MainUserInfo() {
@@ -13,19 +11,24 @@ function MainUserInfo() {
     <div id="user-profile-section">
       {isLogin ? (
         <div className="logged-in-state">
-          <div className="User-Info">
-            <div className="user-icon inline-block">
-              <Circle_user_Icon size={30} color={"#3f9763"} />
+          <div className="user-info-card">
+            <div className="user-info-header">
+              <div className="user-avatar">
+                <Circle_user_Icon size={36} color="#3f9763" />
+              </div>
+              <div className="user-greeting">
+                <span className="user-name">{user.nickname}님</span>
+                <span className="user-message">안녕하세요</span>
+              </div>
             </div>
-            <div className="user-name inline-block">{user.nickname}님</div>
-            <div className="message-icon inline-block">메세지</div>
-            <div className="user-function">
-              <span>
-                <Link to="/mypage">내 정보</Link>
-              </span>
-              <span className="logout-btn" onClick={() => void logout}>
+            <div className="user-info-actions">
+              <Link to="/mypage" className="action-link">
+                내 정보
+              </Link>
+              <span className="action-divider">|</span>
+              <button type="button" className="action-btn logout-btn" onClick={() => logout()}>
                 로그아웃
-              </span>
+              </button>
             </div>
           </div>
         </div>

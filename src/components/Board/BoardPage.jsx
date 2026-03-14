@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../Header/MainHader/Header";
 import "./BoardPage.css";
@@ -24,14 +24,20 @@ const getSortType = (field) => {
 
 export default function BoardPage() {
   const { boardId } = useParams();
+  const navigate = useNavigate();
   const boardKey = parseInt(boardId, 10);
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPosts, setTotalPosts] = useState(0);
 
   // ✅ 정렬 필드 + 정렬 순서
-  const [sortField, setSortField] = useState("date"); // 기본 정렬: 최신순
-  const [sortOrder, setSortOrder] = useState("DESC"); // ASC / DESC
+  const [sortField, setSortField] = useState("date");
+  const [sortOrder, setSortOrder] = useState("DESC");
+
+  // 검색
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchType, setSearchType] = useState("TITLE_CONTENT");
+  const [isSearchMode, setIsSearchMode] = useState(false);
 
   const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
 
@@ -62,9 +68,50 @@ export default function BoardPage() {
     }
   };
 
+  const fetchSearch = async (query, pageNum = page) => {
+    const q = (query ?? searchQuery).trim();
+    if (!q) return;
+    try {
+      const res = await axios.get("/api/posts/search", {
+        params: {
+          query: q,
+          page: pageNum,
+          searchType,
+        },
+        withCredentials: true,
+      });
+      const postList = res.data.postPreviewDtos ?? res.data.postDtos ?? res.data.content ?? [];
+      const total = res.data.totalElements ?? res.data.total ?? postList.length;
+      setPosts(Array.isArray(postList) ? postList : []);
+      setTotalPosts(total);
+    } catch (err) {
+      console.error("검색 실패:", err);
+      setPosts([]);
+      setTotalPosts(0);
+    }
+  };
+
   useEffect(() => {
-    fetchPosts();
-  }, [boardId, page, sortField, sortOrder]); // ✅ 정렬순서도 의존성에 추가
+    if (isSearchMode && searchQuery.trim()) {
+      fetchSearch(searchQuery, page);
+    } else {
+      fetchPosts();
+    }
+  }, [boardId, page, sortField, sortOrder, isSearchMode, searchType]);
+
+  const handleSearch = (e) => {
+    e?.preventDefault();
+    const form = e?.target;
+    const q = (form?.querySelector('input[name="searchQuery"]')?.value ?? searchQuery ?? "").trim();
+    setSearchQuery(q);
+    setPage(0);
+    setIsSearchMode(!!q);
+    if (q) {
+      fetchSearch(q, 0);
+    } else {
+      fetchPosts();
+    }
+  };
 
   const handleSort = (field) => {
     setSortField(field);
@@ -81,13 +128,14 @@ export default function BoardPage() {
       <div className="board-page-container">
         <h2>{boardNameMap[boardKey] || "게시판"}</h2>
 
-        <div className="board-search">
-          <input
-            type="text"
-            placeholder="검색어를 입력하세요"
-            className="search-input"
-          />
-          <button className="search-btn">검색</button>
+        <div className="board-toolbar">
+          <button
+            type="button"
+            className="search-btn write-btn"
+            onClick={() => navigate('/post/write', { state: { boardId } })}
+          >
+            글쓰기
+          </button>
         </div>
 
   
@@ -171,7 +219,7 @@ export default function BoardPage() {
 
         {/* 페이지네이션 */}
         <div className="pagination">
-          {Array.from({ length: totalPages }, (_, idx) => (
+          {Array.from({ length: Math.max(1, totalPages) }, (_, idx) => (
             <button
               key={idx}
               className={`page-btn ${page === idx ? "active" : ""}`}
@@ -181,6 +229,30 @@ export default function BoardPage() {
             </button>
           ))}
         </div>
+
+        {/* 게시글 검색 (하단) */}
+        <form className="board-search-bottom" onSubmit={handleSearch}>
+          <select
+            value={searchType}
+            onChange={(e) => setSearchType(e.target.value)}
+            className="search-type-select"
+          >
+            <option value="TITLE">제목</option>
+            <option value="CONTENT">본문</option>
+            <option value="TITLE_CONTENT">제목+본문</option>
+          </select>
+          <input
+            name="searchQuery"
+            type="text"
+            placeholder="검색어를 입력하세요"
+            className="search-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit" className="search-btn">
+            검색
+          </button>
+        </form>
       </div>
     </div>
   );

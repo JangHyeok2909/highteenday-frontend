@@ -66,6 +66,39 @@
     color: var(--muted);
     border-bottom: 1px solid var(--line);
   }
+
+  .post-meta-actions {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .post-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .post-action-btn:hover {
+    background: #f3f4f6;
+    color: var(--text);
+    border-color: var(--line);
+  }
+
+  .post-action-btn--danger:hover {
+    background: #fee2e2;
+    color: #dc2626;
+    border-color: #fecaca;
+  }
   
   /* 게시글 본문 */
   .post-content {

@@ -1,18 +1,29 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Editor } from '@toast-ui/react-editor';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import './PostEditor.css';
+
+const boardNameMap = {
+  1: '자유게시판',
+  2: '수능게시판',
+  3: '이과게시판',
+  4: '문과게시판',
+};
 
 function PostEditor() {
   const editorRef = useRef();
   const { postId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const isEditMode = !!postId;
   const currentUserId = parseInt(localStorage.getItem('loginUserId'), 10);
 
-  const [boardId, setBoardId] = useState('');
+  // 글쓰기 진입 시 state로 넘어온 boardId 사용 (없으면 '1')
+  const initialBoardId = location.state?.boardId != null ? String(location.state.boardId) : '1';
+  const [boardId, setBoardId] = useState(initialBoardId);
   const [title, setTitle] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(true);
 
@@ -27,7 +38,7 @@ function PostEditor() {
           setTitle(data.title);
           setIsAnonymous(data.anonymous);
           editorRef.current?.getInstance().setHTML(data.content);
-          setBoardId(data.boardId || '');
+          setBoardId(data.boardId != null ? String(data.boardId) : '1');
         })
         .catch((err) => {
           console.error('게시글 로딩 실패:', err);
@@ -37,10 +48,22 @@ function PostEditor() {
   }, [isEditMode, postId]);
 
   const handleSubmit = async () => {
-    const content = editorRef.current.getInstance().getHTML();
+    const trimmedTitle = (title || '').trim();
+    if (!trimmedTitle) {
+      alert('제목을 입력해주세요.');
+      return;
+    }
 
+    const rawHtml = editorRef.current.getInstance().getHTML();
+    const textContent = (rawHtml || '').replace(/<[^>]*>/g, '');
+    const meaningful = textContent.replace(/\s*(Write|Preview|Markdown|WYSIWYG)\s*/gi, '').trim();
+    if (!meaningful) {
+      alert('본문 내용을 입력해주세요.');
+      return;
+    }
+    const content = rawHtml;
     const postData = {
-      title,
+      title: trimmedTitle,
       content,
       anonymous: isAnonymous,
     };
@@ -53,7 +76,7 @@ function PostEditor() {
           { withCredentials: true }
         );
         alert('게시글이 수정되었습니다.');
-        navigate(`/posts/${postId}`);
+        navigate(`/board/post/${postId}`);
       } else {
         const newPostData = {
           ...postData,
@@ -66,8 +89,14 @@ function PostEditor() {
           { withCredentials: true }
         );
         alert('게시글이 작성되었습니다.');
-        const location = res.headers.location || '/';
-        navigate(location.startsWith('/posts/') ? location : '/');
+        const location = res.headers?.location || '';
+        const idFromLocation = location.match(/\/(\d+)\s*$/)?.[1];
+        const newPostId = res.data?.id ?? idFromLocation;
+        if (newPostId) {
+          navigate(`/board/post/${newPostId}`);
+        } else {
+          navigate('/');
+        }
       }
     } catch (error) {
       console.error('게시글 저장 실패:', error);
@@ -75,75 +104,118 @@ function PostEditor() {
     }
   };
 
+  const handleCancel = () => {
+    if (isEditMode && postId) {
+      navigate(`/board/post/${postId}`);
+    } else {
+      navigate(-1);
+    }
+  };
+
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h2>{isEditMode ? '게시글 수정' : '게시글 작성'}</h2>
+    <div className="post-editor">
+      <div className="editor-section">
+        {!isEditMode && (
+          <div className="form-row">
+            <label className="form-label">게시판</label>
+            <select
+              className="form-select"
+              value={boardId}
+              onChange={(e) => setBoardId(e.target.value)}
+            >
+              {Object.entries(boardNameMap).map(([id, name]) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
-      {!isEditMode && (
-        <input
-          type="text"
-          placeholder="Board ID"
-          value={boardId}
-          onChange={(e) => setBoardId(e.target.value)}
-          style={{ width: '100%', marginBottom: '10px' }}
-        />
-      )}
+        <div className="form-row">
+          <label className="form-label">제목</label>
+          <input
+            type="text"
+            className="form-input"
+            placeholder="제목을 입력하세요"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
 
-      <input
-        type="text"
-        placeholder="제목"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        style={{ width: '100%', marginBottom: '10px' }}
-      />
-
-      <Editor
-        ref={editorRef}
-        initialValue=""
-        previewStyle="vertical"
-        height="400px"
-        initialEditType="wysiwyg"
-        useCommandShortcut={true}
-        hooks={{
-          addImageBlobHook: async (blob, callback) => {
-            const formData = new FormData();
-            formData.append('file', blob);
-
-            try {
-              const userId = localStorage.getItem("loginUserId");
-              const res = await axios.post(
-                `${process.env.REACT_APP_API_BASE_URL}/media?userId=${userId}`,
-                formData,
-                {
-                  headers: {
-                    'Content-Type': 'multipart/form-data',
-                  },
-                  withCredentials: true,
+        <div className="form-row">
+          <label className="form-label">내용</label>
+          <div className="editor-wrapper">
+            <Editor
+              ref={editorRef}
+              initialValue=" "
+              previewStyle="vertical"
+              height="400px"
+              initialEditType="wysiwyg"
+              useCommandShortcut={true}
+              hideModeSwitch={true}
+              onLoad={() => {
+                if (!isEditMode) {
+                  requestAnimationFrame(() => {
+                    const editor = editorRef.current?.getInstance();
+                    if (editor) {
+                      if (typeof editor.reset === 'function') editor.reset();
+                      else editor.setHTML('<p><br></p>');
+                    }
+                  });
                 }
-              );
+              }}
+              hooks={{
+                addImageBlobHook: async (blob, callback) => {
+                  const formData = new FormData();
+                  formData.append('file', blob);
 
-              const imageUrl = res.headers['location'];
-              callback(imageUrl, 'image');
-            } catch (e) {
-              console.error('이미지 업로드 실패:', e);
-              alert('이미지 업로드에 실패했습니다.');
-            }
-          },
-        }}
-      />
+                  try {
+                    const userId = localStorage.getItem("loginUserId");
+                    const res = await axios.post(
+                      `${process.env.REACT_APP_API_BASE_URL}/media?userId=${userId}`,
+                      formData,
+                      {
+                        headers: {
+                          'Content-Type': 'multipart/form-data',
+                        },
+                        withCredentials: true,
+                      }
+                    );
 
-      <label style={{ display: 'block', marginTop: '10px' }}>
-        <input
-          type="checkbox"
-          checked={isAnonymous}
-          onChange={(e) => setIsAnonymous(e.target.checked)}
-        />
-        익명으로 {isEditMode ? '수정' : '작성'}
-      </label>
+                    const imageUrl = res.headers['location'];
+                    callback(imageUrl, 'image');
+                  } catch (e) {
+                    console.error('이미지 업로드 실패:', e);
+                    alert('이미지 업로드에 실패했습니다.');
+                  }
+                },
+              }}
+            />
+          </div>
+        </div>
 
-      <button onClick={handleSubmit} style={{ marginTop: '20px' }}>
-        {isEditMode ? '수정 완료' : '작성 완료'}
-      </button>
+        <div className="anonymous-row">
+          <input
+            id="anonymous-check"
+            type="checkbox"
+            checked={isAnonymous}
+            onChange={(e) => setIsAnonymous(e.target.checked)}
+          />
+          <label htmlFor="anonymous-check">
+            익명으로 {isEditMode ? '수정' : '작성'}
+          </label>
+        </div>
+
+        <div className="submit-row">
+          <button type="button" className="btn-cancel" onClick={handleCancel}>
+            취소
+          </button>
+          <button type="button" className="btn-submit" onClick={handleSubmit}>
+            {isEditMode ? '수정 완료' : '작성 완료'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -42,9 +42,80 @@
   top: 43px;
   right: 150px;
 }
-#header .user-section > .function button {
+
+/* 로그인 상태 */
+#header .user-section-logged {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 14px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+#header .user-section-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+#header .user-section-link {
+  font-size: 13px;
+  color: #3f9763;
+  font-weight: 500;
+  padding: 4px 0;
+  transition: color 0.15s;
+}
+
+#header .user-section-link:hover {
+  color: #2d7a4a;
+  text-decoration: none;
+}
+
+#header .user-section-logout {
+  font-size: 13px;
+  color: #6b7280;
+  background: none;
   border: none;
-  background-color: #fff;
-  padding: 0 2px;
+  padding: 4px 0;
   cursor: pointer;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+#header .user-section-logout:hover {
+  color: #374151;
+}
+
+#header .user-section-logout::before {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  background: #e5e7eb;
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
+/* 로그아웃 상태 */
+#header .user-section-login {
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: #3f9763;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.05s;
+}
+
+#header .user-section-login:hover {
+  background: #358f5a;
+}
+
+#header .user-section-login:active {
+  transform: scale(0.98);
 }

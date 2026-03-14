@@ -1,39 +1,151 @@
-/* User Info */
+/* User Info - 로그인 상태 카드 */
+#user-profile-section .logged-in-state {
+  width: 100%;
+}
 
+#user-profile-section .user-info-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+#user-profile-section .user-info-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 14px 12px;
+}
+
+#user-profile-section .user-avatar {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0fdf4;
+  border-radius: 50%;
+  border: 1px solid #bbf7d0;
+}
+
+#user-profile-section .user-greeting {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+#user-profile-section .user-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.3;
+}
+
+#user-profile-section .user-message {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+#user-profile-section .user-info-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 14px 14px;
+  border-top: 1px solid #f3f4f6;
+  background: #fafafa;
+}
+
+#user-profile-section .action-link {
+  font-size: 0.875rem;
+  color: #3f9763;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+
+#user-profile-section .action-link:hover {
+  background: #ecfdf5;
+  color: #2d7a4a;
+  text-decoration: none;
+}
+
+#user-profile-section .action-divider {
+  color: #d1d5db;
+  font-size: 0.75rem;
+  user-select: none;
+}
+
+#user-profile-section .action-btn {
+  font-size: 0.875rem;
+  color: #6b7280;
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+#user-profile-section .action-btn:hover {
+  color: #374151;
+  background: #f3f4f6;
+}
+
+#user-profile-section .logout-btn:hover {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+/* 로그아웃 상태 */
 #user-profile-section .logged-out-state {
-    width: 350px;
+  width: 350px;
 }
 
 #user-profile-section .login-btn {
-    background-color: #3f9763;
-    text-align: center;
-    padding: 17px 0;
-    font-size: 1.4em;
-    cursor: pointer;
-    margin: 0 0 10px 0 ;
-    border-radius: 5px;
+  background-color: #3f9763;
+  text-align: center;
+  padding: 17px 0;
+  font-size: 1.4em;
+  cursor: pointer;
+  margin: 0 0 10px 0;
+  border-radius: 8px;
+  transition: background-color 0.2s;
 }
-#user-profile-section .login-btn>a {
-    color: white;
+
+#user-profile-section .login-btn:hover {
+  background-color: #358f5a;
 }
-#user-profile-section .login-btn>a:hover {
-    text-decoration: none;
+
+#user-profile-section .login-btn > a {
+  color: white;
+  display: block;
+}
+
+#user-profile-section .login-btn > a:hover {
+  text-decoration: none;
 }
 
 #user-profile-section .login-function {
-    text-align: center;
+  text-align: center;
 }
 
 #user-profile-section .login-function span {
-    text-align: center;
-    display: inline-block;
+  text-align: center;
+  display: inline-block;
 }
 
-#user-profile-section .login-function a{
-    padding: 1em;
-    color: gray;
+#user-profile-section .login-function a {
+  padding: 1em;
+  color: #6b7280;
+  font-size: 0.9rem;
 }
 
-#user-profile-section .logout-btn {
-    cursor: pointer;
+#user-profile-section .login-function a:hover {
+  color: #3f9763;
 }

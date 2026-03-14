@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./TimetableMeal.css";
 import axios from "axios";
-import "../../../../Default.css"
-
+import "../../../../Default.css";
 
 const TimetableMeal = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("시간표");
   const [timetableData, setTimetableData] = useState([]);
   const [mealData, setMealData] = useState([]);
+
+  const handleContentClick = () => {
+    if (activeTab === "시간표") {
+      navigate("/timetable");
+    } else {
+      navigate("/meal");
+    }
+  };
 
   // ✅ 시간표 불러오기
   useEffect(() => {
@@ -49,24 +58,70 @@ const TimetableMeal = () => {
     }
   }, [activeTab]);
 
-  const renderRows = () => {
-    const data = activeTab === "시간표" ? timetableData : mealData;
-  
-    return Array.from({ length: 8 }, (_, i) => (
-      <div
-        key={i + 1}
-        className={`row ${activeTab === "급식" ? "centered" : ""}`}
-      >
-        {activeTab === "시간표" && (
+  const renderTimetableRows = () => {
+    return Array.from({ length: 8 }, (_, i) => {
+      const text = timetableData[i + 1] || "-";
+      return (
+        <div key={i + 1} className="row">
           <span className="period">{i + 1}교시</span>
-        )}
-        <span className="content">
-          {data[i + 1] || (activeTab === "급식" ? data[i] || "" : "-")}
-        </span>
-      </div>
-    ));
+          <span
+            className="content content-clickable"
+            onClick={handleContentClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleContentClick();
+              }
+            }}
+          >
+            {text}
+          </span>
+        </div>
+      );
+    });
   };
-  
+
+  // "밥,국,생선" 형태를 쉼표 기준으로 나누어 세로 목록으로 표시
+  const mealItems = mealData.flatMap((item) =>
+    item
+      ? String(item)
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : []
+  );
+
+  const renderMealContent = () => (
+    <div
+      className="meal-box"
+      onClick={handleContentClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleContentClick();
+        }
+      }}
+    >
+      <div className="meal-label">오늘의 급식</div>
+      {mealItems.length > 0 ? (
+        <div className="meal-list">
+          {mealItems.map((name, idx) => (
+            <div key={idx} className="meal-row">
+              {name}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="meal-empty">급식 정보가 없습니다</p>
+      )}
+      <span className="meal-more">자세히 보기 →</span>
+    </div>
+  );
+
   return (
     <div id="time-table">
       <div className="container">
@@ -84,8 +139,10 @@ const TimetableMeal = () => {
             급식
           </div>
         </div>
-  
-        <div className="contentBox">{renderRows()}</div>
+
+        <div className={`contentBox ${activeTab === "급식" ? "contentBox--meal" : ""}`}>
+          {activeTab === "시간표" ? renderTimetableRows() : renderMealContent()}
+        </div>
       </div>
     </div>
   );  

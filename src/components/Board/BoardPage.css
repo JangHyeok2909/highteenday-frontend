@@ -98,33 +98,65 @@
   color: white;
 }
 
-/* 📌 게시글 검색창 */
-.board-page .board-search {
+/* 상단 툴바 (글쓰기) */
+.board-page .board-toolbar {
   display: flex;
-  justify-content: flex-end; /* 오른쪽 정렬 */
-  gap: 8px;
+  justify-content: flex-end;
   margin-bottom: 15px;
 }
 
-.board-page .search-input {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 6px 10px;
-  font-size: 14px;
-  width: 200px;
-}
-
-.board-page .search-btn {
+.board-page .write-btn {
   background: #3cb371;
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   cursor: pointer;
   font-size: 14px;
 }
 
-.board-page .search-btn:hover {
-  background: #2e8b57; /* hover 시 진한 초록 */
+.board-page .write-btn:hover {
+  background: #2e8b57;
+}
+
+/* 하단 검색창 */
+.board-page .board-search-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  justify-content: center;
+}
+
+.board-page .board-search-bottom .search-type-select {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.board-page .board-search-bottom .search-input {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  width: 220px;
+}
+
+.board-page .board-search-bottom .search-btn {
+  background: #3cb371;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.board-page .board-search-bottom .search-btn:hover {
+  background: #2e8b57;
 }
 

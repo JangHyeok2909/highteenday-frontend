@@ -1,10 +1,10 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Trash2, Edit3 } from 'lucide-react';
 import CommentSection from '../../CommentRelated/CommentSection';
 import '../PostDetail.css';
 import { useAuth } from "../../../contexts/AuthContext";
-import { useNavigate } from 'react-router-dom';
 import ReactionButton from '../../ReactionButtons/ReactionButton';
 import ScrapButton from '../../ReactionButtons/ScrapButton';
 import { formatBoardPreviewDate } from '../../../utils/dateFormat';
@@ -18,6 +18,7 @@ function PostDetail() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { isLogin } = useAuth();
+  const loginUserId = parseInt(localStorage.getItem('loginUserId'), 10);
   
 
 
@@ -107,9 +108,28 @@ function PostDetail() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm('이 게시글을 삭제하시겠습니까?')) return;
+    try {
+      await axios.delete(`${API_BASE}/posts/${postId}`, { withCredentials: true });
+      navigate(-1);
+    } catch (err) {
+      console.error(err);
+      alert('게시글 삭제에 실패했습니다.');
+    }
+  };
+
+  const handleEdit = () => {
+    navigate(`/post/edit/${postId}`);
+  };
+
   if (loading) return <p className="loading-message">불러오는 중...</p>;
   if (error) return <p className="error-message">{error}</p>;
   if (!post) return null;
+
+  const isOwner =
+    post.owner === true ||
+    (post.authorId != null && post.authorId === loginUserId);
 
   return (
     <div className="post-container">
@@ -128,6 +148,28 @@ function PostDetail() {
         <span>조회수: {post.viewCount}</span>
         <span>·</span>
         <span>작성일: {formatBoardPreviewDate(post.createdAt)}</span>
+        {isOwner && (
+          <div className="post-meta-actions">
+            <button
+              type="button"
+              className="post-action-btn"
+              onClick={handleEdit}
+              aria-label="수정"
+              title="수정"
+            >
+              <Edit3 size={16} />
+            </button>
+            <button
+              type="button"
+              className="post-action-btn post-action-btn--danger"
+              onClick={handleDelete}
+              aria-label="삭제"
+              title="삭제"
+            >
+              <Trash2 size={16} />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* 본문 */}

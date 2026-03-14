@@ -150,18 +150,48 @@
 #friend-list .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
 }
 
 #friend-list .modal-content {
+  position: relative;
   background-color: #fff;
   border-radius: 12px;
   padding: 20px;
+  padding-top: 44px;
   width: 400px;
   max-width: 90%;
+  max-height: 85vh;
+  overflow: auto;
+}
+
+#friend-list .modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+#friend-list .modal-close:hover {
+  background: #f3f4f6;
+  color: #111827;
 }
 
 @media (max-width: 640px) {

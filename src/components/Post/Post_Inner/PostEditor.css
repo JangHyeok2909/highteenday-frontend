@@ -1,0 +1,174 @@
+.post-editor {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #eee;
+  overflow: hidden;
+}
+
+.post-editor .editor-section {
+  padding: 24px;
+}
+
+.post-editor .form-row {
+  margin-bottom: 20px;
+}
+
+.post-editor .form-row:last-of-type {
+  margin-bottom: 0;
+}
+
+.post-editor .form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.post-editor .form-input,
+.post-editor .form-select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.post-editor .form-input:focus,
+.post-editor .form-select:focus {
+  outline: none;
+  border-color: #3cb371;
+  background: #fff;
+}
+
+.post-editor .form-input::placeholder {
+  color: #999;
+}
+
+.post-editor .editor-wrapper {
+  margin: 20px 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.post-editor .editor-wrapper .toastui-editor-defaultUI {
+  border: none;
+}
+
+.post-editor .anonymous-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 0;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 20px;
+}
+
+.post-editor .anonymous-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3cb371;
+  cursor: pointer;
+}
+
+.post-editor .anonymous-row label {
+  font-size: 0.9rem;
+  color: #555;
+  cursor: pointer;
+  user-select: none;
+}
+
+.post-editor .submit-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 24px;
+  margin-top: 24px;
+  border-top: 1px solid #eee;
+}
+
+.post-editor .btn-cancel {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.post-editor .btn-cancel:hover {
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
+.post-editor .btn-submit {
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: #3cb371;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.05s;
+}
+
+.post-editor .btn-submit:hover {
+  background: #2e8b57;
+}
+
+.post-editor .btn-submit:active {
+  transform: scale(0.98);
+}
+
+/* Write/Preview 탭 및 모드 전환 영역 숨김 */
+.post-editor .editor-wrapper .te-md-tab-container,
+.post-editor .editor-wrapper .te-markdown-tab-section,
+.post-editor .editor-wrapper [class*="tab-section"],
+.post-editor .editor-wrapper .toastui-editor-mode-switch,
+.post-editor .editor-wrapper [class*="mode-switch"],
+.post-editor .editor-wrapper .te-mode-switch,
+.post-editor .editor-wrapper .toastui-editor-tabs,
+.post-editor .editor-wrapper .te-tab,
+.post-editor .editor-wrapper .te-tab-item,
+.post-editor .editor-wrapper [class*="te-tab"],
+/* Toast UI 에디터 탭 영역 전반 */
+.post-editor [class*="toastui-editor"][class*="tab"] {
+  display: none !important;
+}
+
+/* 탭 바로 아래 여백 제거 */
+.post-editor .editor-wrapper .te-md-container .te-tab-container,
+.post-editor .editor-wrapper .te-md-container > .te-tab-section {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 에디터 본문 영역 */
+.post-editor .ProseMirror {
+  min-height: 320px;
+  padding: 16px;
+}
+
+/* 빈 에디터 플레이스홀더 */
+.post-editor .ProseMirror:empty::before {
+  content: "내용을 작성하시오...";
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.post-editor .ProseMirror p:only-child:empty::before,
+.post-editor .ProseMirror p.is-empty::before {
+  content: "내용을 작성하시오...";
+  color: #9ca3af;
+  pointer-events: none;
+}

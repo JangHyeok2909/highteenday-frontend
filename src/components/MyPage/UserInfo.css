@@ -63,6 +63,7 @@
   flex-wrap: wrap;
 }
 #userinfo .edit-btn {
+  display: inline-block;
   background: #ffffff;
   color: #1f5f59;
   border: 0;
@@ -70,46 +71,72 @@
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
 }
 #userinfo .edit-btn:hover {
-  filter: brightness(.98);
+  filter: brightness(0.98);
+  text-decoration: none;
 }
 
 /* 본문 3열 섹션 */
 #userinfo .sections {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 26px;
-  margin-top: 26px;
+  gap: 24px;
+  margin-top: 28px;
 }
 #userinfo .section {
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 16px 18px;
+  border-radius: 14px;
+  padding: 20px 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+#userinfo .section:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 #userinfo .section h2 {
-  margin: 2px 0 12px;
-  font-size: 16px;
+  margin: 0 0 16px;
+  font-size: 15px;
   font-weight: 700;
+  color: #111827;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #3f9763;
 }
 #userinfo .linklist {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-#userinfo .linklist li + li {
-  margin-top: 10px;
+#userinfo .linklist li {
+  margin-bottom: 4px;
+}
+#userinfo .linklist li:last-child {
+  margin-bottom: 0;
 }
 #userinfo .link {
   text-decoration: none;
-  color: #222;
-  display: inline-block;
-  padding: 6px 2px;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
   border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
 }
 #userinfo .link:hover {
-  background: #f3f4f6;
+  background: #f0fdf4;
+  color: #3f9763;
+}
+#userinfo .section:first-child .link::before {
+  content: "→";
+  margin-right: 10px;
+  font-weight: 600;
+  color: #3f9763;
+  opacity: 0.8;
 }
 
 /* 반응형 */

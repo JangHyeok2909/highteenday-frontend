@@ -20,8 +20,9 @@ function LoginPage() {
 
   return (
     <div id="login-page" className="default-root-value">
-      {/* 메인 헤더 적용 */}
-      <Header isMainPage={false} />
+      <div className="header">
+        <Header isMainPage={true} />
+      </div>
 
       {/* LoginButton 컴포넌트 사용 */}
       <LoginButton

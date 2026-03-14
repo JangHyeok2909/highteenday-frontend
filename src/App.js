@@ -50,6 +50,7 @@ function App() {
       {/* post */}
       <Route path="/board/post/:postId" element={<PostSection />} />
       <Route path="/post/write" element={<WritePostPage />} />
+      <Route path="/post/edit/:postId" element={<WritePostPage />} />
       {/* my page */}
       <Route path="/mypage" element={<Mypage />}/>
       <Route path="/mypage/posts" element={<MyPostLikeActivity type="posts" />} />

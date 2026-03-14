@@ -17,57 +17,79 @@
 }
 
 #accept-friend .acceptfriend-item {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 8px;
   transition: background-color 0.2s;
 }
 
 #accept-friend .acceptfriend-item:hover {
-  background-color: #f1f1f1;
+  background-color: #f9fafb;
 }
 
-#accept-friend .acceptfriend-item.selected {
-  background-color: #393c3f;
-  color: white;
+#accept-friend .acceptfriend-item-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #111827;
 }
 
-#accept-friend .acceptfriend-submit {
-  width: 60%;
-  height: 36px;
-  margin: 0 auto;
-  display: block;
-  background-color: #393c3f;
-  color: white;
+#accept-friend .acceptfriend-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#accept-friend .acceptfriend-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   border: none;
   border-radius: 6px;
-  font-size: 14px;
   cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
 }
 
-#accept-friend .acceptfriend-submit:hover {
-  background-color: #555;
+#accept-friend .acceptfriend-icon-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#accept-friend .acceptfriend-icon-btn--accept {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+#accept-friend .acceptfriend-icon-btn--accept:hover:not(:disabled) {
+  background: #d1fae5;
+  color: #047857;
+}
+
+#accept-friend .acceptfriend-icon-btn--reject {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+#accept-friend .acceptfriend-icon-btn--reject:hover:not(:disabled) {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+#accept-friend .acceptfriend-empty {
+  padding: 24px 12px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
 }
 
 #accept-friend .acceptfriend-message {
   font-size: 14px;
-  color: green;
-}
-
-#accept-friend .close-btn {
-  width: 60%;
-  height: 36px;
-  margin: 0 auto;
-  display: block;
-  background-color: #ccc;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-#accept-friend .close-btn:hover {
-  background-color: #bbb;
+  color: #059669;
+  margin: 0;
 }

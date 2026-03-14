@@ -1,65 +1,157 @@
+#mypage-list {
+  padding-bottom: 48px;
+}
 
 #mypage-list .list-page-container {
-  padding: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  max-width: 900px;
+  margin: 32px auto 0;
+  padding: 28px 24px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-#mypage-list h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
+#mypage-list .list-page-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #3f9763;
+}
+
+#mypage-list .list-page-toolbar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-#mypage-list .list-header,
-#mypage-list .post-item {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-#mypage-list .list-header {
-  font-weight: bold;
-  background-color: #f7f7f7;
-}
-
-#mypage-list .title {
-  flex-basis: 40%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-#mypage-list .author,
-#mypage-list .date,
-#mypage-list .views {
-  flex-basis: 20%;
-  text-align: center;
+  justify-content: flex-end;
+  margin-bottom: 16px;
 }
 
 #mypage-list .sort-select {
-  margin-left: auto;
-  margin-bottom: 1rem;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: #374151;
+  cursor: pointer;
+}
+
+#mypage-list .sort-select:focus {
+  outline: none;
+  border-color: #3f9763;
+}
+
+#mypage-list .list-empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: #6b7280;
+  font-size: 15px;
+  margin: 0;
 }
 
 #mypage-list .post-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#mypage-list .list-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f9fafb;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 #mypage-list .post-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f3f4f6;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  font-size: 14px;
+  transition: background 0.15s;
+}
+
+#mypage-list .post-item:last-child {
+  border-bottom: none;
 }
 
 #mypage-list .post-item:hover {
-  background-color: #f0f0f0;
+  background: #f0fdf4;
+}
+
+#mypage-list .title {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #111827;
+}
+
+#mypage-list .author,
+#mypage-list .date,
+#mypage-list .views {
+  flex: 0 0 100px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+#mypage-list .list-header .title {
+  flex: 1;
+}
+
+#mypage-list .list-header .author,
+#mypage-list .list-header .date,
+#mypage-list .list-header .views {
+  flex: 0 0 100px;
+  text-align: center;
+}
+
+#mypage-list .pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 24px;
+}
+
+#mypage-list .pagination button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+#mypage-list .pagination button:hover:not(:disabled) {
+  background: #f0fdf4;
+  border-color: #3f9763;
+  color: #3f9763;
+}
+
+#mypage-list .pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#mypage-list .pagination button.active {
+  background: #3f9763;
+  border-color: #3f9763;
+  color: #fff;
 }

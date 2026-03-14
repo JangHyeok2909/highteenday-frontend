@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
-// import axios from "axios";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { X } from "lucide-react";
 import "./FriendList.css";
 import "../Default.css";
 import FriendAdd from "./FriendAdd";
@@ -26,19 +26,19 @@ const FriendList = () => {
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef(null);
 
-  useEffect(() => {
-    const fetchFriends = async () => {
-      try {
-        const res = await axios.get("/api/friends/list", { withCredentials: true });
-        setFriends(Array.isArray(res.data) ? res.data : []);
-      } catch (err) {
-        console.error("친구 목록 불러오기 실패:", err);
-        setFriends([]);
-      }
-    };
-    fetchFriends();
-    
+  const fetchFriends = useCallback(async () => {
+    try {
+      const res = await axios.get("/api/friends/list", { withCredentials: true });
+      setFriends(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error("친구 목록 불러오기 실패:", err);
+      setFriends([]);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchFriends();
+  }, [fetchFriends]);
 
   useEffect(() => {
     const onDocClick = (e) => {
@@ -251,16 +251,43 @@ const FriendList = () => {
         </ul>
 
         {showFriendAdd && (
-          <div className="modal-overlay" onClick={() => setShowFriendAdd(false)}>
+          <div
+            className="modal-overlay"
+            onClick={() => setShowFriendAdd(false)}
+            role="presentation"
+          >
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <button
+                type="button"
+                className="modal-close"
+                onClick={() => setShowFriendAdd(false)}
+                aria-label="친구창 닫기"
+              >
+                <X size={20} />
+              </button>
               <FriendAdd onClose={() => setShowFriendAdd(false)} />
             </div>
           </div>
         )}
         {showAcceptFriend && (
-          <div className="modal-overlay" onClick={() => setShowAcceptFriend(false)}>
+          <div
+            className="modal-overlay"
+            onClick={() => setShowAcceptFriend(false)}
+            role="presentation"
+          >
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <AcceptFriend onClose={() => setShowAcceptFriend(false)} />
+              <button
+                type="button"
+                className="modal-close"
+                onClick={() => setShowAcceptFriend(false)}
+                aria-label="친구창 닫기"
+              >
+                <X size={20} />
+              </button>
+              <AcceptFriend
+                onClose={() => setShowAcceptFriend(false)}
+                onUpdatedFriends={fetchFriends}
+              />
             </div>
           </div>
         )}

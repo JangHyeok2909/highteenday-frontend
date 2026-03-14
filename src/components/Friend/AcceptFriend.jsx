@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Check, X } from "lucide-react";
 import "./AcceptFriend.css";
 
-const AcceptFriend = ({ onClose }) => {
+const AcceptFriend = ({ onClose, onUpdatedFriends }) => {
   const [requests, setRequests] = useState([]);
-  const [selectedId, setSelectedId] = useState(null);
   const [message, setMessage] = useState("");
+  const [loadingId, setLoadingId] = useState(null);
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -14,7 +15,6 @@ const AcceptFriend = ({ onClose }) => {
           withCredentials: true,
         });
         setRequests(res.data || []);
-        console.log(res);
       } catch (err) {
         console.error("친구 요청 목록 불러오기 실패:", err);
         setMessage("목록을 불러오지 못했습니다.");
@@ -23,64 +23,95 @@ const AcceptFriend = ({ onClose }) => {
     fetchRequests();
   }, []);
 
-  const handleAccept = async (e) => {
-    e.preventDefault();
-    console.log(selectedId);
-    if (!selectedId) {
-      setMessage("수락할 친구를 선택하세요.");
-      return;
-    }
+  const getReqId = (req) => req.friendsReqId ?? req.id;
+
+  const handleAccept = async (e, req) => {
+    e.stopPropagation();
+    const id = getReqId(req);
+    setLoadingId(id);
+    setMessage("");
     try {
-      const res = await axios.post(
-        "/api/friends/respond", { 
-          id: selectedId,
-          status: "ACCEPTED"
-         },
-        { withCredentials: true },
+      await axios.post(
+        "/api/friends/respond",
+        { id, status: "ACCEPTED" },
+        { withCredentials: true }
       );
-      setMessage(res.data.message || "친구 요청을 수락했습니다.");
-      setRequests((prev) => prev.filter((req) => req.id !== selectedId));
-      setSelectedId(null);
+      setRequests((prev) => prev.filter((r) => getReqId(r) !== id));
+      setMessage("친구 요청을 수락했습니다.");
+      if (onUpdatedFriends) {
+        onUpdatedFriends();
+      }
     } catch (err) {
       console.error("친구 요청 수락 실패:", err);
       setMessage("수락에 실패했습니다.");
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  const handleReject = async (e, req) => {
+    e.stopPropagation();
+    const id = getReqId(req);
+    setLoadingId(id);
+    setMessage("");
+    try {
+      await axios.post(
+        "/api/friends/respond",
+        { id, status: "REJECTED" },
+        { withCredentials: true }
+      );
+      setRequests((prev) => prev.filter((r) => getReqId(r) !== id));
+      setMessage("친구 요청을 거절했습니다.");
+    } catch (err) {
+      console.error("친구 요청 거절 실패:", err);
+      setMessage("거절에 실패했습니다.");
+    } finally {
+      setLoadingId(null);
     }
   };
 
   return (
     <div id="accept-friend">
       <div className="acceptfriend-container">
-        <h3 className="acceptfriend-title">친구 수락</h3>
+        <h3 className="acceptfriend-title">친구 요청 목록</h3>
 
         <ul className="acceptfriend-list">
           {requests.length === 0 ? (
             <li className="acceptfriend-empty">대기 중인 요청이 없습니다.</li>
           ) : (
-            requests.map((req) => (
-              <li
-                key={req.friendsReqId}
-                className={`acceptfriend-item ${
-                  selectedId === req.friendsReqId ? "selected" : ""
-                }`}
-                onClick={() => setSelectedId(req.friendsReqId)}
-              >
-                {req.name}
-              </li>
-            ))
+            requests.map((req) => {
+              const id = getReqId(req);
+              const isLoading = loadingId === id;
+              return (
+                <li key={id} className="acceptfriend-item">
+                  <span className="acceptfriend-item-name">{req.name}</span>
+                  <div className="acceptfriend-item-actions">
+                    <button
+                      type="button"
+                      className="acceptfriend-icon-btn acceptfriend-icon-btn--accept"
+                      onClick={(e) => handleAccept(e, req)}
+                      disabled={isLoading}
+                      aria-label="수락"
+                      title="수락"
+                    >
+                      <Check size={18} />
+                    </button>
+                    <button
+                      type="button"
+                      className="acceptfriend-icon-btn acceptfriend-icon-btn--reject"
+                      onClick={(e) => handleReject(e, req)}
+                      disabled={isLoading}
+                      aria-label="거절"
+                      title="거절"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+                </li>
+              );
+            })
           )}
         </ul>
-
-        <form onSubmit={handleAccept} className="acceptfriend-form">
-          <button type="submit" className="acceptfriend-submit">
-            수락하기
-          </button>
-        </form>
-
-        <form onSubmit={(e) => { e.preventDefault(); onClose?.(); }}>
-          <button type="submit" className="close-btn">
-            닫기
-          </button>
-        </form>
 
         {message && <p className="acceptfriend-message">{message}</p>}
       </div>

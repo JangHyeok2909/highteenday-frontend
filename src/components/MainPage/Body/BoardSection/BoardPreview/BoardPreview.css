@@ -24,6 +24,15 @@
   color: #3f9763;
 }
 
+#board-preview .board-name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#board-preview .board-name a:hover {
+  text-decoration: none;
+}
+
 #board-preview .view-all-btn {
   font-size: 0.8rem;
   color: #888;
