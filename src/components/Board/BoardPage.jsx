@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../Header/MainHader/Header";
@@ -32,7 +32,8 @@ export default function BoardPage() {
 
   // ✅ 정렬 필드 + 정렬 순서
   const [sortField, setSortField] = useState("date");
-  const [sortOrder, setSortOrder] = useState("DESC");
+  const [sortOpen, setSortOpen] = useState(false);
+  const sortRef = useRef(null);
 
   // 검색
   const [searchQuery, setSearchQuery] = useState("");
@@ -40,6 +41,11 @@ export default function BoardPage() {
   const [isSearchMode, setIsSearchMode] = useState(false);
 
   const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+  const pageBlockSize = 10;
+  const safeTotalPages = Math.max(1, totalPages);
+  const currentBlock = Math.floor(page / pageBlockSize);
+  const startPage = currentBlock * pageBlockSize;
+  const endPage = Math.min(startPage + pageBlockSize - 1, safeTotalPages - 1);
 
   const fetchPosts = async () => {
     try {
@@ -97,7 +103,7 @@ export default function BoardPage() {
     } else {
       fetchPosts();
     }
-  }, [boardId, page, sortField, sortOrder, isSearchMode, searchType]);
+  }, [boardId, page, sortField, isSearchMode, searchType]);
 
   const handleSearch = (e) => {
     e?.preventDefault();
@@ -114,9 +120,33 @@ export default function BoardPage() {
   };
 
   const handleSort = (field) => {
+    // 백엔드가 내림차순만 지원하므로, 정렬 조건만 바꿔서 다시 조회
     setSortField(field);
-    setSortOrder("desc"); // 무조건 내림차순
+    setPage(0);
   };
+
+  const sortLabel =
+    sortField === "views"
+      ? "조회수순"
+      : sortField === "likes"
+        ? "좋아요순"
+        : "최신순";
+
+  useEffect(() => {
+    const onDocClick = (e) => {
+      if (!sortRef.current) return;
+      if (!sortRef.current.contains(e.target)) setSortOpen(false);
+    };
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setSortOpen(false);
+    };
+    document.addEventListener("click", onDocClick);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("click", onDocClick);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
   
 
   return (
@@ -129,13 +159,71 @@ export default function BoardPage() {
         <h2>{boardNameMap[boardKey] || "게시판"}</h2>
 
         <div className="board-toolbar">
-          <button
-            type="button"
-            className="search-btn write-btn"
-            onClick={() => navigate('/post/write', { state: { boardId } })}
-          >
-            글쓰기
-          </button>
+          <div className="board-toolbar-left">
+            <div className="sort-dropdown" ref={sortRef}>
+              <button
+                type="button"
+                className="sort-trigger"
+                onClick={() => setSortOpen((v) => !v)}
+                aria-haspopup="listbox"
+                aria-expanded={sortOpen}
+              >
+                {sortLabel}
+                <span className={`sort-caret ${sortOpen ? "open" : ""}`}>▾</span>
+              </button>
+
+              {sortOpen && (
+                <div className="sort-menu" role="listbox" aria-label="정렬 선택">
+                  <button
+                    type="button"
+                    className={`sort-item ${sortField === "date" ? "active" : ""}`}
+                    onClick={() => {
+                      handleSort("date");
+                      setSortOpen(false);
+                    }}
+                    role="option"
+                    aria-selected={sortField === "date"}
+                  >
+                    최신순
+                  </button>
+                  <button
+                    type="button"
+                    className={`sort-item ${sortField === "likes" ? "active" : ""}`}
+                    onClick={() => {
+                      handleSort("likes");
+                      setSortOpen(false);
+                    }}
+                    role="option"
+                    aria-selected={sortField === "likes"}
+                  >
+                    좋아요순
+                  </button>
+                  <button
+                    type="button"
+                    className={`sort-item ${sortField === "views" ? "active" : ""}`}
+                    onClick={() => {
+                      handleSort("views");
+                      setSortOpen(false);
+                    }}
+                    role="option"
+                    aria-selected={sortField === "views"}
+                  >
+                    조회수순
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="board-toolbar-right">
+            <button
+              type="button"
+              className="write-btn"
+              onClick={() => navigate("/post/write", { state: { boardId } })}
+            >
+              글쓰기
+            </button>
+          </div>
         </div>
 
   
@@ -143,39 +231,10 @@ export default function BoardPage() {
           <thead>
             <tr>
               <th>제목</th>
-  
-              {/* 날짜 */}
-              <th className="th-col">
-                <span>날짜</span>
-                <button
-                  className="arrow-btn"
-                  onClick={() => handleSort("date", "desc")}  
-                >
-                  ▼
-                </button>
-              </th>
-  
-              {/* 조회 */}
-              <th className="th-col">
-                <span>조회</span>
-                <button
-                  className="arrow-btn"
-                  onClick={() => handleSort("views", "desc")}  
-                >
-                  ▼
-                </button>
-              </th>
-  
-              {/* 좋아요 */}
-              <th className="th-col">
-                <span>좋아요</span>
-                <button
-                  className="arrow-btn"
-                  onClick={() => handleSort("likes", "desc")}  
-                >
-                  ▼
-                </button>
-              </th>
+              <th>작성자</th>
+              <th>날짜</th>
+              <th>조회</th>
+              <th>좋아요</th>
             </tr>
           </thead>
   
@@ -194,6 +253,7 @@ export default function BoardPage() {
                       ({post.commentCount || 0})
                     </span>
                   </td>
+                  <td>{post.author ?? "-"}</td>
                   <td>
                     {new Date(post.createdAt).toLocaleString("ko-KR", {
                       month: "2-digit",
@@ -208,7 +268,7 @@ export default function BoardPage() {
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="no-posts">
+                <td colSpan="5" className="no-posts">
                   게시글이 없습니다.
                 </td>
               </tr>
@@ -219,15 +279,61 @@ export default function BoardPage() {
 
         {/* 페이지네이션 */}
         <div className="pagination">
-          {Array.from({ length: Math.max(1, totalPages) }, (_, idx) => (
-            <button
-              key={idx}
-              className={`page-btn ${page === idx ? "active" : ""}`}
-              onClick={() => setPage(idx)}
-            >
-              {idx + 1}
-            </button>
-          ))}
+          <button
+            type="button"
+            className="page-btn"
+            onClick={() => setPage(0)}
+            disabled={page === 0}
+            aria-label="맨앞"
+            title="맨앞"
+          >
+            «
+          </button>
+          <button
+            type="button"
+            className="page-btn"
+            onClick={() => setPage(Math.max(0, startPage - pageBlockSize))}
+            disabled={startPage === 0}
+            aria-label="이전 10페이지"
+            title="이전 10페이지"
+          >
+            ‹
+          </button>
+
+          {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+            const idx = startPage + i;
+            return (
+              <button
+                key={idx}
+                type="button"
+                className={`page-btn ${page === idx ? "active" : ""}`}
+                onClick={() => setPage(idx)}
+              >
+                {idx + 1}
+              </button>
+            );
+          })}
+
+          <button
+            type="button"
+            className="page-btn"
+            onClick={() => setPage(Math.min(safeTotalPages - 1, startPage + pageBlockSize))}
+            disabled={endPage >= safeTotalPages - 1}
+            aria-label="다음 10페이지"
+            title="다음 10페이지"
+          >
+            ›
+          </button>
+          <button
+            type="button"
+            className="page-btn"
+            onClick={() => setPage(safeTotalPages - 1)}
+            disabled={page >= safeTotalPages - 1}
+            aria-label="맨뒤"
+            title="맨뒤"
+          >
+            »
+          </button>
         </div>
 
         {/* 게시글 검색 (하단) */}
