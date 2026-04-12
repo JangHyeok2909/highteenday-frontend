@@ -3,22 +3,21 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import axios from 'axios';
-
-axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL || '';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './contexts/AuthContext';
 import { BrowserRouter } from 'react-router-dom';
 
+axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL || '';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(   
+root.render(
 
   <BrowserRouter>
     <React.StrictMode>
         <AuthProvider>
           <App />
         </AuthProvider>
-    </React.StrictMode>    
+    </React.StrictMode>
   </BrowserRouter>
 
 );
