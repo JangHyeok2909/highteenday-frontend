@@ -126,6 +126,7 @@ export default function TimetablePage() {
       setSelectedCell({ day: null, period: null });
       setIsEditMode(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTemplateId]);
 
   return (

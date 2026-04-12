@@ -1,7 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import NotificationBellIcons from "../../Icons/NotificationBellIcon";
-import UserAddIcon from "../../Icons/UserAddIcon";
 import UsersOverlayIcon from "../../Icons/UsersOverlayIcon";
 import "./Header.css";
 import SidebarMenu from "../SideBar/SidebarMenu";

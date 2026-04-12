@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./UserProfilePage.css";
@@ -7,24 +7,9 @@ import { useAuth } from "../../contexts/AuthContext"
 function UserProfilePage() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-  const [ profileImage, setProfileImage ] = useState("");
+  const [, setProfileImage] = useState("");
 
-  const { user, isLogin } = useAuth();
-
-  // 예시 유저
-  const exampleUser = {
-    name: "홍길동",
-    nickname: "gildong123",
-    school: "경성중학교",
-    grade: 3,
-    class: 3,
-    email: "gildong@example.com",
-    password: "********",
-    phone: "010-1234-5678",
-    provider: "instagram",
-    profileImage: null,
-  };
-
+  const { user } = useAuth();
 
   // 값이 없으면 "정보가 없습니다"
   const displayValue = (value) => {

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 function NotFound() {
-    const [postId, setPostId] = useState('');
 
   return (
     <div style={{ padding: '2rem', textAlign: 'center' }}>

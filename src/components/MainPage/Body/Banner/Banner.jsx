@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Banner.css";
-import Arrow_Left_Icon from "../../../Icons/Arrow_Left_Icon";
-import Arrow_right_Icon from "../../../Icons/Arrow_Right_Icon";
+import ArrowLeftIcon from "../../../Icons/Arrow_Left_Icon";
+import ArrowRightIcon from "../../../Icons/Arrow_Right_Icon";
 import "../../../Default.css"
 
 function Banner({ width = "100%", height = "300px" }) {
@@ -32,6 +32,7 @@ function Banner({ width = "100%", height = "300px" }) {
     }, 10000);
 
     return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -68,10 +69,10 @@ function Banner({ width = "100%", height = "300px" }) {
         </div>
 
         <div className="banner-arrow left" onClick={prevSlide}>
-          <Arrow_Left_Icon size={45} strokeWidth={1.5} color={"white"} />
+          <ArrowLeftIcon size={45} strokeWidth={1.5} color={"white"} />
         </div>
         <div className="banner-arrow right" onClick={nextSlide}>
-          <Arrow_right_Icon size={45} strokeWidth={1.5} color={"white"} />
+          <ArrowRightIcon size={45} strokeWidth={1.5} color={"white"} />
         </div>
    </div>
   );

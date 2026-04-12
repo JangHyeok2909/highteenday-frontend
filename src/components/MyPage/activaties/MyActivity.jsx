@@ -33,7 +33,7 @@ function MyActivity({myActivityType}) { // myActivityType = [ scraps, comments, 
         setdata(data);
       })
 
-  }, [sortType]);
+  }, [sortType, myActivityType]);
 
   return (
     <div id="my-activity">

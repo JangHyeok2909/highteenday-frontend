@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { User, ChevronRight } from "lucide-react";
 import axios from "axios";
 import Header from "../Header/MainHader/Header";
 import "./ProfileEditPage.css";
 
 function ProfileEditPage() {
-  const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   useEffect(() => {

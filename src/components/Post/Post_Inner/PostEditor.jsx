@@ -19,7 +19,6 @@ function PostEditor() {
   const location = useLocation();
 
   const isEditMode = !!postId;
-  const currentUserId = parseInt(localStorage.getItem('loginUserId'), 10);
 
   // 글쓰기 진입 시 state로 넘어온 boardId 사용 (없으면 '1')
   const initialBoardId = location.state?.boardId != null ? String(location.state.boardId) : '1';

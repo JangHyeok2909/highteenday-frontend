@@ -3,10 +3,7 @@ import Header from "../Header/MainHader/Header";
 import Body from "./Body/Body";
 import "./MainPage.css";
 import "../Default.css";
-import { useAuth } from "../../contexts/AuthContext";
-
 function MainPage() {
-  const { user, isLogIn, logout } = useAuth();
 
   return (
     <div id="MainPage" className="default-root-value">

@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -120,13 +120,12 @@ async function requestCheck(field,value){
 
 function CreateAccount() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [isNicknameChecked, setNicknameChecked] = useState(false);
   const [isEmailChecked, setEmailChecked] = useState(false);
-  const [isPhoneChecked,setPhoneChecked] = useState(false);
-  const [isPhoneAutehnticated, setPhoneAutehnticated] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [, setPhoneChecked] = useState(false);
+  const [isPhoneAutehnticated] = useState(true);
+  const [showPassword] = useState(false);
+  const [showConfirmPassword] = useState(false);
 
 
   // useEffect(() => {
@@ -271,6 +270,7 @@ function CreateAccount() {
        setValue("provider", "LOCAL");
      }
    })();
+ // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
 
   return (

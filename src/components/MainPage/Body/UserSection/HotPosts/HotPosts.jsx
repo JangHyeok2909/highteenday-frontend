@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./HotPosts.css";
 import "../../../../Default.css"
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { formatBoardPreviewDate } from "../../../../../utils/dateFormat";
 
 

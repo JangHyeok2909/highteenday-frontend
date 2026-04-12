@@ -66,25 +66,52 @@
   border-bottom: none;
 }
 
+#board-preview .post-item--empty {
+  color: #aaa;
+  font-size: 0.85rem;
+  justify-content: center;
+}
+
 #board-preview .post-link {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   text-decoration: none;
   width: 100%;
+  gap: 8px;
 }
 
 #board-preview .post-title {
-  text-align: left;
+  flex: 1;
+  min-width: 0;
   font-size: 0.9rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 90%;
   font-weight: 400;
-  
 }
+
+#board-preview .post-comment-count {
+  margin-left: 4px;
+  font-size: 0.8rem;
+  color: #3cb371;
+}
+
+#board-preview .post-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+#board-preview .post-author {
+  font-size: 0.75rem;
+  color: #aaa;
+  white-space: nowrap;
+}
+
 #board-preview .post-time {
   font-size: 0.75rem;
-  color: #999;
+  color: #bbb;
   white-space: nowrap;
 }

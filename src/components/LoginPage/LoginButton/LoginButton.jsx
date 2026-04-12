@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "./LoginButton.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,7 +14,7 @@ function LoginButton({ setShowFindId, setShowFindPw }) {
 
   useEffect(() => {
     if (isLogin) navigate("/", { replace: true });
-  }, [isLogin]);
+  }, [isLogin, navigate]);
 
   const loginhandler = async (e) => {
     e.preventDefault();

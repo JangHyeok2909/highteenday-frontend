@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 function Terms() {
   return <div id="terms">이용약관 페이지</div>;

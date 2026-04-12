@@ -1,32 +1,24 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import WritePostPage from "./components/Post/Post_Inner/WritePostPage";
-import LoginButton from './components/LoginPage/LoginButton/LoginButton';
 import NotFound from "./pages/NotFound";
 import BoardOverview from "./components/MainPage/Body/BoardSection/BoardSection";
 import BoardPage from "./components/Board/BoardPage";
-import PostDetail from "./components/Post/Post_Inner/PostDetail";
 import MainPage from "./components/MainPage/MainPage";
 import FriendList from "./components/Friend/FriendList";
-import MyPostsPage from "./components/MyPage/activaties/MyPostsPage";
 import MyCommentsPage from "./components/MyPage/activaties/MyCommentsPage";
-import MyScrapsPage from "./components/MyPage/activaties/MyScrapsPage";
 import PostSection from "./components/Post/PostSection";
 import AgreeTermsPage from "./components/RegisterRelated/AgreeTerms/AgreeTermsPage";
-import CommentSection from "./components/CommentRelated/CommentSection";
-import UserProfilePage from "components/MyPage/UserProfilePage.jsx";
 import CreateAccountPage from "./components/RegisterRelated/Account/CreateAccountPage";
 import SchoolRegisterPage from "./components/RegisterRelated/School/SchoolRegisterPage";
 import RegisterProfilePage from "./components/RegisterRelated/Profile/RegisterProfilePage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import ProfileEditPage from "./components/MyPage/ProfileEditPage";
-import RegisterHeader from "components/Header/RegisterHeader/RegisterHeader";
 import TimetablePage from './components/TimetableRelated/TimetablePage';
 import MealPage from "components/MealCalendarPage/MealPage";
 
 import Privacy from "pages/Privacy";
 import Terms from "pages/Terms";
-import MyActivity from "components/MyPage/activaties/MyActivity";
 import Mypage from "components/MyPage/MyPage";
 import MyPostLikeActivity from "./components/MyPage/MyPostLikeActivity";
 

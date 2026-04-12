@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 function Privacy() {
   return <div id="privacy">개인정보 약관 페이지</div>;

@@ -30,8 +30,15 @@ export default function BoardPage() {
   const [page, setPage] = useState(0);
   const [totalPosts, setTotalPosts] = useState(0);
 
-  // ✅ 정렬 필드 + 정렬 순서
+  // 커서 스택 (ref → 항상 최신값, stale closure 없음)
+  // cursorStack[N] = 페이지 N 을 요청할 때 보낼 lastSeedId
+  //   cursorStack[0] = undefined  (첫 페이지는 커서 없이 요청)
+  //   cursorStack[N] = 페이지 N-1 의 마지막 게시글 id
+  const cursorStack = useRef([undefined]);
+
+  // 정렬
   const [sortField, setSortField] = useState("date");
+  const sortFieldRef = useRef("date");
   const [sortOpen, setSortOpen] = useState(false);
   const sortRef = useRef(null);
 
@@ -47,26 +54,47 @@ export default function BoardPage() {
   const startPage = currentBlock * pageBlockSize;
   const endPage = Math.min(startPage + pageBlockSize - 1, safeTotalPages - 1);
 
-  const fetchPosts = async () => {
+  // 현재 페이지를 ref로 추적 (isRandomPage 판별용)
+  const currentPageRef = useRef(0);
+
+  const fetchPosts = async (targetPage) => {
     try {
-      const sortType = getSortType(sortField);
+      const sortType = getSortType(sortFieldRef.current);
+      const lastSeedId = cursorStack.current[targetPage];
+
+      // 바로 인접한 페이지(±1) 이동일 때만 false, 그 외(첫 로드·점프 등) 전부 true
+      const pageDiff = Math.abs(targetPage - currentPageRef.current);
+      const isRandomPage = pageDiff !== 1;
+
+      const params = { page: targetPage, size: POSTS_PER_PAGE, sortType, randomPage: isRandomPage };
+      if (lastSeedId != null) params.lastSeedId = lastSeedId;
 
       const res = await axios.get(`/api/boards/${boardId}/posts`, {
-        params: {
-          page,
-          size: POSTS_PER_PAGE,
-          sortType,
-        },
+        params,
         withCredentials: true,
       });
 
-      console.log("서버 응답:", res.data);
+      const postList =
+        res.data.content ??
+        res.data.postPreviewDtos ??
+        res.data.postDtos ??
+        [];
+      const total =
+        res.data.total ??
+        res.data.totalElements ??
+        postList.length;
 
-      const postList = res.data.postPreviewDtos ?? res.data.postDtos ?? [];
-      const total = res.data.totalElements ?? postList.length;
-
-      setPosts(Array.isArray(postList) ? postList : []);
+      const list = Array.isArray(postList) ? postList : [];
+      setPosts(list);
       setTotalPosts(total);
+
+      // 현재 페이지 ref 업데이트
+      currentPageRef.current = targetPage;
+
+      // 다음 페이지 커서 저장 (아직 없을 때만 → 이미 방문한 페이지면 유지)
+      if (list.length > 0 && cursorStack.current[targetPage + 1] == null) {
+        cursorStack.current[targetPage + 1] = list[list.length - 1].id;
+      }
     } catch (err) {
       console.error("게시글 불러오기 실패:", err);
       setPosts([]);
@@ -74,20 +102,23 @@ export default function BoardPage() {
     }
   };
 
-  const fetchSearch = async (query, pageNum = page) => {
+  const fetchSearch = async (query, pageNum) => {
     const q = (query ?? searchQuery).trim();
     if (!q) return;
     try {
       const res = await axios.get("/api/posts/search", {
-        params: {
-          query: q,
-          page: pageNum,
-          searchType,
-        },
+        params: { query: q, page: pageNum, searchType },
         withCredentials: true,
       });
-      const postList = res.data.postPreviewDtos ?? res.data.postDtos ?? res.data.content ?? [];
-      const total = res.data.totalElements ?? res.data.total ?? postList.length;
+      const postList =
+        res.data.content ??
+        res.data.postPreviewDtos ??
+        res.data.postDtos ??
+        [];
+      const total =
+        res.data.total ??
+        res.data.totalElements ??
+        postList.length;
       setPosts(Array.isArray(postList) ? postList : []);
       setTotalPosts(total);
     } catch (err) {
@@ -97,13 +128,25 @@ export default function BoardPage() {
     }
   };
 
+  // boardId 변경 → 커서 스택·페이지 초기화
+  useEffect(() => {
+    cursorStack.current = [undefined];
+    currentPageRef.current = 0;
+    setPage(0);
+  }, [boardId]);
+
   useEffect(() => {
     if (isSearchMode && searchQuery.trim()) {
       fetchSearch(searchQuery, page);
     } else {
-      fetchPosts();
+      fetchPosts(page);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boardId, page, sortField, isSearchMode, searchType]);
+
+  const goToPage = (targetPage) => {
+    setPage(targetPage);
+  };
 
   const handleSearch = (e) => {
     e?.preventDefault();
@@ -115,13 +158,16 @@ export default function BoardPage() {
     if (q) {
       fetchSearch(q, 0);
     } else {
-      fetchPosts();
+      fetchPosts(0);
     }
   };
 
   const handleSort = (field) => {
-    // 백엔드가 내림차순만 지원하므로, 정렬 조건만 바꿔서 다시 조회
+    sortFieldRef.current = field;
     setSortField(field);
+    // 정렬 변경 시 커서 스택·현재 페이지 ref 초기화
+    cursorStack.current = [undefined];
+    currentPageRef.current = 0;
     setPage(0);
   };
 
@@ -253,7 +299,7 @@ export default function BoardPage() {
                       ({post.commentCount || 0})
                     </span>
                   </td>
-                  <td>{post.author ?? "-"}</td>
+                  <td>{post.anonymous ? "익명" : (post.author ?? "-")}</td>
                   <td>
                     {new Date(post.createdAt).toLocaleString("ko-KR", {
                       month: "2-digit",
@@ -279,23 +325,25 @@ export default function BoardPage() {
 
         {/* 페이지네이션 */}
         <div className="pagination">
+          {/* << : 10페이지 뒤로 */}
           <button
             type="button"
             className="page-btn"
-            onClick={() => setPage(0)}
+            onClick={() => goToPage(Math.max(0, page - pageBlockSize))}
             disabled={page === 0}
-            aria-label="맨앞"
-            title="맨앞"
+            aria-label="10페이지 이전"
+            title="10페이지 이전"
           >
             «
           </button>
+          {/* < : 1페이지 뒤로 */}
           <button
             type="button"
             className="page-btn"
-            onClick={() => setPage(Math.max(0, startPage - pageBlockSize))}
-            disabled={startPage === 0}
-            aria-label="이전 10페이지"
-            title="이전 10페이지"
+            onClick={() => goToPage(Math.max(0, page - 1))}
+            disabled={page === 0}
+            aria-label="이전 페이지"
+            title="이전 페이지"
           >
             ‹
           </button>
@@ -307,30 +355,32 @@ export default function BoardPage() {
                 key={idx}
                 type="button"
                 className={`page-btn ${page === idx ? "active" : ""}`}
-                onClick={() => setPage(idx)}
+                onClick={() => goToPage(idx)}
               >
                 {idx + 1}
               </button>
             );
           })}
 
+          {/* > : 1페이지 앞으로 */}
           <button
             type="button"
             className="page-btn"
-            onClick={() => setPage(Math.min(safeTotalPages - 1, startPage + pageBlockSize))}
-            disabled={endPage >= safeTotalPages - 1}
-            aria-label="다음 10페이지"
-            title="다음 10페이지"
+            onClick={() => goToPage(Math.min(safeTotalPages - 1, page + 1))}
+            disabled={page >= safeTotalPages - 1}
+            aria-label="다음 페이지"
+            title="다음 페이지"
           >
             ›
           </button>
+          {/* >> : 10페이지 앞으로 */}
           <button
             type="button"
             className="page-btn"
-            onClick={() => setPage(safeTotalPages - 1)}
+            onClick={() => goToPage(Math.min(safeTotalPages - 1, page + pageBlockSize))}
             disabled={page >= safeTotalPages - 1}
-            aria-label="맨뒤"
-            title="맨뒤"
+            aria-label="10페이지 다음"
+            title="10페이지 다음"
           >
             »
           </button>

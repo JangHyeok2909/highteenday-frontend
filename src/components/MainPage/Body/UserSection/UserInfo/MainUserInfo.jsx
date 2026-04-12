@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./MainUserInfo.css";
 import "../../../../Default.css";
-import Circle_user_Icon from "../../../../Icons/Circle_user_Icon";
+import CircleUserIcon from "../../../../Icons/Circle_user_Icon";
 import { useAuth } from "../../../../../contexts/AuthContext";
 
 function MainUserInfo() {
@@ -14,7 +14,7 @@ function MainUserInfo() {
           <div className="user-info-card">
             <div className="user-info-header">
               <div className="user-avatar">
-                <Circle_user_Icon size={36} color="#3f9763" />
+                <CircleUserIcon size={36} color="#3f9763" />
               </div>
               <div className="user-greeting">
                 <span className="user-name">{user.nickname}님</span>

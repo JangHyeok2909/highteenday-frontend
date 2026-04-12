@@ -127,14 +127,14 @@ export default function UserInfo() {
           <h2>이용 안내</h2>
           <ul className="linklist">
             <li>
-              <a className="link" href="#">
+              <button type="button" className="link">
                 서비스 이용약관
-              </a>
+              </button>
             </li>
             <li>
-              <a className="link" href="#">
+              <button type="button" className="link">
                 개인정보 처리 방침
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -144,19 +144,19 @@ export default function UserInfo() {
           <h2>서비스</h2>
           <ul className="linklist">
             <li>
-              <a className="link" href="#">
+              <button type="button" className="link">
                 고객센터
-              </a>
+              </button>
             </li>
             <li>
-              <a className="link" href="#">
+              <button type="button" className="link">
                 챗봇
-              </a>
+              </button>
             </li>
             <li>
-              <a className="link" href="#">
+              <button type="button" className="link">
                 자주 물어보는 질문
-              </a>
+              </button>
             </li>
           </ul>
         </div>

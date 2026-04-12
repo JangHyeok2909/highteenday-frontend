@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./SidebarMenu.css";
 import Menubar from "../../Icons/Menubar";
-import Arrow_Left_Icon from "../../Icons/Arrow_Left_Icon";
+import ArrowLeftIcon from "../../Icons/Arrow_Left_Icon";
 import "../../Default.css"
 
 function SidebarMenu({size, color}) {
@@ -88,7 +88,7 @@ function SidebarMenu({size, color}) {
               className="sidebar-back-button inline-block"
               onClick={() => setIsOpen(false)}
             >
-              <Arrow_Left_Icon size={size} color={color} strokeWidth={1.5} />
+              <ArrowLeftIcon size={size} color={color} strokeWidth={1.5} />
             </div>
             <div className="menu-content inline-block">
               <ul>

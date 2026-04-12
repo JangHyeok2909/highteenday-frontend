@@ -1,33 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../../../Default.css";
-import axios from "axios";
-import   BoardPreview from "./BoardPreview/BoardPreview";
+import BoardPreview from "./BoardPreview/BoardPreview";
 import "./BoardSection.css";
 
+const BOARDS = [
+  { boardId: 1, boardName: "자유게시판" },
+  { boardId: 2, boardName: "수능게시판" },
+  { boardId: 3, boardName: "이과게시판" },
+  { boardId: 4, boardName: "문과게시판" },
+];
+
 function BoardSection() {
-  const [boards, setBoards] = useState([]);
-  
-  useEffect(() => {
-   const fetchBoards = async () => {
-      try {
-        const res = await axios.get(`/api/boards`, {
-          withCredentials: true,
-        });
-        setBoards(res.data);
-      } catch (err) {
-        setBoards([]);
-      }
-    };  
-
-    fetchBoards();
-  }, []);
-  
-
   return (
     <div className="board-section">
-      {boards.map((board, idx) => (
+      {BOARDS.map((board) => (
         <BoardPreview
-          key={idx}
+          key={board.boardId}
           boardId={board.boardId}
           boardName={board.boardName}
         />

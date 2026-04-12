@@ -28,6 +28,7 @@ function MyPostLikeActivity({ type }) {
         setTotalPages(res.data.totalPages || 1);
       })
       .catch((err) => console.error(`${typeMap[type].title} 불러오기 실패:`, err));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, sortType, page]);
 
   return (

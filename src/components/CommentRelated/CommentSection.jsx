@@ -4,7 +4,7 @@ import Comment from "./Comment";
 import CreateComment from "./CreateComment";
 import "./CommentSystem.css";
 import { useAuth } from "../../contexts/AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
 
@@ -17,8 +17,6 @@ const CommentSection = ({ postId }) => {
   const [loading, setLoading] = useState(false);
   const { isLogin } = useAuth();
   const navigate = useNavigate();
-  
-  const userId = parseInt(localStorage.getItem("loginUserId"), 10);
 
   const buildCommentTree = (flatComments) => {
     const commentMap = {};
@@ -87,7 +85,6 @@ const CommentSection = ({ postId }) => {
         parentId: parentId ?? null,
         anonymous: Boolean(anonymous),
         url: imageUrl || '',
-        userId,
       };
 
       await axios.post(
