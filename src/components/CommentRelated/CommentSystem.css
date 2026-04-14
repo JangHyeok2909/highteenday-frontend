@@ -219,6 +219,20 @@
 #comment-section-container .reply-form-wrapper { margin-top: 8px; margin-left: 40px; }
 #comment-section-container .replies-container { margin-top: 8px; }
 
+@media (max-width: 768px) {
+  #comment-section-container .comment-item.comment-reply {
+    margin-left: 20px;
+  }
+
+  #comment-section-container .reply-form-wrapper {
+    margin-left: 20px;
+  }
+
+  #comment-section-container .comment-form.reply-form {
+    margin-left: 20px;
+  }
+}
+
 /* 메시지 */
 #comment-section-container .error-message {
   background: #ffecec; color: #b42318; border: 1px solid #fac7c3;

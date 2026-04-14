@@ -30,7 +30,7 @@
 
 #login-page .login-container {
   position: relative;
-  width: 500px;
+  width: min(500px, 100%);
   padding: 0;
   background-color: transparent;
   border-radius: 0;

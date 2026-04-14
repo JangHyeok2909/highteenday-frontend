@@ -41,6 +41,24 @@
     padding: 12px 0 16px;
     border-bottom: 2px solid var(--line);
   }
+
+  @media (max-width: 768px) {
+    .post-header {
+      grid-template-columns: 1fr;
+    }
+
+    .post-category {
+      text-align: left;
+    }
+
+    .post-container {
+      margin: 16px auto 28px;
+    }
+
+    .post-title {
+      font-size: 20px;
+    }
+  }
   
   .post-title {
     font-size: 24px;

@@ -1,7 +1,8 @@
 /* header */
 #header {
   width: 100%;
-  height: 140px;
+  /* 반응형: 모바일에서 헤더 높이 축소 */
+  height: clamp(72px, 12vw, 140px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,7 +29,7 @@
 }
 
 #header .logo img {
-  height: 115px;
+  height: clamp(60px, 10vw, 115px);
   width: auto;
   object-fit: contain;
   display: block;
@@ -134,4 +135,28 @@
 #header .padding-minus {
   display: flex;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  #header .right-section {
+    gap: 8px;
+  }
+
+  #header .function {
+    gap: 6px;
+  }
+
+  #header .user-section-logged {
+    gap: 8px;
+    padding: 4px 10px;
+  }
+
+  #header .user-section-name {
+    font-size: 13px;
+  }
+
+  #header .user-section-link,
+  #header .user-section-logout {
+    font-size: 12px;
+  }
 }

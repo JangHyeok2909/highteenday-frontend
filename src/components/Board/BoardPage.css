@@ -18,6 +18,37 @@
   table-layout: fixed;
 }
 
+@media (max-width: 768px) {
+  .board-page .board-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .board-page .board-table th:nth-child(n+3),
+  .board-page .board-table td:nth-child(n+3) {
+    display: none;
+  }
+
+  .board-page .board-table th:first-child,
+  .board-page .board-table td:first-child {
+    width: auto;
+  }
+
+  .board-page .board-table th:nth-child(2),
+  .board-page .board-table td:nth-child(2) {
+    width: auto;
+  }
+
+  .board-page .board-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .board-page .board-search-bottom .search-input {
+    width: 160px;
+  }
+}
+
 .board-page .board-table th,
 .board-page .board-table td {
   border-bottom: 1px solid #ddd;

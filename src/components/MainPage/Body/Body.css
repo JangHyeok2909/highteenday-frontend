@@ -31,3 +31,19 @@
   flex-direction: column;
   gap: 14px;
 }
+
+@media (max-width: 1024px) {
+  #body .body-right {
+    width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  #body #body-bottom {
+    flex-direction: column;
+  }
+
+  #body .body-right {
+    width: 100%;
+  }
+}
