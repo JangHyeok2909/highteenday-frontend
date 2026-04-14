@@ -18,11 +18,18 @@
 
 #header .logo {
   position: absolute;
-  top: 50px;
-  left: 45%;
-  border: 1px solid #000;
-  padding: 30px 25px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   cursor: pointer;
+  line-height: 0;
+}
+
+#header .logo img {
+  height: 190px;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
 #header > .function {

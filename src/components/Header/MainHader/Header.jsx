@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../../../assets/highteenLogo.jpg";
 import NotificationBellIcons from "../../Icons/NotificationBellIcon";
 import UsersOverlayIcon from "../../Icons/UsersOverlayIcon";
 import "./Header.css";
@@ -26,7 +27,7 @@ function Header({ isMainPage }) {
       </div>
 
       <div className="logo" onClick={() => navigate("/")}>
-        <h1>logo</h1>
+        <img src={logo} alt="하이틴데이" />
       </div>
 
       <div className="user-section">
