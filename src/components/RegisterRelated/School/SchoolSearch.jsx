@@ -27,7 +27,7 @@ function SchoolSearch() {
   const submit = async () => {
     if (!selectedSchool) return;
     try {
-      await axios.put(
+      await axios.patch(
         "/api/user/modify/school",
         { schoolId: selectedSchool.id },
         { withCredentials: true }

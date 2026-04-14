@@ -44,8 +44,8 @@ function NicknameChange() {
 
     try {
       setSaveLoading(true);
-      const res = await axios.put(
-        "/api/user/update-nickname",
+      const res = await axios.patch(
+        "/api/user/modify/nickname",
         { nickname },
         { withCredentials: true }
       );

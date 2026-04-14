@@ -69,7 +69,7 @@ function PostEditor() {
 
     try {
       if (isEditMode) {
-        await axios.put(
+        await axios.patch(
           `${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`,
           postData,
           { withCredentials: true }

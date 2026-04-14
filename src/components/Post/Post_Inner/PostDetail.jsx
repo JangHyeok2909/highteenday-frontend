@@ -74,7 +74,7 @@ function PostDetail() {
     setPost({ ...post, liked, disliked, likeCount, dislikeCount });
 
     try {
-      await axios.post(`${API_BASE}/posts/${post.id}/like`, null, {
+      await axios.post(`${API_BASE}/posts/${post.id}/reaction?type=LIKE`, null, {
         withCredentials: true,
       });
     } catch (e) {
@@ -100,7 +100,7 @@ function PostDetail() {
     setPost({ ...post, liked, disliked, likeCount, dislikeCount });
 
     try {
-      await axios.post(`${API_BASE}/posts/${post.id}/dislike`, null, {
+      await axios.post(`${API_BASE}/posts/${post.id}/reaction?type=DISLIKE`, null, {
         withCredentials: true,
       });
     } catch (e) {

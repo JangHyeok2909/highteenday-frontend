@@ -44,7 +44,7 @@ function ProfileEdit() {
         throw new Error("업로드 응답에서 이미지 URL을 찾을 수 없습니다.");
       }
 
-      await axios.put(
+      await axios.patch(
         "/api/user/updateProfileImage",
         { profileImageUrl: imageUrl },
         { withCredentials: true }

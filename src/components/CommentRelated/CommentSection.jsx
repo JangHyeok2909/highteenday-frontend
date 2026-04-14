@@ -111,7 +111,7 @@ const CommentSection = ({ postId }) => {
 
   const handleUpdate = async (commentId, content, url) => {
     try {
-      await axios.put(
+      await axios.patch(
         `${API_BASE}/posts/${postId}/comments/${commentId}`,
         {
           content: content ?? '',
@@ -146,7 +146,7 @@ const CommentSection = ({ postId }) => {
     }
     try {
       await axios.post(
-        `${API_BASE}/comments/${commentId}/like`,
+        `${API_BASE}/comments/${commentId}/reaction?type=LIKE`,
         {},
         { withCredentials: true }
       );
@@ -168,7 +168,7 @@ const CommentSection = ({ postId }) => {
 
     try {
       await axios.post(
-        `${API_BASE}/comments/${commentId}/dislike`,
+        `${API_BASE}/comments/${commentId}/reaction?type=DISLIKE`,
         {},
         { withCredentials: true }
       );

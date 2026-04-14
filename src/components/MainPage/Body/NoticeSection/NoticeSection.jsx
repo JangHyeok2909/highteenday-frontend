@@ -10,8 +10,7 @@ function NoticeSection() {
                 학교 소식지
             </div>
             <div className="content">
-                약간 이쯤에 공모전이나 공지 같은거나 한 두 줄로 띄워도 괜찮을 듯 <br></br>
-                이런 식으로
+                하이틴데이에 오신 걸 환영합니다! 친구들과 소통하고, 급식·시간표를 한눈에 확인하세요.
             </div>
         </div>
     </div>
