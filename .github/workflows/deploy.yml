@@ -37,14 +37,13 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync build/ s3://highteenday-frontend-bucket --delete \
-            --exclude "*" --include "*.html" --content-type "text/html"
-          aws s3 sync build/ s3://highteenday-frontend-bucket \
-            --exclude "*" --include "*.css" --content-type "text/css"
-          aws s3 sync build/ s3://highteenday-frontend-bucket \
-            --exclude "*" --include "*.js" --content-type "application/javascript"
-          aws s3 sync build/ s3://highteenday-frontend-bucket \
-            --exclude "*.html" --exclude "*.css" --exclude "*.js"
+          aws s3 sync build/ s3://highteenday-frontend-bucket --delete
+          aws s3 cp s3://highteenday-frontend-bucket/static/css/ s3://highteenday-frontend-bucket/static/css/ \
+            --recursive --content-type "text/css" --metadata-directive REPLACE
+          aws s3 cp s3://highteenday-frontend-bucket/static/js/ s3://highteenday-frontend-bucket/static/js/ \
+            --recursive --content-type "application/javascript" --metadata-directive REPLACE
+          aws s3 cp s3://highteenday-frontend-bucket/index.html s3://highteenday-frontend-bucket/index.html \
+            --content-type "text/html" --metadata-directive REPLACE
 
       - name: Invalidate CloudFront cache
         run: |
