@@ -1,4 +1,8 @@
 /* User Info - 로그인 상태 카드 */
+#user-profile-section {
+  width: 100%;
+}
+
 #user-profile-section .logged-in-state {
   width: 100%;
 }
@@ -107,7 +111,7 @@
 
 /* 로그아웃 상태 */
 #user-profile-section .logged-out-state {
-  width: 350px;
+  width: 100%;
 }
 
 #user-profile-section .login-btn {

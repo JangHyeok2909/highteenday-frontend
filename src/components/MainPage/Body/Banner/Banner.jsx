@@ -1,80 +1,79 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./Banner.css";
-import ArrowLeftIcon from "../../../Icons/Arrow_Left_Icon";
-import ArrowRightIcon from "../../../Icons/Arrow_Right_Icon";
-import "../../../Default.css"
+import banner1 from "../../../../assets/banner1.jpg";
+// import banner2 from "../../../../assets/banner2.jpg";
+// import banner3 from "../../../../assets/banner3.jpg";
 
-function Banner({ width = "100%", height = "300px" }) {
+const banners = [
+  banner1,
+  // banner2,
+  // banner3,
+];
 
+function Banner() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [startX, setStartX] = useState(0);
-  const banners = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  
-  // 배너 이전 클릭
-  const prevSlide = () => {
-      setCurrentIndex( (prev) => (prev - 1 + banners.length) % banners.length);
-  };
-  // 배너 다음 클릭
-  const nextSlide = () => {
-      setCurrentIndex( (prev) => (prev + 1) % banners.length);
-  };
-  
-  const handleMouseLeftSlide = (e) => setStartX(e.clientX);
-  const handleMouseRightSlide = (e) => {
-      const diff = e.clientX - startX;
-      if(diff > 50) prevSlide();
-      if(diff < -50) nextSlide();
+
+  const prevSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + banners.length) % banners.length);
+  }, []);
+
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % banners.length);
+  }, []);
+
+  const handleMouseDown = (e) => setStartX(e.clientX);
+  const handleMouseUp = (e) => {
+    const diff = e.clientX - startX;
+    if (diff > 50) prevSlide();
+    if (diff < -50) nextSlide();
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 10000);
-
+    const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [nextSlide]);
 
   return (
-   <div id="banner">    
-        <div style={{ width, height }} 
-            className="banner-container"
-            onMouseDown={handleMouseLeftSlide}
-            onMouseUp={handleMouseRightSlide}
-            >
-          <div
-            className="banner-track"
-            style={{
-              transform: `translateX(-${currentIndex * 100}%)`,
-            }}
-          >
-            {banners.map((banner, idx) => (
-              <div className="banner-slide">
-                <div className="banner-content" key={idx}>
-                  {banner}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div id="indicators">
-            {banners.map((_, idx) => (
-              <span 
-                key={idx}
-                className={`dot ${currentIndex === idx ? "active" : ""}`}
-                onClick={() => setCurrentIndex(idx)}>
-              </span>
-            ))}
-          </div>
+    <div id="banner">
+      <div
+        className="banner-container"
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+      >
+        <div
+          className="banner-track"
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        >
+          {banners.map((src, idx) => (
+            <div key={idx} className="banner-slide">
+              <img src={src} alt={`배너 ${idx + 1}`} className="banner-image" draggable={false} />
+            </div>
+          ))}
         </div>
 
-        <div className="banner-arrow left" onClick={prevSlide}>
-          <ArrowLeftIcon size={45} strokeWidth={1.5} color={"white"} />
-        </div>
-        <div className="banner-arrow right" onClick={nextSlide}>
-          <ArrowRightIcon size={45} strokeWidth={1.5} color={"white"} />
-        </div>
-   </div>
+        {banners.length > 1 && (
+          <>
+            <button className="banner-arrow left" onClick={prevSlide} aria-label="이전">
+              &#8249;
+            </button>
+            <button className="banner-arrow right" onClick={nextSlide} aria-label="다음">
+              &#8250;
+            </button>
+
+            <div className="banner-indicators">
+              {banners.map((_, idx) => (
+                <span
+                  key={idx}
+                  className={`dot ${currentIndex === idx ? "active" : ""}`}
+                  onClick={() => setCurrentIndex(idx)}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
 

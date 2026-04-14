@@ -1,27 +1,27 @@
 #hot-posts .hotposts-container {
-  
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #fff;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
 #hot-posts .hotposts-title {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #333;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111827;
   margin: 0;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #ddd;
-  display: block;
-  width: 100%;
+  padding: 13px 16px;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fafafa;
 }
 
-/* 표 스타일 시작 */
 #hot-posts .hotposts-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 0.6rem;
 }
 
 #hot-posts .hotposts-table tbody {
@@ -29,38 +29,69 @@
 }
 
 #hot-posts .hotpost-row {
-  border-top: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background 0.15s;
 }
 
-#hot-posts .hotpost-row:first-child {
-  border-top: none;
+#hot-posts .hotpost-row:hover {
+  background: #f9fafb;
 }
 
 #hot-posts .hotpost-row td {
-  padding: 0.6rem 0;
-  font-size: 0.9rem;
+  padding: 9px 16px;
+  font-size: 0.85rem;
   vertical-align: middle;
+  border-bottom: 1px solid #f3f4f6;
 }
 
-/* 제목 셀 */
-
-#hot-posts tr {
-  cursor: pointer;
+#hot-posts .hotpost-row:last-child td {
+  border-bottom: none;
 }
-#hot-posts .link>.post-title {
+
+#hot-posts .post-rank {
+  width: 28px;
+  text-align: center;
+  padding-right: 4px !important;
+}
+
+#hot-posts .rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+#hot-posts .rank-badge.rank-top {
+  background: #ecfdf5;
+  color: #3f9763;
+}
+
+#hot-posts .post-title {
   text-align: left;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 180px;
-  color: #222;
+  max-width: 230px;
+  color: #374151;
 }
 
-/* 날짜 셀 */
-#hot-posts .link>.post-date {
+#hot-posts .post-date {
   text-align: right;
-  font-size: 0.8rem;
-  color: #777;
+  font-size: 0.75rem;
+  color: #9ca3af;
   white-space: nowrap;
+}
+
+#hot-posts .no-posts {
+  padding: 20px 16px;
+  font-size: 0.85rem;
+  color: #9ca3af;
+  text-align: center;
 }

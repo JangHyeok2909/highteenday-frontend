@@ -123,7 +123,6 @@ function CreateAccount() {
   const [isNicknameChecked, setNicknameChecked] = useState(false);
   const [isEmailChecked, setEmailChecked] = useState(false);
   const [, setPhoneChecked] = useState(false);
-  const [isPhoneAutehnticated] = useState(true);
   const [showPassword] = useState(false);
   const [showConfirmPassword] = useState(false);
 
@@ -142,7 +141,7 @@ function CreateAccount() {
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
-    defaultValues: { mode: false, provider: "LOCAL" }, 
+    defaultValues: { mode: false, provider: "DEFAULT" },
   });
   const isOAuth = watch("mode");
 
@@ -189,19 +188,26 @@ function CreateAccount() {
     }
   };
 
-  const handlePhoneChange = async (e) => {
-    //입력폼 제한(010xxxxxxxx 형식)
-    let value = e.target.value.replace(/\D/g, ""); // 숫자만
-    if (!value.startsWith("010")) value = "010" + value.slice(3);
-    if (value.length > 3 && value.length <= 7)
-      value = value.replace(/(\d{3})(\d+)/, "$1$2");
-    else if (value.length > 7)
-      value = value.replace(/(\d{3})(\d{4})(\d+)/, "$1$2$3");
+  const handlePhoneChange = (e) => {
+    let digits = e.target.value.replace(/\D/g, "");
+    if (digits.length > 0 && !digits.startsWith("010")) digits = "010";
+    digits = digits.slice(0, 11);
 
-    setValue("phone", value); // RHF 상태 업데이트
-    trigger("phone"); // yup 유효성 체크
+    let formatted = digits;
+    if (digits.length > 7) {
+      formatted = digits.slice(0, 3) + "-" + digits.slice(3, 7) + "-" + digits.slice(7);
+    } else if (digits.length > 3) {
+      formatted = digits.slice(0, 3) + "-" + digits.slice(3);
+    }
 
-    //서버 중복 체크
+    setValue("phone", formatted, { shouldValidate: false });
+  };
+
+  const handlePhoneBlur = async (e) => {
+    const value = e.target.value;
+    const valid = await trigger("phone");
+    if (!valid) return;
+
     const formattedPhone = formattingPhone(value);
     const res = await requestCheck("phone", formattedPhone);
     if (res) {
@@ -217,15 +223,17 @@ function CreateAccount() {
   };
 
   const isFormValid =
-    isValid && isNicknameChecked && isEmailChecked && isPhoneAutehnticated;
+    isValid && isNicknameChecked && isEmailChecked && !errors.phone;
 
   const onSubmit = async (data) => {
-    console.log("Submit called!", data);
-    // 전송되는 phone +82 형식으로 변환
+    // confirmPassword, mode는 프론트 전용 필드 — 백엔드에 보내지 않음
+    // eslint-disable-next-line no-unused-vars
+    const { confirmPassword, mode, birth, ...rest } = data;
     const payload = {
-      ...data,
-      phone:formattingPhone(data.phone),
-    }
+      ...rest,
+      phone: formattingPhone(data.phone),
+      birthDate: birth ? new Date(birth).toISOString().split("T")[0] : null,
+    };
 
     
     try {
@@ -262,12 +270,12 @@ function CreateAccount() {
          setValue("provider", data.provider);
        } else {
          setValue("mode", false);
-         setValue("provider", "LOCAL");
+         setValue("provider", "DEFAULT");
        }
      } catch (err) {
        console.log("마운트 에러", err);
        setValue("mode", false);
-       setValue("provider", "LOCAL");
+       setValue("provider", "DEFAULT");
      }
    })();
  // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -293,6 +301,7 @@ function CreateAccount() {
             type="tel"
             {...register("phone")}
             onChange={handlePhoneChange}
+            onBlur={handlePhoneBlur}
             maxLength={13}
           />
           {errors.phone && <p>{errors.phone.message}</p>}

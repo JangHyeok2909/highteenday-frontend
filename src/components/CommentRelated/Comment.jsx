@@ -5,6 +5,7 @@ import { MessageSquare, Trash2, Edit3, X, CornerDownRight } from "lucide-react";
 import "./CommentSystem.css";
 import ReactionButton from "../ReactionButtons/ReactionButton";
 import { formatBoardPreviewDate } from "../../utils/dateFormat";
+import defaultProfile from "../../assets/default_profile_image.jpg";
 
 
 
@@ -196,7 +197,11 @@ const Comment = ({
         )}
 
         <div className="comment-avatar" aria-hidden>
-          {displayAuthor?.[0] || "익"}
+          <img
+            src={comment.profileUrl || defaultProfile}
+            alt={displayAuthor}
+            onError={(e) => { e.currentTarget.src = defaultProfile; }}
+          />
         </div>
 
         <div className="comment-main">

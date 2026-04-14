@@ -59,7 +59,7 @@ function BoardPreview({ boardId, boardName }) {
   };
 
   return (
-    <div id="board-preview">
+    <div className="board-preview">
       <div className="board-block">
         <div className="board-header">
           <h3 className="board-name">

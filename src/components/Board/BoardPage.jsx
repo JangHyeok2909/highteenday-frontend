@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { PenSquare } from "lucide-react";
 import Header from "../Header/MainHader/Header";
 import "./BoardPage.css";
 
@@ -203,7 +204,6 @@ export default function BoardPage() {
   
       <div className="board-page-container">
         <h2>{boardNameMap[boardKey] || "게시판"}</h2>
-
         <div className="board-toolbar">
           <div className="board-toolbar-left">
             <div className="sort-dropdown" ref={sortRef}>
@@ -266,8 +266,10 @@ export default function BoardPage() {
               type="button"
               className="write-btn"
               onClick={() => navigate("/post/write", { state: { boardId } })}
+              aria-label="글쓰기"
+              title="글쓰기"
             >
-              글쓰기
+              <PenSquare size={22} />
             </button>
           </div>
         </div>

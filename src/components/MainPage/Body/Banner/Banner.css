@@ -1,80 +1,104 @@
-/* banner */
 #banner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+  width: 100%;
+  margin-bottom: 20px;
 }
-#banner>.banner-container {
-    background-color: #838383;
-    border-radius: 5px;
-}
-#banner .banner-arrow {
-    position: absolute;
-    background-color: #C4C4C4;
-    width: 40px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-#banner>.banner-arrow.left {
-    left: 2.5%;
-    transform: scaleY(4);
-}
-#banner>.banner-arrow.right {
-    right: 2.5%;
-    transform: scaleY(4);
-}
+
 #banner .banner-container {
-    overflow: hidden;
-    position: relative;
+  position: relative;
+  width: 100%;
+  height: 280px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  cursor: grab;
+  user-select: none;
 }
+
+#banner .banner-container:active {
+  cursor: grabbing;
+}
+
+/* 슬라이드 트랙 */
 #banner .banner-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    height: 100%;
+  display: flex;
+  height: 100%;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 #banner .banner-slide {
-    flex: 0 0 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-#banner .banner-content {
-    width: 75%;
-    height: 100%;
-    background-color: rgba(44, 44, 44, 0.336);
-    font-size: 100px;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  flex: 0 0 100%;
+  height: 100%;
 }
 
-#banner #indicators {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display:flex;
-    gap: 5px;
+#banner .banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
 }
+
+/* 화살표 버튼 */
+#banner .banner-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #3f9763;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s, transform 0.2s;
+  z-index: 2;
+  line-height: 1;
+  padding: 0;
+}
+
+#banner .banner-arrow:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-50%) scale(1.08);
+}
+
+#banner .banner-arrow.left {
+  left: 14px;
+}
+
+#banner .banner-arrow.right {
+  right: 14px;
+}
+
+/* 인디케이터 */
+#banner .banner-indicators {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 2;
+}
+
 #banner .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: white;
-    opacity: 0.5;
-    cursor: pointer;
-
-    box-shadow: 0 2px 4px rgba(0, 128, 0, 0.2);
-    transition: all 0.2s ease;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
 }
-#banner .dot.active{
-    opacity: 1;
-    background-color: #3f9763;
+
+#banner .dot:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+#banner .dot.active {
+  background: #3f9763;
+  transform: scale(1.25);
 }

@@ -1,18 +1,18 @@
 #time-table .container {
-  border: 1.5px solid #3f9673;
-  width: 100%; 
-  border-radius: 5px;
+  border: 1px solid #e5e7eb;
+  width: 100%;
+  border-radius: 10px;
   font-family: sans-serif;
   background-color: #fff;
   position: relative;
-
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
 #time-table .tabMenu {
   display: flex;
-  border-bottom: 1.5px solid #3f9673;
-  border-radius: 5px 5px 0 0;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fafafa;
 }
 
 #time-table .tab {
@@ -26,21 +26,12 @@
   background-color: white;
 }
 
-#time-table .active_left {
-  background-color: #d4f5d4;
-  border-left: 1.5px solid #3f9673;
-  border-top: none;
-  border-bottom: none;
-  border-radius: 4px 4px 0 0;
-  color: black;
-}
+#time-table .active_left,
 #time-table .active_right {
-  background-color: #d4f5d4;
-  border-right: 1.5px solid #3f9673;
-  border-top: none;
-  border-bottom: none;
-  border-radius: 4px 4px 0 0;
-  color: black;
+  background-color: #ecfdf5;
+  color: #3f9763;
+  font-weight: 700;
+  border-bottom: 2px solid #3f9763;
 }
 
 #time-table .contentBox {

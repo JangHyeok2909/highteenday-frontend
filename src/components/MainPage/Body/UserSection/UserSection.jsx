@@ -10,17 +10,11 @@ import TimetableMeal from "./TimeTable/TimetableMeal";
 function UserSection() {
 
   return (
-   <div id="user-section">    
-        <div className="user-info">
-            <MainUserInfo />
-        </div>
-        <div className="time-table">
-          <TimetableMeal />
-        </div>
-        <div className="hot-posts">
-          <HotPosts />
-        </div>
-   </div>
+    <>
+      <MainUserInfo />
+      <TimetableMeal />
+      <HotPosts />
+    </>
   );
 }
 

@@ -1,14 +1,4 @@
-/* User Section */
-
+/* User Section - gap은 body-right에서 관리 */
 #user-section {
-    width: 370px;
-    padding: 0 0 0 20px;
-}
-
-#user-section .time-table {
-    padding: 10px 0;
-}
-
-#user-section>div {
-    padding: 10px 0;
+  display: contents;
 }

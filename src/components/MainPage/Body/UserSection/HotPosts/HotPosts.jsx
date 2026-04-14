@@ -39,7 +39,7 @@ const HotPosts = () => {
         ) : (
           <table className="hotposts-table">
             <tbody>
-              {posts.map((post) => (
+              {posts.map((post, idx) => (
                 <tr
                   key={post.id}
                   className="hotpost-row"
@@ -48,6 +48,9 @@ const HotPosts = () => {
                   tabIndex={0}
                   onKeyDown={(e) => e.key === "Enter" && movePostHandler(post.id)}
                 >
+                  <td className="post-rank">
+                    <span className={`rank-badge ${idx < 3 ? "rank-top" : ""}`}>{idx + 1}</span>
+                  </td>
                   <td className="post-title">{post.title}</td>
                   <td className="post-date">{formatBoardPreviewDate(post.createdAt)}</td>
                 </tr>

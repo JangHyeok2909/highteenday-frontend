@@ -36,7 +36,15 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Deploy to S3
-        run: aws s3 sync build/ s3://highteenday-frontend-bucket --delete
+        run: |
+          aws s3 sync build/ s3://highteenday-frontend-bucket --delete \
+            --exclude "*" --include "*.html" --content-type "text/html"
+          aws s3 sync build/ s3://highteenday-frontend-bucket \
+            --exclude "*" --include "*.css" --content-type "text/css"
+          aws s3 sync build/ s3://highteenday-frontend-bucket \
+            --exclude "*" --include "*.js" --content-type "application/javascript"
+          aws s3 sync build/ s3://highteenday-frontend-bucket \
+            --exclude "*.html" --exclude "*.css" --exclude "*.js"
 
       - name: Invalidate CloudFront cache
         run: |

@@ -16,15 +16,12 @@ function Body() {
       </div>
 
       <div id="body-bottom">
-        <div className="body-left inline-block">
-          <div className="NoticeSection">
-            <NoticeSection />
-          </div>
-
+        <div className="body-left">
+          <NoticeSection />
           <BoardSection />
         </div>
 
-        <div className="body-right inline-block">
+        <div className="body-right">
           <UserSection />
         </div>
       </div>

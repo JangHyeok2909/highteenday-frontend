@@ -1,8 +1,6 @@
-/* board-over-view in MainPage */
-#board-over-view>.board-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    padding: 20px 0;
-    width: 850px;
+.board-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
 }

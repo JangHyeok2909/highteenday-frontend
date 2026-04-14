@@ -19,6 +19,7 @@ import MealPage from "components/MealCalendarPage/MealPage";
 
 import Privacy from "pages/Privacy";
 import Terms from "pages/Terms";
+import WelcomePage from "pages/WelcomePage";
 import Mypage from "components/MyPage/MyPage";
 import MyPostLikeActivity from "./components/MyPage/MyPostLikeActivity";
 
@@ -57,6 +58,8 @@ function App() {
       {/*mypages */}
       {/* <Route path="/mypage" element ={<MyActivity />}/> */}
 
+      {/* 웰컴 페이지 */}
+      <Route path="/welcome" element={<WelcomePage />} />
       {/*약관 페이지*/}
       <Route path="/FormRegisterPage" element={<AgreeTermsPage />} />
       {/* 약관 페이지 (필수로 필요한 페이지임) */}

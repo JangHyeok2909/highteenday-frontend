@@ -1,5 +1,9 @@
 .board-page {
-  padding: 20px;
+  padding: 0;
+}
+
+.board-page-container {
+  padding-top: 32px;
 }
 
 .board-page h2 {
@@ -11,7 +15,7 @@
 .board-page .board-table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* 각 열 고정 */
+  table-layout: fixed;
 }
 
 .board-page .board-table th,
@@ -26,7 +30,6 @@
   background-color: #fafafa;
 }
 
-/* 📌 제목은 왼쪽 정렬 */
 .board-page .board-table th:first-child,
 .board-page .board-table td:first-child {
   text-align: left;
@@ -34,29 +37,25 @@
   word-break: break-word;
 }
 
-/* 📌 작성자 */
 .board-page .board-table th:nth-child(2),
 .board-page .board-table td:nth-child(2) {
   text-align: center;
   width: 12%;
 }
 
-/* 📌 날짜 / 조회 / 좋아요는 가운데 정렬 */
 .board-page .board-table th:nth-child(n+3),
 .board-page .board-table td:nth-child(n+3) {
   text-align: center;
   width: 14%;
 }
 
-/* 📌 헤더 내부: 텍스트 위, 화살표 아래 */
 .board-page .board-table th .th-col {
-  display: inline-flex;     /* 테이블 구조 깨지지 않음 */
-  flex-direction: column;   /* 내부만 세로 배치 */
+  display: inline-flex;
+  flex-direction: column;
   align-items: center;
   gap: 2px;
 }
 
-/* 🔽 화살표 버튼 */
 .board-page .arrow-btn {
   background: none;
   border: none;
@@ -71,19 +70,16 @@
   color: #000;
 }
 
-/* 📌 게시글 제목 */
 .board-page .post-title {
   font-weight: 500;
 }
 
-/* 📌 댓글 수 */
 .board-page .comment-count {
   color: #3cb371;
   margin-left: 4px;
   font-size: 13px;
 }
 
-/* 📌 페이지네이션 */
 .board-page .pagination {
   margin-top: 20px;
   display: flex;
@@ -105,7 +101,6 @@
   color: white;
 }
 
-/* 상단 툴바 (글쓰기) */
 .board-page .board-toolbar {
   display: flex;
   align-items: center;
@@ -125,43 +120,6 @@
   align-items: center;
 }
 
-.board-page .sort-tabs {
-  display: inline-flex;
-  gap: 6px;
-  padding: 4px;
-  border: 1px solid #ddd;
-  border-radius: 999px;
-  background: #fff;
-}
-
-.board-page .sort-tab {
-  border: none;
-  background: transparent;
-  padding: 8px 14px;
-  font-size: 14px;
-  cursor: pointer;
-  color: #6b7280;
-  border-radius: 999px;
-  transition: background 0.15s, color 0.15s;
-}
-
-.board-page .sort-tab:hover {
-  background: #f5f5f5;
-  color: #374151;
-}
-
-.board-page .sort-tab.active {
-  background: #eaf7f0;
-  color: #2e8b57;
-  font-weight: 700;
-}
-
-.board-page .sort-tab:focus-visible {
-  outline: 2px solid rgba(60, 179, 113, 0.35);
-  outline-offset: 2px;
-}
-
-/* 정렬 드롭다운 */
 .board-page .sort-dropdown {
   position: relative;
 }
@@ -228,22 +186,25 @@
   font-weight: 700;
 }
 
+/* 글쓰기 아이콘 버튼 */
 .board-page .write-btn {
-  background: #3cb371;
-  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
   border: none;
-  border-radius: 8px;
-  padding: 8px 14px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
+  color: #3f9763;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
 }
 
 .board-page .write-btn:hover {
-  background: #2e8b57;
+  background: #ecfdf5;
+  color: #2d7a4a;
 }
 
-/* 하단 검색창 */
 .board-page .board-search-bottom {
   display: flex;
   align-items: center;
@@ -283,4 +244,3 @@
 .board-page .board-search-bottom .search-btn:hover {
   background: #2e8b57;
 }
-

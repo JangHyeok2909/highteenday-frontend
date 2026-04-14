@@ -30,44 +30,33 @@ function Header({ isMainPage }) {
         <img src={logo} alt="하이틴데이" />
       </div>
 
-      <div className="user-section">
-        {!isMainPage && (
-          isLogin ? (
-            <div className="user-section-logged">
-              <span className="user-section-name">{user.nickname}님</span>
-              <Link to="/mypage" className="user-section-link">
-                내 정보
-              </Link>
-              <button
-                type="button"
-                className="user-section-logout"
-                onClick={() => logout()}
-              >
-                로그아웃
+      <div className="right-section">
+        <div className="user-section">
+          {!isMainPage && (
+            isLogin ? (
+              <div className="user-section-logged">
+                <span className="user-section-name">{user.nickname}님</span>
+                <Link to="/mypage" className="user-section-link">내 정보</Link>
+                <button type="button" className="user-section-logout" onClick={() => logout()}>
+                  로그아웃
+                </button>
+              </div>
+            ) : (
+              <button type="button" className="user-section-login" onClick={() => navigate("/login")}>
+                로그인
               </button>
-            </div>
-          ) : (
-            <button
-              type="button"
-              className="user-section-login"
-              onClick={() => navigate("/login")}
-            >
-              로그인
-            </button>
-          )
-        )}
+            )
+          )}
+        </div>
+        <div className="function">
+          <span onClick={() => linkMoveHandler()} className="padding-minus">
+            <UsersOverlayIcon size={32} color={"#3f9763"} />
+          </span>
+          <Link to="/">
+            <NotificationBellIcons size={32} color={"#3f9763"} count={0} />
+          </Link>
+        </div>
       </div>
-
-      <div className="function">
-        <span onClick={() => linkMoveHandler()} className="padding-minus">
-          <UsersOverlayIcon size={32} color={"#3f9763"} />
-        </span>
-        <Link to="/">
-          <NotificationBellIcons size={32} color={"#3f9763"} count={0} />
-        </Link>
-        {/* 위에 Notification은 다른 페이지가  아니라 팝업 이니까 Link 없엘 예정 */}
-      </div>
-      <div className="header-bottom-line" />
     </div>
   );
 }

@@ -1,7 +1,32 @@
-/* Notice-Section */
+/* Notice Section */
 #notice-section .notice-content {
-    border: 1px solid gray;
-    border-radius: 5px;
-    padding: 10px;
-    width: 850px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #3f9763;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
+
+#notice-section .notice-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+#notice-section .title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #3f9763;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 3px;
+}
+
+#notice-section .content {
+  font-size: 0.875rem;
+  color: #4b5563;
+  line-height: 1.5;
 }
