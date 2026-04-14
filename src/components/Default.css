@@ -31,7 +31,8 @@ a:hover{
 
 /* 모든 루트 페이지의 루트 div의 className으로 주기 !!필수 */
 .default-root-value {
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
-    max-width: 1440px;
-    padding: 0 16px;
+    padding: 0 clamp(16px, 5vw, 40px);
 }
