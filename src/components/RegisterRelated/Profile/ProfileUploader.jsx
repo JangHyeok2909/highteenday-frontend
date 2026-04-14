@@ -37,8 +37,8 @@ function ProfileUploader() {
       const url = res.headers["location"] || res.data.url; // 서버 반환에 맞춰 조정
       console.log("이미지 tmp 업로드 성공:", res.data);
 
-      await axios.post(
-        "/api/media/profileImg-save",
+      await axios.patch(
+        "/api/media/profile-image",
         { url: url },
         { withCredentials: true }
       );

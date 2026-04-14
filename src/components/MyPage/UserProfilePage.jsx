@@ -28,13 +28,18 @@ function UserProfilePage() {
     };
     reader.readAsDataURL(file);
 
-    // 서버 업로드 예시
+    // 1단계: 임시 업로드
     const formData = new FormData();
-    formData.append("profileImage", file);
+    formData.append("file", file);
     axios
-      .post("/api/user/uploadProfile", formData, {
+      .post("/api/media", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
+      })
+      .then((res) => {
+        const tmpUrl = res.headers["location"];
+        // 2단계: 프로필 확정
+        return axios.patch("/api/media/profile-image", { url: tmpUrl }, { withCredentials: true });
       })
       .then(() => {
         console.log("프로필 사진 업로드 성공");

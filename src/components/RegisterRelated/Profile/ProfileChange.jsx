@@ -28,30 +28,30 @@ function ProfileEdit() {
     setMsg(null);
 
     try {
+      // 1단계: 임시 업로드
       const formData = new FormData();
-      formData.append("profileImage", profileImg);
+      formData.append("file", profileImg);
 
-      const uploadRes = await axios.post("/api/media/profileImg-save", formData, {
+      const uploadRes = await axios.post("/api/media", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
 
-      const imageUrl =
-        uploadRes.data.url ||
-        (uploadRes.data.data && uploadRes.data.data.url);
+      const tmpUrl = uploadRes.headers["location"];
 
-      if (!imageUrl) {
+      if (!tmpUrl) {
         throw new Error("업로드 응답에서 이미지 URL을 찾을 수 없습니다.");
       }
 
+      // 2단계: 프로필 확정 (tmp → profile-file 복사)
       await axios.patch(
-        "/api/user/updateProfileImage",
-        { profileImageUrl: imageUrl },
+        "/api/media/profile-image",
+        { url: tmpUrl },
         { withCredentials: true }
       );
 
       setMsg("프로필 사진이 변경되었습니다.");
-      setPreview(imageUrl);
+      setPreview(tmpUrl);
     } catch (err) {
       console.error(err);
       if (err.response && err.response.status === 413) {
