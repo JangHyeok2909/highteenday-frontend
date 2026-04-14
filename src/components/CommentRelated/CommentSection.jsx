@@ -6,7 +6,6 @@ import "./CommentSystem.css";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
 
 const CommentSection = ({ postId }) => {
   const [comments, setComments] = useState([]);
@@ -56,7 +55,7 @@ const CommentSection = ({ postId }) => {
       setError(null);
     }
     try {
-      const response = await axios.get(`${API_BASE}/posts/${postId}/comments`, {
+      const response = await axios.get(`/api/posts/${postId}/comments`, {
         withCredentials: true,
       });
       const flat = Array.isArray(response.data) ? response.data : [];
@@ -88,7 +87,7 @@ const CommentSection = ({ postId }) => {
       };
 
       await axios.post(
-        `${API_BASE}/posts/${postId}/comments`,
+        `/api/posts/${postId}/comments`,
         requestData,
         { withCredentials: true }
       );
@@ -112,7 +111,7 @@ const CommentSection = ({ postId }) => {
   const handleUpdate = async (commentId, content, url) => {
     try {
       await axios.patch(
-        `${API_BASE}/posts/${postId}/comments/${commentId}`,
+        `/api/posts/${postId}/comments/${commentId}`,
         {
           content: content ?? '',
           url: url || '',
@@ -130,7 +129,7 @@ const CommentSection = ({ postId }) => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
 
     try {
-      await axios.delete(`${API_BASE}/posts/${postId}/comments/${commentId}`, {
+      await axios.delete(`/api/posts/${postId}/comments/${commentId}`, {
         withCredentials: true,
       });
       fetchComments();
@@ -146,7 +145,7 @@ const CommentSection = ({ postId }) => {
     }
     try {
       await axios.post(
-        `${API_BASE}/comments/${commentId}/reaction?type=LIKE`,
+        `/api/comments/${commentId}/reaction?type=LIKE`,
         {},
         { withCredentials: true }
       );
@@ -168,7 +167,7 @@ const CommentSection = ({ postId }) => {
 
     try {
       await axios.post(
-        `${API_BASE}/comments/${commentId}/reaction?type=DISLIKE`,
+        `/api/comments/${commentId}/reaction?type=DISLIKE`,
         {},
         { withCredentials: true }
       );

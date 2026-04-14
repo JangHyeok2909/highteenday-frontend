@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext"
 import { useNavigate } from "react-router-dom";
 
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL || "/api";
+
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 
 const CreateComment = ({
@@ -62,7 +62,7 @@ const CreateComment = ({
       const userId = localStorage.getItem("loginUserId");
 
       const response = await axios.post(
-        `${API_BASE}/media?userId=${userId}`,
+        `/api/media?userId=${userId}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

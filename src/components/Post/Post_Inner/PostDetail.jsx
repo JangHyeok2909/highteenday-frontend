@@ -9,7 +9,6 @@ import ReactionButton from '../../ReactionButtons/ReactionButton';
 import ScrapButton from '../../ReactionButtons/ScrapButton';
 import { formatBoardPreviewDate } from '../../../utils/dateFormat';
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
 
 function PostDetail() {
   const { postId } = useParams();
@@ -26,7 +25,7 @@ function PostDetail() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get(`${API_BASE}/posts/${postId}`, {
+      const res = await axios.get(`/api/posts/${postId}`, {
         withCredentials: true,
       });
       setPost(res.data);
@@ -49,7 +48,7 @@ function PostDetail() {
       return;
     }
     try {
-      await axios.post(`${API_BASE}/posts/${postId}/scraps`, null, {
+      await axios.post(`/api/posts/${postId}/scraps`, null, {
         withCredentials: true,
       });
       await fetchPost();
@@ -74,7 +73,7 @@ function PostDetail() {
     setPost({ ...post, liked, disliked, likeCount, dislikeCount });
 
     try {
-      await axios.post(`${API_BASE}/posts/${post.id}/reaction?type=LIKE`, null, {
+      await axios.post(`/api/posts/${post.id}/reaction?type=LIKE`, null, {
         withCredentials: true,
       });
     } catch (e) {
@@ -100,7 +99,7 @@ function PostDetail() {
     setPost({ ...post, liked, disliked, likeCount, dislikeCount });
 
     try {
-      await axios.post(`${API_BASE}/posts/${post.id}/reaction?type=DISLIKE`, null, {
+      await axios.post(`/api/posts/${post.id}/reaction?type=DISLIKE`, null, {
         withCredentials: true,
       });
     } catch (e) {
@@ -112,7 +111,7 @@ function PostDetail() {
   const handleDelete = async () => {
     if (!window.confirm('이 게시글을 삭제하시겠습니까?')) return;
     try {
-      await axios.delete(`${API_BASE}/posts/${postId}`, { withCredentials: true });
+      await axios.delete(`/api/posts/${postId}`, { withCredentials: true });
       navigate(-1);
     } catch (err) {
       console.error(err);

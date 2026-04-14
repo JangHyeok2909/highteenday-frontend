@@ -7,7 +7,7 @@ import ReactionButton from "../ReactionButtons/ReactionButton";
 import { formatBoardPreviewDate } from "../../utils/dateFormat";
 
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL || "/api";
+
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 
 const Comment = ({
@@ -151,7 +151,7 @@ const Comment = ({
       if (editFile) {
         const formData = new FormData();
         formData.append("file", editFile);
-        const response = await axios.post(`${API_BASE}/media`, formData, {
+        const response = await axios.post(`/api/media`, formData, {
           withCredentials: true,
         });
         imageUrl =

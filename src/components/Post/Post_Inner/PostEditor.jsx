@@ -29,7 +29,7 @@ function PostEditor() {
   useEffect(() => {
     if (isEditMode) {
       axios
-        .get(`${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`, {
+        .get(`/api/posts/${postId}`, {
           withCredentials: true,
         })
         .then((res) => {
@@ -70,7 +70,7 @@ function PostEditor() {
     try {
       if (isEditMode) {
         await axios.patch(
-          `${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`,
+          `/api/posts/${postId}`,
           postData,
           { withCredentials: true }
         );
@@ -83,7 +83,7 @@ function PostEditor() {
         };
 
         const res = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}/posts`,
+          `/api/posts`,
           newPostData,
           { withCredentials: true }
         );
@@ -172,7 +172,7 @@ function PostEditor() {
                   try {
                     const userId = localStorage.getItem("loginUserId");
                     const res = await axios.post(
-                      `${process.env.REACT_APP_API_BASE_URL}/media?userId=${userId}`,
+                      `/api/media?userId=${userId}`,
                       formData,
                       {
                         headers: {
