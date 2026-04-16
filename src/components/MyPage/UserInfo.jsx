@@ -40,8 +40,8 @@ export default function UserInfo() {
 
   const nickname = user?.nickname || "익명";
   const school = user?.schoolName || "학교 정보 없음";
-  const grade = Number.isFinite(user?.userGrade) ? `${user.userGrade}학년` : "";
-  const klass = Number.isFinite(user?.userClass) ? `${user.userClass}반` : "";
+  const grade = Number.isFinite(user?.grade) ? `${user.grade}학년` : "";
+  const userClass = Number.isFinite(user?.useruserClass) ? `${user.userClass}반` : "";
 
 
   if (loading) {
@@ -72,7 +72,7 @@ export default function UserInfo() {
           <img
             src={user.profileUrl || defaultImg}
             alt="프로필"
-            onError={(e)=>{
+            onError={(e) => {
               e.currentTarget.src = defaultImg;
             }}
           />
@@ -82,11 +82,11 @@ export default function UserInfo() {
           <div className="nickname">{nickname} 님</div>
           <div className="sub-info">
             <span className="school">{school}</span>
-            {(grade || klass) && (
+            {(grade || userClass) && (
               <>
                 <span className="dot">·</span>
                 <span className="gradeclass">
-                  {[grade, klass].filter(Boolean).join(" ")}
+                  {[grade, userClass].filter(Boolean).join(" ")}
                 </span>
               </>
             )}
@@ -139,9 +139,9 @@ export default function UserInfo() {
           </ul>
         </div>
 
-        {/* 고객지원 */}
+        {/* 서비스 */}
         <div className="section">
-          <h2>고객지원</h2>
+          <h2>서비스</h2>
           <ul className="linklist">
             <li>
               <button type="button" className="link">
@@ -150,7 +150,12 @@ export default function UserInfo() {
             </li>
             <li>
               <button type="button" className="link">
-                자주 묻는 질문
+                챗봇
+              </button>
+            </li>
+            <li>
+              <button type="button" className="link">
+                자주 물어보는 질문
               </button>
             </li>
           </ul>

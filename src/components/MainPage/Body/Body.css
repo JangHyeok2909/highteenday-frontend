@@ -4,11 +4,6 @@
   width: 100%;
 }
 
-#body #body-top {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
 #body #body-bottom {
   display: flex;
   gap: 20px;

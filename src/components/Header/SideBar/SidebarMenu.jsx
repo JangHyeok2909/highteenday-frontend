@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./SidebarMenu.css";
 import Menubar from "../../Icons/Menubar";
 import ArrowLeftIcon from "../../Icons/Arrow_Left_Icon";
 import "../../Default.css"
+import { useAuth } from "../../../contexts/AuthContext";
 
 function SidebarMenu({size, color}) {
 
     const [isOpen, setIsOpen] = useState(false);
     const [boards, setBoards] = useState([]);
+    const { user, isLogin, logout } = useAuth();
+    const navigate = useNavigate();
 
     // board 이름 들고오는 부분
     const getPostName = async () => {
@@ -90,6 +93,35 @@ function SidebarMenu({size, color}) {
             >
               <ArrowLeftIcon size={size} color={color} strokeWidth={1.5} />
             </div>
+            {/* 모바일 유저 섹션 (≤900px에서만 표시) */}
+            <div className="sidebar-user-section">
+              {isLogin ? (
+                <>
+                  <div className="sidebar-user-name">{user.nickname}님</div>
+                  <div className="sidebar-user-actions">
+                    <Link to="/mypage" className="sidebar-user-link" onClick={() => setIsOpen(false)}>
+                      내 정보
+                    </Link>
+                    <button
+                      type="button"
+                      className="sidebar-user-logout"
+                      onClick={() => { logout(); setIsOpen(false); }}
+                    >
+                      로그아웃
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  className="sidebar-login-btn"
+                  onClick={() => { navigate("/login"); setIsOpen(false); }}
+                >
+                  로그인
+                </button>
+              )}
+            </div>
+
             <div className="menu-content inline-block">
               <ul>
                 {menuData.map((section, idx) =>

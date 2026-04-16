@@ -47,3 +47,77 @@
     margin: 5% 0 0 5%;
     cursor: pointer;
 }
+
+/* 모바일 유저 섹션 */
+#Sidebar-menu .sidebar-user-section {
+    display: none;
+    padding: 16px 15% 20px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 8px;
+}
+
+#Sidebar-menu .sidebar-user-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 10px;
+}
+
+#Sidebar-menu .sidebar-user-actions {
+    display: flex;
+    gap: 8px;
+}
+
+#Sidebar-menu .sidebar-user-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 16px;
+    background: #ecfdf5;
+    color: #3f9763;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+#Sidebar-menu .sidebar-user-link:hover {
+    background: #d1fae5;
+    text-decoration: none;
+}
+
+#Sidebar-menu .sidebar-user-logout {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 16px;
+    background: #f3f4f6;
+    color: #6b7280;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+#Sidebar-menu .sidebar-user-logout:hover {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+#Sidebar-menu .sidebar-login-btn {
+    width: 100%;
+    padding: 10px 0;
+    background: #3f9763;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+#Sidebar-menu .sidebar-login-btn:hover {
+    background: #2d7a4a;
+}
+
+@media (max-width: 900px) {
+    #Sidebar-menu .sidebar-user-section {
+        display: block;
+    }
+}

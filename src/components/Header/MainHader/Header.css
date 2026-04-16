@@ -137,6 +137,12 @@
   align-items: center;
 }
 
+@media (max-width: 900px) {
+  #header .user-section {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   #header .right-section {
     gap: 8px;
@@ -144,19 +150,5 @@
 
   #header .function {
     gap: 6px;
-  }
-
-  #header .user-section-logged {
-    gap: 8px;
-    padding: 4px 10px;
-  }
-
-  #header .user-section-name {
-    font-size: 13px;
-  }
-
-  #header .user-section-link,
-  #header .user-section-logout {
-    font-size: 12px;
   }
 }

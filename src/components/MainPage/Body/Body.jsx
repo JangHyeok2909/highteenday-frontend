@@ -9,14 +9,9 @@ import UserSection from "./UserSection/UserSection";
 function Body() {
   return (
     <div id="body">
-      <div id="body-top">
-        <div className="banner">
-          <Banner />
-        </div>
-      </div>
-
       <div id="body-bottom">
         <div className="body-left">
+          <Banner />
           <NoticeSection />
           <BoardSection />
         </div>
