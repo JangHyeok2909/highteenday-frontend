@@ -14,6 +14,11 @@ import SchoolRegisterPage from "./components/RegisterRelated/School/SchoolRegist
 import RegisterProfilePage from "./components/RegisterRelated/Profile/RegisterProfilePage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import ProfileEditPage from "./components/MyPage/ProfileEditPage";
+import ProfileImageChangePage from "./components/MyPage/ProfileImageChangePage";
+import SchoolChangePage from "./components/MyPage/SchoolChangePage";
+import PasswordChangePage from "./components/MyPage/PasswordChangePage";
+import NicknameChangePage from "./components/MyPage/NicknameChangePage";
+import PhoneChangePage from "./components/MyPage/PhoneChangePage";
 import TimetablePage from './components/TimetableRelated/TimetablePage';
 import MealPage from "components/MealCalendarPage/MealPage";
 
@@ -32,6 +37,11 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<CreateAccountPage />} />
       <Route path="/profile/edit" element={<ProfileEditPage />} />
+      <Route path="/profile/edit/image" element={<ProfileImageChangePage />} />
+      <Route path="/profile/edit/school" element={<SchoolChangePage />} />
+      <Route path="/profile/edit/password" element={<PasswordChangePage />} />
+      <Route path="/profile/edit/nickname" element={<NicknameChangePage />} />
+      <Route path="/profile/edit/phone" element={<PhoneChangePage />} />
       {/* school */}
       <Route path="/register/school" element={<SchoolRegisterPage />} />
       <Route path="/register/profile" element={<RegisterProfilePage />} />

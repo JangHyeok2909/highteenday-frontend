@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { User, ChevronRight } from "lucide-react";
 import axios from "axios";
 import Header from "../Header/MainHader/Header";
 import "./ProfileEditPage.css";
 
 function ProfileEditPage() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -23,14 +25,14 @@ function ProfileEditPage() {
   const getGradeText = (grade) => {
     if (typeof grade === 'string') {
       const gradeMap = {
-        'FRESHMAN': '1학년',
-        'SOPHOMORE': '2학년',
-        'JUNIOR': '3학년',
-        'SENIOR': '4학년'
+        'FRESHMAN': '1',
+        'SOPHOMORE': '2',
+        'JUNIOR': '3',
+        'SENIOR': '4'
       };
-      return gradeMap[grade] || `${grade}학년`;
+      return gradeMap[grade] || `${grade}`;
     }
-    return `${grade}학년`;
+    return `${grade}`;
   };
 
   // 반 정보 처리 함수
@@ -57,23 +59,23 @@ function ProfileEditPage() {
   };
 
   const handleProfileImageChange = () => {
-    console.log("프로필 사진 변경 클릭");
+    navigate("/profile/edit/image");
   };
 
   const handleNicknameChange = () => {
-    console.log("닉네임 변경 클릭");
+    navigate("/profile/edit/nickname");
   };
 
   const handleSchoolInfoChange = () => {
-    console.log("학교/학년/반 변경 클릭");
+    navigate("/profile/edit/school");
   };
 
   const handlePasswordChange = () => {
-    console.log("비밀번호 변경 클릭");
+    navigate("/profile/edit/password");
   };
 
   const handlePhoneChange = () => {
-    console.log("전화번호 변경 클릭");
+    navigate("/profile/edit/phone");
   };
 
   if (!user) {
