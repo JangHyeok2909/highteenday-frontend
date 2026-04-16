@@ -139,9 +139,9 @@ export default function UserInfo() {
           </ul>
         </div>
 
-        {/* 서비스 */}
+        {/* 고객지원 */}
         <div className="section">
-          <h2>서비스</h2>
+          <h2>고객지원</h2>
           <ul className="linklist">
             <li>
               <button type="button" className="link">
@@ -150,12 +150,7 @@ export default function UserInfo() {
             </li>
             <li>
               <button type="button" className="link">
-                챗봇
-              </button>
-            </li>
-            <li>
-              <button type="button" className="link">
-                자주 물어보는 질문
+                자주 묻는 질문
               </button>
             </li>
           </ul>

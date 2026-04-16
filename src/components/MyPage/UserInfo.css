@@ -1,80 +1,109 @@
 #userinfo {
-  max-width: 980px;
+  max-width: 900px;
   margin: 40px auto 80px;
-  padding: 0 20px;
+  padding: 0 clamp(16px, 4vw, 32px);
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   color: #222;
-  background: #fafafa;
 }
 
 /* 상단 제목 */
 #userinfo .header {
-  padding: 8px 0 18px;
-  border-bottom: 1px solid #e5e7eb;
-  margin-bottom: 18px;
-  text-align: center;
+  padding: 8px 0 20px;
+  margin-bottom: 24px;
+  text-align: left;
 }
 #userinfo .header h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: #111827;
 }
 
 /* 계정 정보 카드 */
 #userinfo .account-card {
   display: flex;
   align-items: center;
-  gap: 16px;
-  background: #1f5f59;
+  gap: 20px;
+  background: linear-gradient(135deg, #1a5c50 0%, #2d7a62 100%);
   color: #fff;
-  padding: 16px 20px;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,.06);
+  padding: 24px 28px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(31, 95, 89, 0.22);
+  margin-bottom: 28px;
 }
+
 #userinfo .account-avatar {
-  width: 56px;
-  height: 56px;
-  flex: 0 0 56px;
+  width: 80px;
+  height: 80px;
+  flex: 0 0 80px;
   border-radius: 50%;
   overflow: hidden;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.15);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 #userinfo .account-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 #userinfo .account-meta {
   flex: 1;
   min-width: 0;
 }
 #userinfo .nickname {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
 }
 #userinfo .sub-info {
-  font-size: 14px;
-  color: #e6f4f1;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
+#userinfo .sub-info .school {
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 3px 10px;
+  border-radius: 20px;
+  color: #d4f5ea;
+}
+#userinfo .sub-info .dot {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+}
+#userinfo .sub-info .gradeclass {
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 3px 10px;
+  border-radius: 20px;
+  color: #d4f5ea;
+}
+
 #userinfo .edit-btn {
-  display: inline-block;
-  background: #ffffff;
-  color: #1f5f59;
-  border: 0;
-  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  padding: 9px 18px;
   border-radius: 10px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
 }
 #userinfo .edit-btn:hover {
-  filter: brightness(0.98);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
 }
 
@@ -82,61 +111,74 @@
 #userinfo .sections {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 28px;
+  gap: 16px;
 }
+
 #userinfo .section {
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 14px;
-  padding: 20px 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   transition: box-shadow 0.2s, border-color 0.2s;
 }
 #userinfo .section:hover {
-  border-color: #d1d5db;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-color: #c8e6d4;
+  box-shadow: 0 4px 16px rgba(63, 151, 99, 0.09);
 }
+
 #userinfo .section h2 {
-  margin: 0 0 16px;
-  font-size: 15px;
+  margin: 0 0 14px;
+  font-size: 13px;
   font-weight: 700;
-  color: #111827;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #3f9763;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f3f4f6;
 }
+
 #userinfo .linklist {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
-#userinfo .linklist li {
-  margin-bottom: 4px;
-}
-#userinfo .linklist li:last-child {
-  margin-bottom: 0;
-}
+
 #userinfo .link {
   text-decoration: none;
   color: #374151;
   display: flex;
   align-items: center;
-  padding: 10px 12px;
+  justify-content: space-between;
+  padding: 10px 10px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
   transition: background 0.15s, color 0.15s;
+  border: none;
+  background: transparent;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+}
+#userinfo .link::after {
+  content: "›";
+  font-size: 18px;
+  color: #d1d5db;
+  line-height: 1;
+  transition: color 0.15s, transform 0.15s;
 }
 #userinfo .link:hover {
   background: #f0fdf4;
   color: #3f9763;
+  text-decoration: none;
 }
-#userinfo .section:first-child .link::before {
-  content: "→";
-  margin-right: 10px;
-  font-weight: 600;
+#userinfo .link:hover::after {
   color: #3f9763;
-  opacity: 0.8;
+  transform: translateX(2px);
 }
 
 /* 반응형 */
@@ -145,12 +187,33 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
 @media (max-width: 640px) {
-  #userinfo .account-card {
-    align-items: flex-start;
-    flex-direction: column;
+  #userinfo {
+    margin: 24px auto 60px;
   }
+
+  #userinfo .account-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 16px;
+  }
+
+  #userinfo .edit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
   #userinfo .sections {
     grid-template-columns: 1fr;
+  }
+
+  #userinfo .header h1 {
+    font-size: 20px;
+  }
+
+  #userinfo .nickname {
+    font-size: 18px;
   }
 }
