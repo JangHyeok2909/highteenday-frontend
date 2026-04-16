@@ -77,7 +77,7 @@ function LoginButton({ setShowFindId, setShowFindPw }) {
 
         {/* 소셜 로그인 */}
         <div className="social-login">
-          <a href="https://highteenday.duckdns.org/oauth2/authorization/kakao">
+          <a href="https://api.highteenday.org/oauth2/authorization/kakao">
             <img
               src={kakaoBtn}
               alt="카카오 로그인"
@@ -85,7 +85,7 @@ function LoginButton({ setShowFindId, setShowFindPw }) {
             />
           </a>
           <a
-            href="https://highteenday.duckdns.org/oauth2/authorization/naver"
+            href="https://api.highteenday.org/oauth2/authorization/naver"
             className="naver-btn"
           >
             <img
@@ -94,7 +94,7 @@ function LoginButton({ setShowFindId, setShowFindPw }) {
               className="social-login-img"
             />
           </a>
-          <a href="https://highteenday.duckdns.org/oauth2/authorization/google">
+          <a href="https://api.highteenday.org/oauth2/authorization/google">
             <img
               src={googleBtn}
               alt="구글 로그인"
