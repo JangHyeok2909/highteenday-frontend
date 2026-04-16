@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "./TimetableMeal.css";
 import axios from "axios";
 import "../../../../Default.css";
+import { useAuth } from "../../../../../contexts/AuthContext";
 
 const TimetableMeal = () => {
   const navigate = useNavigate();
+  const { isLogin, isLoading } = useAuth();
   const [activeTab, setActiveTab] = useState("시간표");
   const [timetableData, setTimetableData] = useState([]);
   const [mealData, setMealData] = useState([]);
@@ -18,11 +20,12 @@ const TimetableMeal = () => {
     }
   };
 
-  // ✅ 시간표 불러오기
+  // 시간표 불러오기 — 로그인 상태일 때만
   useEffect(() => {
+    if (!isLogin) return;
     axios
-      .get("/api/timetableTemplates/userTimetables/today", { 
-        withCredentials: true 
+      .get("/api/timetableTemplates/userTimetables/today", {
+        withCredentials: true
       })
       .then((res) => {
         const timetableArr = Array(9).fill(null);
@@ -38,25 +41,24 @@ const TimetableMeal = () => {
       .catch((err) => {
         console.error("시간표 불러오기 실패:", err);
       });
-  }, []);
+  }, [isLogin]);
 
-  // ✅ 급식 불러오기 (탭 클릭 시 실행)
+  // 급식 불러오기 — 로그인 상태이고 급식 탭일 때만
   useEffect(() => {
-    if (activeTab === "급식") {
-      axios
-        .get("/api/schools/meals/today", {
-          withCredentials: true
-        })
-        .then((res) => {
-          const mealArr = res.data.map((item) => item.dishName);
-          const paddedMealArr = [...mealArr.slice(0, 8), ...Array(8).fill("")].slice(0, 8); // 8칸 고정
-          setMealData(paddedMealArr);
-        })
-        .catch((err) => {
-          console.error("급식 불러오기 실패:", err);
-        });
-    }
-  }, [activeTab]);
+    if (!isLogin || activeTab !== "급식") return;
+    axios
+      .get("/api/schools/meals/today", {
+        withCredentials: true
+      })
+      .then((res) => {
+        const mealArr = res.data.map((item) => item.dishName);
+        const paddedMealArr = [...mealArr.slice(0, 8), ...Array(8).fill("")].slice(0, 8);
+        setMealData(paddedMealArr);
+      })
+      .catch((err) => {
+        console.error("급식 불러오기 실패:", err);
+      });
+  }, [isLogin, activeTab]);
 
   const renderTimetableRows = () => {
     return Array.from({ length: 8 }, (_, i) => {
@@ -122,6 +124,22 @@ const TimetableMeal = () => {
     </div>
   );
 
+  const renderLoginRequired = () => (
+    <div
+      className="login-required-box"
+      onClick={() => navigate("/login")}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter") navigate("/login"); }}
+    >
+      <p className="login-required-text">로그인이 필요한 서비스입니다.</p>
+      <span className="login-required-link">로그인하러 가기 →</span>
+    </div>
+  );
+
+  // 초기 로딩 중이면 아무것도 렌더링하지 않음
+  if (isLoading) return null;
+
   return (
     <div id="time-table">
       <div className="container">
@@ -140,12 +158,16 @@ const TimetableMeal = () => {
           </div>
         </div>
 
-        <div className={`contentBox ${activeTab === "급식" ? "contentBox--meal" : ""}`}>
-          {activeTab === "시간표" ? renderTimetableRows() : renderMealContent()}
+        <div className={`contentBox ${!isLogin ? "contentBox--center" : activeTab === "급식" ? "contentBox--meal" : ""}`}>
+          {!isLogin
+            ? renderLoginRequired()
+            : activeTab === "시간표"
+            ? renderTimetableRows()
+            : renderMealContent()}
         </div>
       </div>
     </div>
-  );  
+  );
 };
 
 export default TimetableMeal;

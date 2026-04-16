@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './contexts/AuthContext';
 import { BrowserRouter } from 'react-router-dom';
 import { setupAxiosInterceptors } from './utils/setupAxios';
+import { HelmetProvider } from 'react-helmet-async';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL || '';
 setupAxiosInterceptors();
@@ -14,13 +15,15 @@ setupAxiosInterceptors();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
-  <BrowserRouter>
-    <React.StrictMode>
+  <HelmetProvider>
+    <BrowserRouter>
+      <React.StrictMode>
         <AuthProvider>
           <App />
         </AuthProvider>
-    </React.StrictMode>
-  </BrowserRouter>
+      </React.StrictMode>
+    </BrowserRouter>
+  </HelmetProvider>
 
 );
 

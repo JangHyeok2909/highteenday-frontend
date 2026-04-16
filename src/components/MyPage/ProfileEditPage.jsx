@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, ChevronRight } from "lucide-react";
+import { Helmet } from "react-helmet-async";
+import { ChevronRight } from "lucide-react";
+import defaultImg from "assets/default_profile_image.jpg";
 import axios from "axios";
 import Header from "../Header/MainHader/Header";
 import "./ProfileEditPage.css";
@@ -103,23 +105,18 @@ function ProfileEditPage() {
       <div className="profile-container">
         {/* 프로필 수정 컨텐츠 */}
         <div className="profile-content">
+          <Helmet><title>프로필 수정 | 하이틴데이</title></Helmet>
           <h2 className="section-title">프로필 수정</h2>
 
           {/* 프로필 이미지 섹션 */}
           <div className="profile-image-section">
             <div className="profile-image-container">
               <div className="profile-image">
-                {user.profileUrl ? (
-                  <img 
-                    src={user.profileUrl} 
-                    alt="프로필 이미지" 
-                    className="user-avatar"
-                  />
-                ) : (
-                <div className="default-avatar">
-                  <User size={80} color="#6c757d" strokeWidth={1.5} />
-                </div>
-                )}
+                <img
+                  src={user.profileUrl || defaultImg}
+                  alt="프로필 이미지"
+                  className="user-avatar"
+                />
               </div>
               <button className="profile-image-btn" onClick={handleProfileImageChange}>
                 프로필 사진 변경 ⓘ

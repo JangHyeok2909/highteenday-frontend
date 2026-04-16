@@ -146,3 +146,39 @@
   text-align: center;
   justify-content: center;
 }
+
+#time-table .contentBox--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+}
+
+#time-table .login-required-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 20px;
+  border-radius: 10px;
+  transition: background-color 0.15s ease;
+  width: 100%;
+}
+
+#time-table .login-required-box:hover {
+  background-color: rgba(63, 150, 115, 0.06);
+}
+
+#time-table .login-required-text {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+#time-table .login-required-link {
+  font-size: 13px;
+  color: #3f9763;
+  font-weight: 600;
+}

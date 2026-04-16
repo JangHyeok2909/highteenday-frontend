@@ -38,7 +38,7 @@ function SchoolSearch({ onSchoolSelect }) {
     if (!selectedSchool) return;
     try {
       await axios.patch(
-        "/api/user/modify/school",
+        "/api/user/school",
         { schoolId: selectedSchool.id },
         { withCredentials: true }
       );

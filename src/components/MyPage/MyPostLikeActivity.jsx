@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "components/Header/MainHader/Header";
@@ -33,6 +34,7 @@ function MyPostLikeActivity({ type }) {
 
   return (
     <div id="mypage-list" className="default-root-value">
+      <Helmet><title>{typeMap[type].title} | 하이틴데이</title></Helmet>
       <div className="header">
         <Header isMainPage={false} />
       </div>

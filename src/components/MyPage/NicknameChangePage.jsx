@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "components/Header/MainHader/Header";
@@ -65,7 +66,7 @@ function NicknameChangePage() {
     setSaveLoading(true);
     try {
       await axios.patch(
-        "/api/user/modify/nickname",
+        "/api/user/nickname",
         { pastNickname: currentNickname, newNickname: newNickname.trim() },
         { withCredentials: true }
       );
@@ -85,6 +86,7 @@ function NicknameChangePage() {
       <Header isMainPage={false} />
 
       <div className="nc2-page">
+        <Helmet><title>닉네임 변경 | 하이틴데이</title></Helmet>
         <h2 className="nc2-title">닉네임 변경</h2>
 
         <form className="nc2-form" onSubmit={handleSubmit}>

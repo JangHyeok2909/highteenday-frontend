@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { PenSquare } from "lucide-react";
@@ -198,6 +199,7 @@ export default function BoardPage() {
 
   return (
     <div className="board-page default-root-value">
+      <Helmet><title>{boardNameMap[boardKey] || "게시판"} | 하이틴데이</title></Helmet>
       <div className="header">
         <Header iMainPage={false} />
       </div>

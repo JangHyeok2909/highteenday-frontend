@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "components/Header/MainHader/Header";
@@ -46,6 +47,7 @@ function MyCommentsPage() {
 
   return (
     <div id="mypage-list" className="default-root-value">
+      <Helmet><title>내 댓글 | 하이틴데이</title></Helmet>
       <div className="header">
         <Header isMainPage={false} />
       </div>

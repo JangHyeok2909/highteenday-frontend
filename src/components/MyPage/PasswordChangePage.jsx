@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import axios from "axios";
@@ -48,7 +49,7 @@ function PasswordChangePage() {
     try {
       setLoading(true);
       await axios.post(
-        "/api/user/modify/password",
+        "/api/user/password",
         { pastPassword: currentPw, newPassword: newPw },
         { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
@@ -70,6 +71,7 @@ function PasswordChangePage() {
       <Header isMainPage={false} />
 
       <div className="pw-change-page">
+        <Helmet><title>비밀번호 변경 | 하이틴데이</title></Helmet>
         <h2 className="pw-change-title">비밀번호 변경</h2>
 
         <form className="pw-change-form" onSubmit={handleSubmit} noValidate>

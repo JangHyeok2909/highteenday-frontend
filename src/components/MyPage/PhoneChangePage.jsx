@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "components/Header/MainHader/Header";
@@ -48,7 +49,7 @@ function PhoneChangePage() {
     setLoading(true);
     try {
       await axios.patch(
-        "/api/user/modify/phone",
+        "/api/user/phone",
         { phoneNum: phone.replace(/-/g, "") },
         { withCredentials: true }
       );
@@ -66,6 +67,7 @@ function PhoneChangePage() {
       <Header isMainPage={false} />
 
       <div className="phone-change-page">
+        <Helmet><title>전화번호 변경 | 하이틴데이</title></Helmet>
         <h2 className="phone-change-title">전화번호 변경</h2>
 
         <form className="phone-change-form" onSubmit={handleSubmit}>

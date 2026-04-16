@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import "./AgreeTermsPage.css";
 
@@ -44,6 +45,7 @@ function AgreeTermsPage() {
 
   return (
     <div id="agree-terms">
+      <Helmet><title>약관 동의 | 하이틴데이</title></Helmet>
       <div className="agreement-container">
         <h2>약관 동의</h2>
 

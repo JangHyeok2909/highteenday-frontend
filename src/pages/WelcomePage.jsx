@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import "./WelcomePage.css";
 
@@ -30,6 +31,7 @@ function WelcomePage() {
 
   return (
     <div className="welcome-page">
+      <Helmet><title>환영합니다 | 하이틴데이</title></Helmet>
       <div className="welcome-hero">
         <div className="welcome-logo-ring" />
         <h1 className="welcome-title">

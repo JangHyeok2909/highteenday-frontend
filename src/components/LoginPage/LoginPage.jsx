@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import Header from "../Header/MainHader/Header";
@@ -20,6 +21,7 @@ function LoginPage() {
 
   return (
     <div id="login-page" className="default-root-value">
+      <Helmet><title>로그인 | 하이틴데이</title></Helmet>
       <div className="header">
         <Header isMainPage={true} />
       </div>

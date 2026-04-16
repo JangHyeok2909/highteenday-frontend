@@ -39,7 +39,7 @@ function PassChange() {
       setLoading(true);
 
       const res = await axios.post(
-        "/api/user/modify/password",
+        "/api/user/password",
         {
           pastPassword: currentPw, 
           newPassword: newPw,     
