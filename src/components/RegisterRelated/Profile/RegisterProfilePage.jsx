@@ -11,7 +11,7 @@ function RegisterProfilePage() {
           <RegisterHeader title={"프로필 설정"} />
         </div>
         <div className="body">
-          <ProfileUploader />
+          <ProfileUploader mode="register" />
         </div>
       </div>
     </div>

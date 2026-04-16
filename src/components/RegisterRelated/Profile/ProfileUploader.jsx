@@ -1,13 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./ProfileUploader.css"; 
+import "./ProfileUploader.css";
 import defaultImg from "assets/default_profile_image.jpg";
 
-
-function ProfileUploader() {
+// mode: "register" | "edit"
+function ProfileUploader({ mode = "register" }) {
+  const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const isEdit = mode === "edit";
 
   // 파일 선택
   const handleFileChange = (e) => {
@@ -34,7 +38,7 @@ function ProfileUploader() {
         withCredentials: true,
       });
 
-      const url = res.headers["location"] || res.data.url; // 서버 반환에 맞춰 조정
+      const url = res.headers["location"] || res.data.url;
       console.log("이미지 tmp 업로드 성공:", res.data);
 
       await axios.patch(
@@ -44,13 +48,17 @@ function ProfileUploader() {
       );
 
       console.log("프로필 설정 완료");
-      window.location.href = "/welcome"; // navigator 대신
+      navigate(isEdit ? "/profile/edit" : "/welcome");
     } catch (err) {
       console.error("업로드 실패:", err);
       alert("업로드 실패");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCancel = () => {
+    navigate(isEdit ? "/profile/edit" : "/welcome");
   };
 
   return (
@@ -81,13 +89,13 @@ function ProfileUploader() {
             onClick={handleUpload}
             disabled={loading}
           >
-            {loading ? "업로드 중..." : "사진 업로드"}
+            {loading ? "업로드 중..." : isEdit ? "프로필 이미지 변경" : "프로필 이미지 등록"}
           </button>
           <button
             className="skip-button"
-            onClick={() => (window.location.href = "/")}
+            onClick={handleCancel}
           >
-            건너뛰기
+            {isEdit ? "취소" : "건너뛰기"}
           </button>
         </div>
       </div>
