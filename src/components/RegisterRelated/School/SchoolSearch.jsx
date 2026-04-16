@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./SchoolSearch.css";
 
-function SchoolSearch() {
+// onSchoolSelect: 외부에서 선택 상태를 제어할 때 사용 (제공 시 submit 버튼 숨김)
+function SchoolSearch({ onSchoolSelect }) {
   const [query, setQuery] = useState("");
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedSchool, setSelectedSchool] = useState(null);
 
   const navigate = useNavigate();
+
+  const isControlled = typeof onSchoolSelect === "function";
 
   const handleSearch = async () => {
     if (!query.trim()) return;
@@ -21,6 +24,13 @@ function SchoolSearch() {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSelect = (school) => {
+    setSelectedSchool(school);
+    if (isControlled) {
+      onSchoolSelect(school);
     }
   };
 
@@ -65,22 +75,26 @@ function SchoolSearch() {
               <li
                 key={school.id}
                 className={selectedSchool?.id === school.id ? "selected" : ""}
-                onClick={() => setSelectedSchool(school)}
+                onClick={() => handleSelect(school)}
               >
                 {school.name} ({school.location})
               </li>
             ))}
           </ul>
         )}
-        <div className="button-container">
-          <button
-            className="submit-button"
-            onClick={submit}
-            disabled={!selectedSchool}
-          >
-            다음
-          </button>
-        </div>
+
+        {/* 외부에서 제어하지 않을 때만 내부 submit 버튼 표시 */}
+        {!isControlled && (
+          <div className="button-container">
+            <button
+              className="submit-button"
+              onClick={submit}
+              disabled={!selectedSchool}
+            >
+              다음
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

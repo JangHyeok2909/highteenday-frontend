@@ -1,0 +1,104 @@
+.school-change-page {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 0 16px 40px;
+}
+
+.school-change-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #111827;
+}
+
+/* 선택된 학교 배지 */
+.selected-school-badge {
+  margin: 0 20px 16px;
+  padding: 10px 14px;
+  background-color: #ecfdf5;
+  border: 1px solid #6ee7b7;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #065f46;
+}
+
+/* 학년 / 반 행 */
+.grade-class-row {
+  display: flex;
+  gap: 12px;
+  margin: 0 20px 24px;
+}
+
+.select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.select-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.select-box {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.select-box:focus {
+  border-color: #10b981;
+}
+
+/* 액션 버튼 */
+.school-change-actions {
+  display: flex;
+  gap: 10px;
+  margin: 0 20px;
+}
+
+.school-change-submit {
+  flex: 1;
+  padding: 12px 0;
+  background-color: #10b981;
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.school-change-submit:hover:not(:disabled) {
+  background-color: #059669;
+}
+
+.school-change-submit:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.school-change-cancel {
+  flex: 1;
+  padding: 12px 0;
+  background-color: #e5e7eb;
+  color: #374151;
+  font-size: 15px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.school-change-cancel:hover {
+  background-color: #d1d5db;
+}
