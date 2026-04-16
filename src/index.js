@@ -6,8 +6,10 @@ import axios from 'axios';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './contexts/AuthContext';
 import { BrowserRouter } from 'react-router-dom';
+import { setupAxiosInterceptors } from './utils/setupAxios';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL || '';
+setupAxiosInterceptors();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
