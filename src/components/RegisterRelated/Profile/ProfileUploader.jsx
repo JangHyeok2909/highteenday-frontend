@@ -51,7 +51,7 @@ function ProfileUploader({ mode = "register" }) {
       navigate(isEdit ? "/profile/edit" : "/welcome");
     } catch (err) {
       console.error("업로드 실패:", err);
-      alert("업로드 실패");
+      alert(err?.response?.data?.message || "업로드 실패");
     } finally {
       setLoading(false);
     }

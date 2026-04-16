@@ -18,37 +18,45 @@ export interface User {
 type AuthContextType = {
   user: User | null;
   isLogin: boolean;
+  isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  refresh: () => Promise<void>; 
+  refresh: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const LOGIN_FLAG_KEY = "htd_logged_in";
+
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const login = async (email: string, password: string) => {
     try {
       await axios.post("/api/user/login", {
-         email: email, password: password 
+         email: email, password: password
         }, {
-           withCredentials: true 
+           withCredentials: true
         }
       );
-      await refresh();           
-      navigate("/");      
+      localStorage.setItem(LOGIN_FLAG_KEY, "1");
+      await refresh();
+      navigate("/");    
   
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;
         console.error("Axios error", status, err.response?.data);
   
-        if (status === 401) {
-          alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+        const data = err.response?.data;
+        if (data?.code === "VALIDATION_ERROR") {
+          const errors = data.errors ?? {};
+          if (errors.email) alert(errors.email);
+          if (errors.password) alert(errors.password);
         } else {
-          alert(`서버 오류 또는 네트워크 오류 (status: ${status ?? "네트워크"})`);
+          alert(data?.message ?? `서버 오류 또는 네트워크 오류 (status: ${status ?? "네트워크"})`);
         }
       } else {
         console.error(err);
@@ -61,24 +69,34 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     try {
       await axios.get("/api/user/logout", {
         withCredentials: true,
-      });      
+      });
     } catch (err) {
       console.log("로그아웃 실패", err);
     } finally {
-      console.log("로그아웃 성공");
+      localStorage.removeItem(LOGIN_FLAG_KEY);
       setUser(null);
       window.location.reload();
     }
-  }
+  };
 
   const refresh = async () => {
+    // 로그인 플래그가 없으면 userInfo 요청 생략
+    if (!localStorage.getItem(LOGIN_FLAG_KEY)) {
+      setUser(null);
+      setIsLoading(false);
+      return;
+    }
     try {
       const { data } = await axios.get<User>('/api/user/userInfo', {
         withCredentials: true
       });
+      localStorage.setItem(LOGIN_FLAG_KEY, "1");
       setUser(data);
     } catch {
+      localStorage.removeItem(LOGIN_FLAG_KEY);
       setUser(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -87,8 +105,8 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   }, []);
 
   return (
-    <AuthContext.Provider 
-      value={{user, isLogin: !!user, login, logout, refresh}}>
+    <AuthContext.Provider
+      value={{ user, isLogin: !!user, isLoading, login, logout, refresh }}>
       {children}
     </AuthContext.Provider>
   );

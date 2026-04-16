@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "components/Header/MainHader/Header";
@@ -28,7 +29,7 @@ function SchoolChangePage() {
     setLoading(true);
     try {
       await axios.patch(
-        "/api/user/modify/school",
+        "/api/user/school",
         {
           schoolId: String(selectedSchool.id),
           grade,
@@ -39,7 +40,7 @@ function SchoolChangePage() {
       navigate("/profile/edit");
     } catch (err) {
       console.error("학교 변경 실패:", err);
-      alert("학교 정보 변경에 실패했습니다.");
+      alert(err?.response?.data?.message || "학교 정보 변경에 실패했습니다.");
     } finally {
       setLoading(false);
     }
@@ -50,6 +51,7 @@ function SchoolChangePage() {
       <Header isMainPage={false} />
 
       <div className="school-change-page">
+        <Helmet><title>학교 정보 변경 | 하이틴데이</title></Helmet>
         <h2 className="school-change-title">학교 정보 변경</h2>
 
         {/* 학교 검색 (SchoolSearch 재사용) */}

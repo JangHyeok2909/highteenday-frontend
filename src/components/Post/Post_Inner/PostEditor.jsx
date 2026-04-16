@@ -41,7 +41,7 @@ function PostEditor() {
         })
         .catch((err) => {
           console.error('게시글 로딩 실패:', err);
-          alert('게시글을 불러오지 못했습니다.');
+          alert(err?.response?.data?.message || '게시글을 불러오지 못했습니다.');
         });
     }
   }, [isEditMode, postId]);
@@ -99,7 +99,7 @@ function PostEditor() {
       }
     } catch (error) {
       console.error('게시글 저장 실패:', error);
-      alert(isEditMode ? '수정 실패' : '작성 실패');
+      alert(error?.response?.data?.message || (isEditMode ? '수정 실패' : '작성 실패'));
     }
   };
 
@@ -186,7 +186,7 @@ function PostEditor() {
                     callback(imageUrl, 'image');
                   } catch (e) {
                     console.error('이미지 업로드 실패:', e);
-                    alert('이미지 업로드에 실패했습니다.');
+                    alert(e?.response?.data?.message || '이미지 업로드에 실패했습니다.');
                   }
                 },
               }}

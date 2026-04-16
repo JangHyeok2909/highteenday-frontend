@@ -85,7 +85,7 @@ function TimetableTemplateList({ onSelectTemplate }) {
     })
     .catch(err => {
       console.error('템플릿 생성 실패:', err);
-      alert('템플릿 생성에 실패했습니다.');
+      alert(err?.response?.data?.message || '템플릿 생성에 실패했습니다.');
     });
   }
 
@@ -116,7 +116,7 @@ function TimetableTemplateList({ onSelectTemplate }) {
       })
       .catch(err => {
         console.error('템플릿 삭제 실패:', err);
-        alert('템플릿 삭제에 실패했습니다.');
+        alert(err?.response?.data?.message || '템플릿 삭제에 실패했습니다.');
       });
   };
 
@@ -164,7 +164,7 @@ function TimetableTemplateList({ onSelectTemplate }) {
       })
       .catch(err => {
         console.error('템플릿 수정 실패:', err);
-        alert('템플릿 수정에 실패했습니다.');
+        alert(err?.response?.data?.message || '템플릿 수정에 실패했습니다.');
       });
   };
 

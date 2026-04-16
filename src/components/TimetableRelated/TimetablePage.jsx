@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 
 import Header from "components/Header/MainHader/Header";
@@ -95,8 +96,8 @@ export default function TimetablePage() {
       await apiCall("DELETE", `/timetableTemplates/${selectedTemplateId}/userTimetables/${userTimetableId}`);
       await fetchData();
       setSelectedCell({ day: null, period: null });
-    } catch {
-      alert("과목 제거에 실패했습니다.");
+    } catch (err) {
+      alert(err?.response?.data?.message || "과목 제거에 실패했습니다.");
     }
   };
 
@@ -131,6 +132,7 @@ export default function TimetablePage() {
 
   return (
     <div id="TimetablePage" className="default-root-value">
+      <Helmet><title>시간표 | 하이틴데이</title></Helmet>
       <div className="content-container">
         <div className="header">
           <Header isMainPage={false} />

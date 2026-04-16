@@ -32,7 +32,7 @@ export default function SubjectList({ subjects = [], onSubjectCreate, onSubjectU
       onRefresh?.();
     } catch (err) {
       console.error(`과목 ${action} 실패:`, err);
-      alert(`과목 ${action === 'create' ? '생성' : action === 'update' ? '수정' : '삭제'} 중 오류가 발생했습니다.`);
+      alert(err?.response?.data?.message || `과목 ${action === 'create' ? '생성' : action === 'update' ? '수정' : '삭제'} 중 오류가 발생했습니다.`);
     } finally {
       setIsLoading(false);
     }

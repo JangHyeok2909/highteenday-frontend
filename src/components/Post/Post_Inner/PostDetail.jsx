@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 import { Trash2, Edit3 } from 'lucide-react';
 import CommentSection from '../../CommentRelated/CommentSection';
@@ -115,7 +116,7 @@ function PostDetail() {
       navigate(-1);
     } catch (err) {
       console.error(err);
-      alert('게시글 삭제에 실패했습니다.');
+      alert(err?.response?.data?.message || '게시글 삭제에 실패했습니다.');
     }
   };
 
@@ -133,6 +134,7 @@ function PostDetail() {
 
   return (
     <div className="post-container">
+      <Helmet><title>{post?.title ? `${post.title} | 하이틴데이` : "게시글 | 하이틴데이"}</title></Helmet>
       {/* 헤더 */}
       <div className="post-header">
         <h1 className="post-title">{post.title}</h1>

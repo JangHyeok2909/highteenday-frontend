@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
 import { X } from "lucide-react";
 import "./FriendList.css";
 import "../Default.css";
@@ -78,7 +79,7 @@ const FriendList = () => {
       setOpenMenuId(null);
     } catch (err) {
       console.error("차단 실패:", err);
-      alert("차단에 실패했습니다.");
+      alert(err?.response?.data?.message || "차단에 실패했습니다.");
     }
   };
 
@@ -92,7 +93,7 @@ const FriendList = () => {
       setOpenMenuId(null);
     } catch (err) {
       console.error("차단 해제 실패:", err);
-      alert("차단 해제에 실패했습니다.");
+      alert(err?.response?.data?.message || "차단 해제에 실패했습니다.");
     }
   };
 
@@ -110,12 +111,13 @@ const FriendList = () => {
       setOpenMenuId(null);
     } catch (err) {
       console.error("친구 삭제 실패:", err);
-      alert("친구 삭제에 실패했습니다.");
+      alert(err?.response?.data?.message || "친구 삭제에 실패했습니다.");
     }
   };
 
   return (
     <div id="friend-list" className="default-root-value">
+      <Helmet><title>친구 목록 | 하이틴데이</title></Helmet>
 
       <div className="header">
         <Header isMainPage={false} />
