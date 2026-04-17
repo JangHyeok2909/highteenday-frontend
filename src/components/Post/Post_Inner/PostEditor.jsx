@@ -60,7 +60,8 @@ function PostEditor() {
       alert('본문 내용을 입력해주세요.');
       return;
     }
-    const content = rawHtml;
+    // 백엔드가 빈 <p><br></p>를 제거하므로 &nbsp;로 치환해서 보존
+    const content = rawHtml.replace(/<p><br\s*\/?><\/p>/gi, '<p>&nbsp;</p>');
     const postData = {
       title: trimmedTitle,
       content,

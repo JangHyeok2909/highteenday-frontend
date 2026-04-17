@@ -183,6 +183,9 @@
     word-break: break-word;
     overflow-wrap: anywhere;
   }
+  .post-content p {
+    margin: 0;
+  }
   
   /* 헤딩 계층/간격 */
   .post-content h1, .post-content h2, .post-content h3,

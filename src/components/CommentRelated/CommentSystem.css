@@ -191,6 +191,7 @@
   color: var(--text);
   margin-bottom: 8px;
   word-break: break-word;
+  white-space: pre-wrap;
 }
 #comment-section-container .mention { color: var(--accent); font-weight: 500; }
 
