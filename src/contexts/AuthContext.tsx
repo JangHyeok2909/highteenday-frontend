@@ -64,7 +64,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
   const logout = async () => {
     try {
-      await axios.get("/api/user/logout", {
+      await axios.post("/api/user/logout", {}, {
         withCredentials: true,
       });
     } catch (err) {
