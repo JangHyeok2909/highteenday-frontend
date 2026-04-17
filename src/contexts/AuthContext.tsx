@@ -26,8 +26,6 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const LOGIN_FLAG_KEY = "htd_logged_in";
-
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
@@ -41,7 +39,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
            withCredentials: true
         }
       );
-      localStorage.setItem(LOGIN_FLAG_KEY, "1");
       await refresh();
       navigate("/");    
   
@@ -73,27 +70,18 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     } catch (err) {
       console.log("로그아웃 실패", err);
     } finally {
-      localStorage.removeItem(LOGIN_FLAG_KEY);
       setUser(null);
       window.location.reload();
     }
   };
 
   const refresh = async () => {
-    // 로그인 플래그가 없으면 userInfo 요청 생략
-    if (!localStorage.getItem(LOGIN_FLAG_KEY)) {
-      setUser(null);
-      setIsLoading(false);
-      return;
-    }
     try {
       const { data } = await axios.get<User>('/api/user/userInfo', {
         withCredentials: true
       });
-      localStorage.setItem(LOGIN_FLAG_KEY, "1");
       setUser(data);
     } catch {
-      localStorage.removeItem(LOGIN_FLAG_KEY);
       setUser(null);
     } finally {
       setIsLoading(false);
