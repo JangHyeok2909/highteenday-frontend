@@ -1,9 +1,15 @@
+#hot-posts {
+  width: 100%;
+  min-width: 0;
+}
+
 #hot-posts .hotposts-container {
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  width: 100%;
 }
 
 #hot-posts .hotposts-title {
@@ -21,6 +27,7 @@
 
 #hot-posts .hotposts-table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
 }
 
@@ -78,15 +85,9 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 230px;
   color: #374151;
 }
 
-@media (max-width: 768px) {
-  #hot-posts .post-title {
-    max-width: none;
-  }
-}
 
 #hot-posts .post-date {
   text-align: right;
