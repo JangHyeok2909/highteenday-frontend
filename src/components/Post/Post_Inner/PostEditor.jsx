@@ -171,9 +171,8 @@ function PostEditor() {
                   formData.append('file', blob);
 
                   try {
-                    const userId = localStorage.getItem("loginUserId");
                     const res = await axios.post(
-                      `/api/media?userId=${userId}`,
+                      `/api/media`,
                       formData,
                       {
                         headers: {

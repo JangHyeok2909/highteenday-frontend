@@ -4,6 +4,18 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import {
+  nameField,
+  nicknameField,
+  phoneField,
+  emailField,
+  passwordField,
+  confirmPasswordField,
+  birthField,
+  gradeField,
+  genderField,
+  filterHangul,
+} from "utils/validationSchemas";
 import "./CreateAccount.css";
 import "components/Default.css";
 
@@ -21,71 +33,15 @@ const minBirthDate = new Date(
 );
 
 const schema = yup.object().shape({
-  name: yup
-    .string()
-    .required("이름을 입력해주세요.")
-    .max(8, "이름은 최대 8자 입니다.")
-    .min(2, "이름은 최소 2자 이상이어야 합니다."),
-
-  nickname: yup
-    .string()
-    .required("닉네임을 입력해주세요.")
-    .min(2, "닉네임은 최소 2자 이상이어야 합니다.")
-    .max(12, "닉네임은 최대 12자까지 가능합니다."),
-
-  phone: yup
-    .string()
-    // .required("휴대폰 번호를 입력해주세요.")
-    .matches(
-      /^010-\d{3,4}-\d{4}$/,
-      "휴대폰 번호는 010-1234-5678 형식으로 입력해주세요."
-    ),
-  email: yup
-    .string()
-    .required("이메일을 입력해주세요.")
-    .email("올바른 이메일 형식이 아닙니다."),
-
-  birth: yup
-    .date()
-    .required("생일을 입력해주세요.")
-    .transform((value, originalValue) => {
-      return originalValue === "" ? null : value; // 빈 문자열은 null로 변환
-    })
-    .max(new Date(), "생일은 오늘 날짜보다 이후일 수 없습니다.")
-    .test("highschool-age", "고등학생 이상만 가입할 수 있습니다.", (value) => {
-      if (!value) return false;
-      const today = new Date();
-      const birthDate = new Date(value);
-      const age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-      const dayDiff = today.getDate() - birthDate.getDate();
-      const actualAge =
-        monthDiff > 0 || (monthDiff === 0 && dayDiff >= 0) ? age : age - 1;
-
-      return actualAge >= 15 && actualAge <= 30; // 15~30살까지 가입가능
-    }),
-
-  grade: yup
-    .string()
-    .required("학년을 선택해주세요.")
-    .oneOf(["SOPHOMORE", "JUNIOR", "SENIOR"], "올바른 학년을 선택해주세요."),
-
-  gender: yup
-    .string()
-    .required("성별을 선택해주세요.")
-    .oneOf(["MALE", "FEMALE", "OTHER"], "올바른 성별을 선택해주세요."),
-
-  password: yup
-    .string()
-    .required("비밀번호는 필수 입력입니다.")
-    .min(8, "비밀번호는 최소 8자리 이상이어야 합니다.")
-    .matches(/[0-9]/, "숫자를 최소 1개 포함해야 합니다.")
-    .matches(/[!@#$%^&*(),.?":{}|<>]/, "특수문자를 최소 1개 포함해야 합니다."),
-
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref("password"), null], "비밀번호가 일치하지 않습니다.")
-    .required("비밀번호 확인은 필수입니다."),
+  name: nameField,
+  nickname: nicknameField,
+  phone: phoneField,
+  email: emailField,
+  birth: birthField,
+  grade: gradeField,
+  gender: genderField,
+  password: passwordField,
+  confirmPassword: confirmPasswordField,
 });
 
 //중복체크 요청 함수
@@ -144,6 +100,8 @@ function CreateAccount() {
     defaultValues: { mode: false, provider: "DEFAULT" },
   });
   const isOAuth = watch("mode");
+  const passwordRegister = register("password");
+  const confirmPasswordRegister = register("confirmPassword");
 
   const handleNicknameBlur = async (e) => {
     const nickname = e.target.value;
@@ -322,13 +280,23 @@ function CreateAccount() {
           <label>비밀번호 설정</label>
           <input
             type={showPassword ? "text" : "password"}
-            {...register("password")}
+            {...passwordRegister}
+            onChange={(e) => {
+              e.target.value = filterHangul(e.target.value);
+              passwordRegister.onChange(e);
+            }}
+            style={{ imeMode: "inactive" }}
           />
           {errors.password && <p>{errors.password.message}</p>}
           <label>비밀번호 확인</label>
           <input
             type={showConfirmPassword ? "text" : "password"}
-            {...register("confirmPassword")}
+            {...confirmPasswordRegister}
+            onChange={(e) => {
+              e.target.value = filterHangul(e.target.value);
+              confirmPasswordRegister.onChange(e);
+            }}
+            style={{ imeMode: "inactive" }}
           />
           {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
 

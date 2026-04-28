@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import googleBtn from "../../../assets/google-login-btn.png";
 import kakaoBtn from "../../../assets/kakao-login-btn.png";
 import naverBtn from "../../../assets/naver-login-btn.png";
+import { filterHangul } from "utils/validationSchemas";
 
 function LoginButton({ setShowFindId, setShowFindPw }) {
   const [email, setEmail] = useState("");
@@ -32,14 +33,16 @@ function LoginButton({ setShowFindId, setShowFindPw }) {
             type="email"
             placeholder="아이디"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(filterHangul(e.target.value))}
+            style={{ imeMode: "inactive" }}
             className="input-field"
           />
           <input
             type="password"
             placeholder="비밀번호"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(filterHangul(e.target.value))}
+            style={{ imeMode: "inactive" }}
             className="input-field"
           />
           <button type="submit" className="login-button">

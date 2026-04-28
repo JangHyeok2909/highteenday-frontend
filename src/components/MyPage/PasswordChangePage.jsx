@@ -1,66 +1,103 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { Eye, EyeOff } from "lucide-react";
 import axios from "axios";
 import Header from "components/Header/MainHader/Header";
+import { passwordField, confirmPasswordField, filterHangul } from "utils/validationSchemas";
 import "components/Default.css";
 import "./PasswordChangePage.css";
+
+// currentPw는 yup에서 선택적으로 두고, 서버 /verify 엔드포인트로 별도 검증
+const schema = yup.object().shape({
+  currentPw: yup.string(),
+  password: passwordField,
+  confirmPassword: confirmPasswordField,
+});
 
 function PasswordChangePage() {
   const navigate = useNavigate();
 
-  const [currentPw, setCurrentPw] = useState("");
-  const [newPw, setNewPw] = useState("");
-  const [confirmPw, setConfirmPw] = useState("");
+  const [provider, setProvider] = useState(null); // null = 로딩 중
+  const [isCurrentPwVerified, setIsCurrentPwVerified] = useState(false);
 
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
-  const [error, setError] = useState(null);
-  const [notice, setNotice] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const validate = () => {
-    const lengthOk = newPw.length >= 8 && newPw.length <= 20;
-    const hasLetter = /[a-zA-Z]/.test(newPw);
-    const hasDigit = /\d/.test(newPw);
-    const hasSpecial = /[^a-zA-Z0-9]/.test(newPw);
-    const kinds = [hasLetter, hasDigit, hasSpecial].filter(Boolean).length;
+  const {
+    register,
+    handleSubmit,
+    setError,
+    clearErrors,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
-    if (!currentPw) return "현재 비밀번호를 입력해 주세요.";
-    if (!newPw) return "새로운 비밀번호를 입력해 주세요.";
-    if (!lengthOk) return "새 비밀번호는 8~20자여야 합니다.";
-    if (kinds < 2) return "영문/숫자/특수문자 중 2종 이상을 포함해야 합니다.";
-    if (newPw === currentPw) return "현재 비밀번호와 다른 비밀번호를 사용해 주세요.";
-    if (newPw !== confirmPw) return "비밀번호 확인이 일치하지 않습니다.";
-    return null;
-  };
+  useEffect(() => {
+    axios
+      .get("/api/user/userInfo", { withCredentials: true })
+      .then((res) => setProvider(res.data.provider || "DEFAULT"))
+      .catch(() => setProvider("DEFAULT"));
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setNotice(null);
+  const isDefault = provider === "DEFAULT";
+  // DEFAULT 유저는 현재 비밀번호 서버 검증까지 통과해야 제출 가능
+  const isFormValid = isValid && (!isDefault || isCurrentPwVerified);
 
-    const v = validate();
-    if (v) { setError(v); return; }
+  const currentPwRegister = register("currentPw");
+  const passwordRegister = register("password");
+  const confirmPasswordRegister = register("confirmPassword");
+
+  const handleCurrentPwBlur = async (e) => {
+    const password = e.target.value;
+    if (!password) return;
 
     try {
-      setLoading(true);
-      await axios.post(
+      const res = await axios.post(
+        "/api/user/password/verify",
+        { password },
+        { withCredentials: true }
+      );
+      if (res.data === true) {
+        clearErrors("currentPw");
+        setIsCurrentPwVerified(true);
+      } else {
+        setError("currentPw", { type: "manual", message: "현재 비밀번호가 올바르지 않습니다." });
+        setIsCurrentPwVerified(false);
+      }
+    } catch (err) {
+      setError("currentPw", {
+        type: "manual",
+        message: err?.response?.data?.message || "비밀번호 확인 중 오류가 발생했습니다.",
+      });
+      setIsCurrentPwVerified(false);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      const payload = isDefault
+        ? { pastPassword: data.currentPw, newPassword: data.password }
+        : { newPassword: data.password };
+
+      await axios.patch(
         "/api/user/password",
-        { pastPassword: currentPw, newPassword: newPw },
+        payload,
         { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
-      setNotice("비밀번호가 성공적으로 변경되었습니다.");
-      setCurrentPw(""); setNewPw(""); setConfirmPw("");
+      alert("비밀번호가 성공적으로 변경되었습니다.");
+      navigate(-1);
     } catch (err) {
-      if (err?.response?.status === 401) {
-        setError("현재 비밀번호가 올바르지 않습니다.");
-      } else {
-        setError(err?.response?.data?.message || "비밀번호 변경 중 오류가 발생했습니다.");
-      }
+      setError("currentPw", {
+        type: "manual",
+        message: err?.response?.data?.message || "비밀번호 변경 중 오류가 발생했습니다.",
+      });
     } finally {
       setLoading(false);
     }
@@ -74,29 +111,38 @@ function PasswordChangePage() {
         <Helmet><title>비밀번호 변경 | 하이틴데이</title></Helmet>
         <h2 className="pw-change-title">비밀번호 변경</h2>
 
-        <form className="pw-change-form" onSubmit={handleSubmit} noValidate>
-          {/* 현재 비밀번호 */}
-          <div className="pw-field-group">
-            <label className="pw-label">현재 비밀번호</label>
-            <div className="pw-input-wrap">
-              <input
-                type={showCurrent ? "text" : "password"}
-                className="pw-input"
-                placeholder="현재 비밀번호"
-                value={currentPw}
-                onChange={(e) => setCurrentPw(e.target.value)}
-                autoComplete="current-password"
-              />
-              <button
-                type="button"
-                className="pw-eye-btn"
-                onClick={() => setShowCurrent((v) => !v)}
-                tabIndex={-1}
-              >
-                {showCurrent ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+        <form className="pw-change-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+          {/* 현재 비밀번호 — DEFAULT 유저만 표시 */}
+          {isDefault && (
+            <div className="pw-field-group">
+              <label className="pw-label">현재 비밀번호</label>
+              <div className="pw-input-wrap">
+                <input
+                  type={showCurrent ? "text" : "password"}
+                  className="pw-input"
+                  placeholder="현재 비밀번호"
+                  {...currentPwRegister}
+                  onChange={(e) => {
+                    e.target.value = filterHangul(e.target.value);
+                    currentPwRegister.onChange(e);
+                    setIsCurrentPwVerified(false);
+                  }}
+                  style={{ imeMode: "inactive" }}
+                  onBlur={handleCurrentPwBlur}
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  className="pw-eye-btn"
+                  onClick={() => setShowCurrent((v) => !v)}
+                  tabIndex={-1}
+                >
+                  {showCurrent ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+              {errors.currentPw && <p className="pw-msg pw-error">{errors.currentPw.message}</p>}
             </div>
-          </div>
+          )}
 
           {/* 새 비밀번호 */}
           <div className="pw-field-group">
@@ -105,10 +151,14 @@ function PasswordChangePage() {
               <input
                 type={showNew ? "text" : "password"}
                 className="pw-input"
-                placeholder="영문, 숫자, 특수문자 2종류 이상, 8~20자"
-                value={newPw}
-                onChange={(e) => setNewPw(e.target.value)}
+                placeholder="숫자, 특수문자 포함 8자 이상"
+                {...passwordRegister}
+                onChange={(e) => {
+                  e.target.value = filterHangul(e.target.value);
+                  passwordRegister.onChange(e);
+                }}
                 autoComplete="new-password"
+                style={{ imeMode: "inactive" }}
               />
               <button
                 type="button"
@@ -119,7 +169,8 @@ function PasswordChangePage() {
                 {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            <p className="pw-hint">영문, 숫자, 특수문자 중 2종류 이상 조합, 8~20자</p>
+            <p className="pw-hint">숫자, 특수문자를 각 1개 이상 포함, 8자 이상</p>
+            {errors.password && <p className="pw-msg pw-error">{errors.password.message}</p>}
           </div>
 
           {/* 비밀번호 확인 */}
@@ -130,9 +181,13 @@ function PasswordChangePage() {
                 type={showConfirm ? "text" : "password"}
                 className="pw-input"
                 placeholder="새 비밀번호 확인"
-                value={confirmPw}
-                onChange={(e) => setConfirmPw(e.target.value)}
+                {...confirmPasswordRegister}
+                onChange={(e) => {
+                  e.target.value = filterHangul(e.target.value);
+                  confirmPasswordRegister.onChange(e);
+                }}
                 autoComplete="new-password"
+                style={{ imeMode: "inactive" }}
               />
               <button
                 type="button"
@@ -143,13 +198,11 @@ function PasswordChangePage() {
                 {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
+            {errors.confirmPassword && <p className="pw-msg pw-error">{errors.confirmPassword.message}</p>}
           </div>
 
-          {error && <p className="pw-msg pw-error">{error}</p>}
-          {notice && <p className="pw-msg pw-notice">{notice}</p>}
-
           <div className="pw-change-actions">
-            <button type="submit" className="pw-submit" disabled={loading}>
+            <button type="submit" className="pw-submit" disabled={!isFormValid || loading}>
               {loading ? "처리 중..." : "변경하기"}
             </button>
             <button

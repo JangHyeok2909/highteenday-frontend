@@ -1,56 +1,69 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import axios from "axios";
 import Header from "components/Header/MainHader/Header";
+import { phoneField } from "utils/validationSchemas";
 import "components/Default.css";
 import "./PhoneChangePage.css";
 
+const schema = yup.object().shape({
+  phone: phoneField.required("전화번호를 입력해주세요."),
+});
+
 function PhoneChangePage() {
   const navigate = useNavigate();
-  const [phone, setPhone] = useState("");
   const [verifyCode, setVerifyCode] = useState("");
   const [codeSent, setCodeSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState(null);
   const [msgType, setMsgType] = useState("info");
 
-  // 전화번호 입력 시 숫자만, 자동 하이픈 포맷
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors, isValid },
+  } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
+
   const handlePhoneChange = (e) => {
-    const digits = e.target.value.replace(/\D/g, "").slice(0, 11);
+    let digits = e.target.value.replace(/\D/g, "");
+    if (digits.length > 0 && !digits.startsWith("010")) digits = "010";
+    digits = digits.slice(0, 11);
+
     let formatted = digits;
-    if (digits.length >= 8) {
-      formatted = digits.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
-    } else if (digits.length >= 4) {
-      formatted = digits.replace(/(\d{3})(\d{0,4})/, "$1-$2");
+    if (digits.length > 7) {
+      formatted = digits.slice(0, 3) + "-" + digits.slice(3, 7) + "-" + digits.slice(7);
+    } else if (digits.length > 3) {
+      formatted = digits.slice(0, 3) + "-" + digits.slice(3);
     }
-    setPhone(formatted);
+
+    setValue("phone", formatted, { shouldValidate: true });
   };
 
-  // 인증번호 전송 (UI 전용 — 기능 미구현)
   const handleSendCode = () => {
-    if (!phone.trim()) {
+    const phone = getValues("phone");
+    if (!phone?.trim()) {
       setMsg("전화번호를 입력해 주세요."); setMsgType("error"); return;
     }
     setCodeSent(true);
     setMsg("인증번호 전송 기능은 준비 중입니다."); setMsgType("info");
   };
 
-  // 인증하기 (UI 전용 — 기능 미구현)
   const handleVerify = () => {
     setMsg("인증 기능은 준비 중입니다."); setMsgType("info");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!phone.trim()) {
-      setMsg("전화번호를 입력해 주세요."); setMsgType("error"); return;
-    }
+  const onSubmit = async (data) => {
     setLoading(true);
     try {
       await axios.patch(
         "/api/user/phone",
-        { phoneNum: phone.replace(/-/g, "") },
+        { phoneNum: data.phone.replace(/-/g, "") },
         { withCredentials: true }
       );
       setMsg("전화번호가 변경되었습니다."); setMsgType("success");
@@ -70,7 +83,7 @@ function PhoneChangePage() {
         <Helmet><title>전화번호 변경 | 하이틴데이</title></Helmet>
         <h2 className="phone-change-title">전화번호 변경</h2>
 
-        <form className="phone-change-form" onSubmit={handleSubmit}>
+        <form className="phone-change-form" onSubmit={handleSubmit(onSubmit)}>
           {/* 전화번호 입력 */}
           <div className="phone-field-group">
             <label className="phone-label">전화번호</label>
@@ -79,7 +92,7 @@ function PhoneChangePage() {
                 type="tel"
                 className="phone-input"
                 placeholder="010-0000-0000"
-                value={phone}
+                {...register("phone")}
                 onChange={handlePhoneChange}
               />
               <button
@@ -90,6 +103,7 @@ function PhoneChangePage() {
                 인증번호 전송
               </button>
             </div>
+            {errors.phone && <p className="phone-msg phone-msg--error">{errors.phone.message}</p>}
           </div>
 
           {/* 인증번호 입력 */}
@@ -121,7 +135,7 @@ function PhoneChangePage() {
           )}
 
           <div className="phone-change-actions">
-            <button type="submit" className="phone-submit" disabled={loading}>
+            <button type="submit" className="phone-submit" disabled={!isValid || loading}>
               {loading ? "변경 중..." : "변경하기"}
             </button>
             <button

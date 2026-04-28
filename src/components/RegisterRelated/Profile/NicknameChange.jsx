@@ -1,63 +1,64 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import axios from "axios";
+import { nicknameField } from "utils/validationSchemas";
 import "./NicknameChange.css";
 
+const schema = yup.object().shape({ nickname: nicknameField });
+
 function NicknameChange() {
-  const [nickname, setNickname] = useState("");
-  const [msg, setMsg] = useState(null);
-  const [checkLoading, setCheckLoading] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
 
-  // 닉네임 중복 확인
-  const handleCheck = async () => {
-    if (!nickname) {
-      setMsg("닉네임을 입력하세요.");
-      return;
-    }
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    setError,
+    clearErrors,
+    formState: { errors, isValid },
+  } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
+
+  const handleNicknameBlur = async (e) => {
+    const nickname = e.target.value;
+    const valid = await trigger("nickname");
+    if (!valid) { setIsAvailable(false); return; }
 
     try {
-      setCheckLoading(true);
       const res = await axios.get(`/api/user/check/nickname?nickname=${nickname}`, {
         withCredentials: true,
       });
-
       if (res.data === true) {
-        setMsg("이미 사용 중인 닉네임입니다.");
+        clearErrors("nickname");
+        setIsAvailable(true);
       } else {
-        setMsg("사용 가능한 닉네임입니다.");
+        setError("nickname", { type: "manual", message: "이미 사용 중인 닉네임입니다." });
+        setIsAvailable(false);
       }
     } catch (err) {
       console.error(err);
-      setMsg("중복 확인 중 오류가 발생했습니다.");
-    } finally {
-      setCheckLoading(false);
+      setError("nickname", { type: "manual", message: "중복 확인 중 오류가 발생했습니다." });
+      setIsAvailable(false);
     }
   };
 
-  // 닉네임 변경 저장
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!nickname) {
-      setMsg("닉네임을 입력하세요.");
-      return;
-    }
-
+  const onSubmit = async (data) => {
+    if (!isAvailable) return;
     try {
       setSaveLoading(true);
       const res = await axios.patch(
         "/api/user/nickname",
-        { nickname },
+        { nickname: data.nickname },
         { withCredentials: true }
       );
-
       if (res.status === 200) {
-        setMsg("닉네임이 변경되었습니다.");
-      } else {
-        setMsg("닉네임 변경에 실패했습니다.");
+        setError("nickname", { type: "manual", message: "닉네임이 변경되었습니다." });
       }
     } catch (err) {
       console.error(err);
-      setMsg("닉네임 변경 중 오류가 발생했습니다.");
+      setError("nickname", { type: "manual", message: "닉네임 변경 중 오류가 발생했습니다." });
     } finally {
       setSaveLoading(false);
     }
@@ -73,37 +74,33 @@ function NicknameChange() {
       <main className="nc-container">
         <h2 className="nc-heading">닉네임 설정</h2>
 
-        <form className="nc-form" onSubmit={handleSubmit}>
+        <form className="nc-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="nc-input-row">
-            <label htmlFor="nickname" className="nc-label">
-              닉네임
-            </label>
+            <label htmlFor="nickname" className="nc-label">닉네임</label>
             <input
               id="nickname"
               type="text"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
               className="nc-input"
               placeholder="닉네임을 입력하세요"
+              {...register("nickname")}
+              onBlur={handleNicknameBlur}
             />
-            <button
-              type="button"
-              className="nc-check-btn"
-              onClick={handleCheck}
-              disabled={checkLoading}
-            >
-              {checkLoading ? "확인 중..." : "중복 확인"}
-            </button>
           </div>
+          {errors.nickname && <p className="nc-message">{errors.nickname.message}</p>}
+          {!errors.nickname && isAvailable && (
+            <p className="nc-message">사용 가능한 닉네임입니다.</p>
+          )}
           <p className="nc-guide">
             ※ 닉네임은 <span>한 달에 두 번</span>까지 변경 가능합니다.
           </p>
-          <button type="submit" className="nc-submit-btn" disabled={saveLoading}>
+          <button
+            type="submit"
+            className="nc-submit-btn"
+            disabled={!isValid || !isAvailable || saveLoading}
+          >
             {saveLoading ? "저장 중..." : "확인"}
           </button>
         </form>
-
-        {msg && <p className="nc-message">{msg}</p>}
       </main>
     </div>
   );

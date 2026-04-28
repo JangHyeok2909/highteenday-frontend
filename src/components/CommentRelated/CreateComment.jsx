@@ -59,10 +59,8 @@ const CreateComment = ({
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const userId = localStorage.getItem("loginUserId");
-
       const response = await axios.post(
-        `/api/media?userId=${userId}`,
+        `/api/media`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
