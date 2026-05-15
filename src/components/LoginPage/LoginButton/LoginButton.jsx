@@ -28,11 +28,10 @@ function LoginButton({ setShowFindId, setShowFindPw }) {
         {/* 로그인 폼 */}
         <form className="login-form" onSubmit={loginhandler}>
           <input
-            type="email"
+            type="text"
             placeholder="아이디"
             value={email}
-            onChange={(e) => setEmail(filterHangul(e.target.value))}
-            style={{ imeMode: "inactive" }}
+            onChange={(e) => setEmail(e.target.value)}
             className="input-field"
           />
           <input
@@ -40,7 +39,6 @@ function LoginButton({ setShowFindId, setShowFindPw }) {
             placeholder="비밀번호"
             value={password}
             onChange={(e) => setPassword(filterHangul(e.target.value))}
-            style={{ imeMode: "inactive" }}
             className="input-field"
           />
           <button type="submit" className="login-button">
