@@ -89,13 +89,6 @@ function MonthlyMealCalendar({ onDateClick }) {
     if (onDateClick) onDateClick(clickedDate, meal);
   };
 
-  const handleActiveStartDateChange = ({ activeStartDate, view }) => {
-    if (view !== 'month' || !activeStartDate) return;
-    const y = activeStartDate.getFullYear();
-    const m = String(activeStartDate.getMonth() + 1).padStart(2, '0');
-    const nextKey = `${y}-${m}`;
-    if (nextKey !== currentMonthKey) setCurrentMonthKey(nextKey);
-  };
 
   const renderMealPreview = (day) => {
     const key = toYMD(day);
@@ -153,7 +146,7 @@ function MonthlyMealCalendar({ onDateClick }) {
       <Calendar
         view="month"
         onClickDay={handleDateClick}
-        onActiveStartDateChange={handleActiveStartDateChange}
+        showNavigation={false}
         value={date}
         tileContent={({ date: tileDate, view }) =>
           view === 'month' ? renderMealPreview(tileDate) : null
