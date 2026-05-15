@@ -195,7 +195,7 @@ function CreateAccount() {
 
     
     try {
-      const res = await axios.post("/api/user/register", payload);
+      const res = await axios.post("/api/user/register", payload, { withCredentials: true });
       console.log("회원가입 성공:", res.data);
       navigate("/register/school");
     } catch (err) {

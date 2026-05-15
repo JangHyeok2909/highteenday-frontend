@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "contexts/AuthContext";
 import "./ProfileUploader.css";
 import defaultImg from "assets/default_profile_image.jpg";
 
@@ -12,6 +13,7 @@ function ProfileUploader({ mode = "register" }) {
   const [loading, setLoading] = useState(false);
 
   const isEdit = mode === "edit";
+  const { refresh } = useAuth();
 
   // 파일 선택
   const handleFileChange = (e) => {
@@ -48,6 +50,7 @@ function ProfileUploader({ mode = "register" }) {
       );
 
       console.log("프로필 설정 완료");
+      if (!isEdit) await refresh();
       navigate(isEdit ? "/profile/edit" : "/welcome");
     } catch (err) {
       console.error("업로드 실패:", err);
@@ -57,7 +60,8 @@ function ProfileUploader({ mode = "register" }) {
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
+    if (!isEdit) await refresh();
     navigate(isEdit ? "/profile/edit" : "/welcome");
   };
 
