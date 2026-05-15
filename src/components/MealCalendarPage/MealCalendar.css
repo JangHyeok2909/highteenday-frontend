@@ -1,79 +1,273 @@
-/* 부모 컨테이너 */
+/* ===== 전체 컨테이너 ===== */
 .meal-calendar-container {
-  max-width: 1280px;
-  margin: auto;
-  font-family: 'Arial', sans-serif;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
 }
 
-/* 달력 전체 영역 */
+/* ===== 제목 ===== */
+.meal-calendar-container .meal-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a3c2e;
+  margin-bottom: 20px;
+  letter-spacing: -0.3px;
+}
+
+/* ===== 로딩 / 에러 ===== */
+.meal-calendar-container .meal-loading {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9rem;
+  padding: 8px 0 12px;
+}
+
+.meal-calendar-container .meal-error {
+  text-align: center;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  padding: 8px 16px;
+  margin-bottom: 14px;
+}
+
+/* ===== react-calendar 전체 ===== */
 .meal-calendar-container .react-calendar {
   width: 100%;
   border: none;
+  background: transparent;
+  font-family: inherit;
 }
 
-/* 각 날짜 칸 */
-.meal-calendar-container .react-calendar__tile {
-  min-height: 240px;  /* ✅ 높이 조금 더 늘림 (석식 대비) */
-  padding: 8px;
-  background: #f8f9fa; 
-  border: 1px solid #dee2e6; 
-  transition: background 0.2s ease-in-out;
+/* ===== 네비게이션 ===== */
+.meal-calendar-container .react-calendar__navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
 
+.meal-calendar-container .react-calendar__navigation button {
+  min-width: 36px;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #374151;
+  transition: background 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+
+.meal-calendar-container .react-calendar__navigation button:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.meal-calendar-container .react-calendar__navigation button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.meal-calendar-container .react-calendar__navigation__label {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #111827;
+  cursor: default !important;
+  flex-grow: 0 !important;
+  padding: 6px 16px;
+  pointer-events: none;
+}
+
+/* ===== 요일 헤더 ===== */
+.meal-calendar-container .react-calendar__month-view__weekdays {
+  background: #f8fafc;
+  border-top: 2px solid #e2e8f0;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 2px;
+}
+
+.meal-calendar-container .react-calendar__month-view__weekdays__weekday {
+  padding: 10px 0;
+  text-align: center;
+}
+
+.meal-calendar-container .react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #6b7280;
+  letter-spacing: 0.5px;
+}
+
+/* ===== 날짜 타일 ===== */
+.meal-calendar-container .react-calendar__tile {
+  min-height: 160px;
+  padding: 8px 7px 6px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  transition: background 0.15s, border-color 0.15s;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  vertical-align: top;
+  cursor: pointer;
 }
 
-/* hover 시 */
 .meal-calendar-container .react-calendar__tile:hover {
-  background: #e9ecef; 
+  background: #f0fdf4;
+  border-color: #86efac;
+  z-index: 1;
+}
+
+/* ===== 날짜 숫자 ===== */
+.meal-calendar-container .react-calendar__tile abbr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #374151;
+  border-radius: 50%;
+  margin-bottom: 5px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+/* 오늘 날짜 */
+.meal-calendar-container .react-calendar__tile--now {
+  background: #eff6ff !important;
+  border-color: #bfdbfe !important;
+}
+
+.meal-calendar-container .react-calendar__tile--now abbr {
+  background: #3b82f6;
+  color: #fff;
 }
 
 /* 선택된 날짜 */
-.meal-calendar-container .react-calendar__tile--active {
-  background: #d4edda !important; 
-  color: #155724; 
-  font-weight: bold;
+.meal-calendar-container .react-calendar__tile--active,
+.meal-calendar-container .react-calendar__tile--active:hover {
+  background: #f0fdf4 !important;
+  border-color: #4ade80 !important;
 }
 
-/* ✅ 네비게이션 없애기 (JSX에서 showNavigation={false} 적용 후에도 혹시 모를 UI 제거) */
-.meal-calendar-container .react-calendar__navigation {
-  display: none;
+.meal-calendar-container .react-calendar__tile--active abbr {
+  background: #16a34a;
+  color: #fff;
 }
 
-/* 중식 */
-.meal-calendar-container .meal-preview .lunch {
-  color: #000;
-  font-size: 0.85rem;
-  margin-bottom: 4px;
+/* 이전/다음 달 날짜 흐리게 */
+.meal-calendar-container .react-calendar__month-view__days__day--neighboringMonth {
+  opacity: 0.3;
+  pointer-events: none;
 }
 
-/* 석식 */
+/* 일요일 날짜 숫자 */
+.meal-calendar-container .sunday-tile abbr {
+  color: #ef4444;
+}
+
+/* 토요일 날짜 숫자 */
+.meal-calendar-container .saturday-tile abbr {
+  color: #3b82f6;
+}
+
+/* ===== 급식 미리보기 영역 ===== */
+.meal-calendar-container .meal-preview {
+  width: 100%;
+  font-size: 0.7rem;
+  line-height: 1.45;
+  color: #374151;
+}
+
+/* 중식 레이블 */
+.meal-calendar-container .meal-preview .lunch strong {
+  display: inline-block;
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+  letter-spacing: 0.3px;
+}
+
+/* 석식 레이블 */
 .meal-calendar-container .meal-preview .dinner {
-  color: #28a745; 
-  font-size: 0.85rem;
+  margin-top: 5px;
 }
 
+.meal-calendar-container .meal-preview .dinner strong {
+  display: inline-block;
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+  letter-spacing: 0.3px;
+}
+
+/* 음식 목록 */
 .meal-calendar-container .meal-text {
-  text-align: center;
-  margin-top: 4px;
-  font-size: 0.8rem;
-  line-height: 1.4;
+  margin-top: 1px;
 }
 
 .meal-calendar-container .meal-line {
-  display: block;    /* ✅ span도 줄바꿈되게 */
-  text-align: center;    /* ✅ span도 중앙 정렬 */
-  margin: 2px 0;         /* ✅ 위아래 여백 조금 줘서 간격 맞춤 */
+  display: block;
+  color: #4b5563;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-
-/* 제목 스타일 */
-.meal-calendar-container .meal-title {
+/* 급식 없음 */
+.meal-calendar-container .no-meal {
+  color: #d1d5db;
+  font-size: 0.68rem;
   text-align: center;
-  font-size: 1.8rem; 
-  font-weight: bold;
-  color: #1c7430; 
-  margin-bottom: 16px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 768px) {
+  .meal-calendar-container .react-calendar__tile {
+    min-height: 80px;
+    padding: 5px 3px;
+  }
+
+  .meal-calendar-container .meal-preview .lunch strong,
+  .meal-calendar-container .meal-preview .dinner strong {
+    font-size: 0.58rem;
+    padding: 0 3px;
+  }
+
+  .meal-calendar-container .meal-line {
+    font-size: 0.6rem;
+  }
+
+  .meal-calendar-container .meal-preview .dinner {
+    margin-top: 3px;
+  }
+
+  .meal-calendar-container .meal-title {
+    font-size: 1.2rem;
+  }
 }

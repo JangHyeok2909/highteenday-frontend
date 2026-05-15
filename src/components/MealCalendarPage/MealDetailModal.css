@@ -1,0 +1,174 @@
+/* ===== 오버레이 ===== */
+.meal-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  animation: meal-overlay-in 0.15s ease;
+}
+
+@keyframes meal-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ===== 모달 카드 ===== */
+.meal-modal {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 440px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: meal-modal-in 0.2s ease;
+  overflow: hidden;
+}
+
+@keyframes meal-modal-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ===== 헤더 ===== */
+.meal-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.meal-modal-date {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a3c2e;
+}
+
+.meal-modal-close {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1;
+}
+
+.meal-modal-close:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+/* ===== 본문 ===== */
+.meal-modal-body {
+  overflow-y: auto;
+  padding: 16px 20px;
+  flex: 1;
+}
+
+.meal-modal-empty {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  padding: 24px 0;
+}
+
+/* ===== 섹션 ===== */
+.meal-modal-section {
+  margin-bottom: 20px;
+}
+
+.meal-modal-section:last-child {
+  margin-bottom: 0;
+}
+
+/* 중식 / 석식 레이블 */
+.meal-modal-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 3px 10px;
+  margin-bottom: 10px;
+  letter-spacing: 0.3px;
+}
+
+.meal-modal-category.lunch {
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
+.meal-modal-category.dinner {
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+/* 음식 목록 */
+.meal-modal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meal-modal-list li {
+  font-size: 0.95rem;
+  color: #374151;
+  padding: 7px 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border-left: 3px solid #e5e7eb;
+}
+
+.meal-modal-section:has(.lunch) .meal-modal-list li {
+  border-left-color: #fb923c;
+}
+
+.meal-modal-section:has(.dinner) .meal-modal-list li {
+  border-left-color: #4ade80;
+}
+
+/* 섹션별 칼로리 */
+.meal-modal-cal-sub {
+  font-size: 0.8rem;
+  color: #6b7280;
+  text-align: right;
+  margin: 4px 0 0;
+}
+
+/* ===== 푸터 — 총 칼로리 ===== */
+.meal-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.meal-modal-footer span {
+  font-size: 0.88rem;
+  color: #6b7280;
+}
+
+.meal-modal-footer strong {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #dc2626;
+}

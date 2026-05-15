@@ -3,8 +3,6 @@ import "./LoginButton.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import googleBtn from "../../../assets/google-login-btn.png";
-import kakaoBtn from "../../../assets/kakao-login-btn.png";
-import naverBtn from "../../../assets/naver-login-btn.png";
 import { filterHangul } from "utils/validationSchemas";
 
 function LoginButton({ setShowFindId, setShowFindPw }) {
@@ -80,28 +78,7 @@ function LoginButton({ setShowFindId, setShowFindPw }) {
 
         {/* 소셜 로그인 */}
         <div className="social-login">
-          <a
-            href="https://api.highteenday.org/oauth2/authorization/kakao"
-          >
-            <img
-              src={kakaoBtn}
-              alt="카카오 로그인"
-              className="social-login-img"
-            />
-          </a>
-          <a
-            href="https://api.highteenday.org/oauth2/authorization/naver"
-            className="naver-btn"
-          >
-            <img
-              src={naverBtn}
-              alt="네이버 로그인"
-              className="social-login-img"
-            />
-          </a>
-          <a
-            href="https://api.highteenday.org/oauth2/authorization/google"
-          >
+          <a href="https://api.highteenday.org/oauth2/authorization/google">
             <img
               src={googleBtn}
               alt="구글 로그인"
