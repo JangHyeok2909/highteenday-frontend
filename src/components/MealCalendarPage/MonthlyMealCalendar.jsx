@@ -34,6 +34,7 @@ function MonthlyMealCalendar({ onDateClick }) {
       try {
         const res = await axios.get('/api/schools/meals/month', {
           headers: { Accept: 'application/json' },
+          withCredentials: true,
         });
 
         setSchoolName(res.data.schoolName);
