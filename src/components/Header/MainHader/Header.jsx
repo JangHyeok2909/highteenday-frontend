@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/highteenLogo.jpg";
 import NotificationBellIcons from "../../Icons/NotificationBellIcon";
 import UsersOverlayIcon from "../../Icons/UsersOverlayIcon";
+import NotificationPanel from "../../Notification/NotificationPanel";
 import "./Header.css";
 import SidebarMenu from "../SideBar/SidebarMenu";
 import "components/Default.css";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useNotification } from "../../../contexts/NotificationContext";
 
 function Header({ isMainPage }) {
   const { user, isLogin, logout } = useAuth();
+  const { unreadCount, panelOpen, setPanelOpen } = useNotification();
   const navigate = useNavigate();
+  const bellRef = useRef(null);
 
   const linkMoveHandler = () => {
     if (!isLogin) {
@@ -18,7 +22,15 @@ function Header({ isMainPage }) {
       return;
     }
     navigate("/friend");
-  }
+  };
+
+  const handleBellClick = () => {
+    if (!isLogin) {
+      navigate("/login");
+      return;
+    }
+    setPanelOpen(!panelOpen);
+  };
 
   return (
     <div id="header">
@@ -52,9 +64,12 @@ function Header({ isMainPage }) {
           <span onClick={() => linkMoveHandler()} className="padding-minus">
             <UsersOverlayIcon size={32} color={"#3f9763"} />
           </span>
-          <Link to="/">
-            <NotificationBellIcons size={32} color={"#3f9763"} count={0} />
-          </Link>
+          <div className="notification-bell-wrap" ref={bellRef}>
+            <span onClick={handleBellClick} style={{ cursor: "pointer" }}>
+              <NotificationBellIcons size={32} color={"#3f9763"} count={isLogin ? unreadCount : 0} />
+            </span>
+            {panelOpen && <NotificationPanel bellRef={bellRef} />}
+          </div>
         </div>
       </div>
     </div>

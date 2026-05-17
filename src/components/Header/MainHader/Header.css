@@ -137,6 +137,12 @@
   align-items: center;
 }
 
+#header .notification-bell-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 @media (max-width: 900px) {
   #header .user-section {
     display: none;

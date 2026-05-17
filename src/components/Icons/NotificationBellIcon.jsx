@@ -4,7 +4,7 @@ import "./Icons.css";
 
 function NotificationBellIcon({ size, color, count }) {
 
-    const displayCount = count > 9 ? "9+" : count;
+    const displayCount = count > 99 ? "99+" : count;
     
   return (
     <div className="notification-icon-container lucide-icon">
