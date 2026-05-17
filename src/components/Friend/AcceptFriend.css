@@ -1,39 +1,70 @@
+#accept-friend {
+  margin-top: 16px;
+}
+
 #accept-friend .acceptfriend-container {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+#accept-friend .acceptfriend-header {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #15803d;
 }
 
 #accept-friend .acceptfriend-title {
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 15px;
+  font-weight: 700;
+  color: #15803d;
+  margin: 0;
+}
+
+#accept-friend .acceptfriend-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: #22c55e;
+  border-radius: 11px;
 }
 
 #accept-friend .acceptfriend-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 #accept-friend .acceptfriend-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 12px;
+  padding: 10px 14px;
+  background: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  transition: background-color 0.2s;
+  border-radius: 10px;
+  transition: box-shadow 0.15s;
 }
 
 #accept-friend .acceptfriend-item:hover {
-  background-color: #f9fafb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 #accept-friend .acceptfriend-item-name {
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
   color: #111827;
 }
 
@@ -47,28 +78,28 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   padding: 0;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.15s, color 0.15s;
 }
 
 #accept-friend .acceptfriend-icon-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 #accept-friend .acceptfriend-icon-btn--accept {
-  background: #ecfdf5;
-  color: #059669;
+  background: #dcfce7;
+  color: #16a34a;
 }
 
 #accept-friend .acceptfriend-icon-btn--accept:hover:not(:disabled) {
-  background: #d1fae5;
-  color: #047857;
+  background: #bbf7d0;
+  color: #15803d;
 }
 
 #accept-friend .acceptfriend-icon-btn--reject {
@@ -81,15 +112,8 @@
   color: #b91c1c;
 }
 
-#accept-friend .acceptfriend-empty {
-  padding: 24px 12px;
-  text-align: center;
-  color: #6b7280;
-  font-size: 14px;
-}
-
 #accept-friend .acceptfriend-message {
-  font-size: 14px;
-  color: #059669;
-  margin: 0;
+  font-size: 13px;
+  color: #16a34a;
+  margin: 10px 0 0;
 }

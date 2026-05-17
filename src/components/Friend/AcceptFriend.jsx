@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Check, X } from "lucide-react";
+import { Check, X, UserPlus } from "lucide-react";
 import "./AcceptFriend.css";
 
-const AcceptFriend = ({ onClose, onUpdatedFriends }) => {
+const AcceptFriend = ({ onUpdatedFriends }) => {
   const [requests, setRequests] = useState([]);
   const [message, setMessage] = useState("");
   const [loadingId, setLoadingId] = useState(null);
@@ -17,7 +17,6 @@ const AcceptFriend = ({ onClose, onUpdatedFriends }) => {
         setRequests(res.data || []);
       } catch (err) {
         console.error("친구 요청 목록 불러오기 실패:", err);
-        setMessage("목록을 불러오지 못했습니다.");
       }
     };
     fetchRequests();
@@ -38,9 +37,7 @@ const AcceptFriend = ({ onClose, onUpdatedFriends }) => {
       );
       setRequests((prev) => prev.filter((r) => getReqId(r) !== id));
       setMessage("친구 요청을 수락했습니다.");
-      if (onUpdatedFriends) {
-        onUpdatedFriends();
-      }
+      if (onUpdatedFriends) onUpdatedFriends();
     } catch (err) {
       console.error("친구 요청 수락 실패:", err);
       setMessage("수락에 실패했습니다.");
@@ -70,47 +67,49 @@ const AcceptFriend = ({ onClose, onUpdatedFriends }) => {
     }
   };
 
+  if (requests.length === 0) return null;
+
   return (
     <div id="accept-friend">
       <div className="acceptfriend-container">
-        <h3 className="acceptfriend-title">친구 요청 목록</h3>
+        <div className="acceptfriend-header">
+          <UserPlus size={18} />
+          <h3 className="acceptfriend-title">친구 요청</h3>
+          <span className="acceptfriend-count">{requests.length}</span>
+        </div>
 
         <ul className="acceptfriend-list">
-          {requests.length === 0 ? (
-            <li className="acceptfriend-empty">대기 중인 요청이 없습니다.</li>
-          ) : (
-            requests.map((req) => {
-              const id = getReqId(req);
-              const isLoading = loadingId === id;
-              return (
-                <li key={id} className="acceptfriend-item">
-                  <span className="acceptfriend-item-name">{req.name}</span>
-                  <div className="acceptfriend-item-actions">
-                    <button
-                      type="button"
-                      className="acceptfriend-icon-btn acceptfriend-icon-btn--accept"
-                      onClick={(e) => handleAccept(e, req)}
-                      disabled={isLoading}
-                      aria-label="수락"
-                      title="수락"
-                    >
-                      <Check size={18} />
-                    </button>
-                    <button
-                      type="button"
-                      className="acceptfriend-icon-btn acceptfriend-icon-btn--reject"
-                      onClick={(e) => handleReject(e, req)}
-                      disabled={isLoading}
-                      aria-label="거절"
-                      title="거절"
-                    >
-                      <X size={18} />
-                    </button>
-                  </div>
-                </li>
-              );
-            })
-          )}
+          {requests.map((req) => {
+            const id = getReqId(req);
+            const isLoading = loadingId === id;
+            return (
+              <li key={id} className="acceptfriend-item">
+                <span className="acceptfriend-item-name">{req.name}</span>
+                <div className="acceptfriend-item-actions">
+                  <button
+                    type="button"
+                    className="acceptfriend-icon-btn acceptfriend-icon-btn--accept"
+                    onClick={(e) => handleAccept(e, req)}
+                    disabled={isLoading}
+                    aria-label="수락"
+                    title="수락"
+                  >
+                    <Check size={18} />
+                  </button>
+                  <button
+                    type="button"
+                    className="acceptfriend-icon-btn acceptfriend-icon-btn--reject"
+                    onClick={(e) => handleReject(e, req)}
+                    disabled={isLoading}
+                    aria-label="거절"
+                    title="거절"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
 
         {message && <p className="acceptfriend-message">{message}</p>}

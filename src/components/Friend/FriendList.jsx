@@ -7,6 +7,7 @@ import FriendAdd from "./FriendAdd";
 import AcceptFriend from "./AcceptFriend";
 import Header from "components/Header/MainHader/Header";
 import axios from "axios";
+import defaultProfile from "../../assets/default_profile_image.jpg";
 
 
 
@@ -22,7 +23,6 @@ const getInitials = (name = "") => {
 const FriendList = () => {
   const [friends, setFriends] = useState([]);
   const [showFriendAdd, setShowFriendAdd] = useState(false);
-  const [showAcceptFriend, setShowAcceptFriend] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef(null);
@@ -67,7 +67,7 @@ const FriendList = () => {
 
   const blockFriend = async (id, email) => {
     try {
-      await axios.post(
+      await axios.patch(
         "/api/friends/block",
         { id, email },
         { withCredentials: true }
@@ -85,7 +85,7 @@ const FriendList = () => {
 
   const unblockFriend = async (id, email) => {
     try {
-      await axios.post("/api/friends/unblock", { id, email }, { withCredentials: true });
+      await axios.patch("/api/friends/unblock", { id, email }, { withCredentials: true });
 
       setFriends((prev) =>
         prev.map((f) => (f.id === id ? { ...f, isBlocked: false } : f))
@@ -138,9 +138,10 @@ const FriendList = () => {
 
           <div className="action-buttons">
             <button type="button" onClick={() => setShowFriendAdd(true)}>친구 추가</button>
-            <button type="button" onClick={() => setShowAcceptFriend(true)}>친구 요청 목록</button>
           </div>
         </div>
+
+        <AcceptFriend onUpdatedFriends={fetchFriends} />
 
         <ul className="friend-list">
           {filtered.length > 0 ? (
@@ -151,20 +152,12 @@ const FriendList = () => {
                 <li key={friend.id} className="friend-card">
                   <div className="friend-info">
                     <div className="friend-avatar">
-                      {/* 프로필 사진 URL */}
-                      {friend.profileImageUrl ? (
-                        <img
-                          src={friend.profileImageUrl}
-                          alt={`${friend.name ?? "사용자"} 프로필`}
-                          loading="lazy"
-                          onError={(e) => {
-                            e.currentTarget.style.display = "none";
-                            const sib = e.currentTarget.nextElementSibling;
-                            if (sib) sib.classList.add("show");
-                          }}
-                        />
-                      ) : null}
-                      <span className="avatar-initials">{initials}</span>
+                      <img
+                        src={friend.profileUrl || defaultProfile}
+                        alt={`${friend.name ?? "사용자"} 프로필`}
+                        loading="lazy"
+                        onError={(e) => { e.target.src = defaultProfile; }}
+                      />
                     </div>
 
                     <div className="friend-text">
@@ -268,28 +261,6 @@ const FriendList = () => {
                 <X size={20} />
               </button>
               <FriendAdd onClose={() => setShowFriendAdd(false)} />
-            </div>
-          </div>
-        )}
-        {showAcceptFriend && (
-          <div
-            className="modal-overlay"
-            onClick={() => setShowAcceptFriend(false)}
-            role="presentation"
-          >
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <button
-                type="button"
-                className="modal-close"
-                onClick={() => setShowAcceptFriend(false)}
-                aria-label="친구창 닫기"
-              >
-                <X size={20} />
-              </button>
-              <AcceptFriend
-                onClose={() => setShowAcceptFriend(false)}
-                onUpdatedFriends={fetchFriends}
-              />
             </div>
           </div>
         )}

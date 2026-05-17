@@ -10,14 +10,14 @@ const FriendAdd = () => {
     e.preventDefault();
 
     if (!inputValue.trim()) {
-      setMessage("이메일을 입력하세요.");
+      setMessage("닉네임을 입력하세요.");
       return;
     }
 
     try {
       const res = await axios.post(
         "/api/friends/request",
-        { email: inputValue },
+        { nickname: inputValue },
         { withCredentials: true }
       );
 
@@ -51,7 +51,7 @@ const FriendAdd = () => {
         <form onSubmit={handleSubmit} className="friendadd-form">
           <input
             type="text"
-            placeholder="이메일 입력"
+            placeholder="닉네임 입력"
             className="friendadd-input"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
