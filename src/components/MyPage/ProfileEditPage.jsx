@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { ChevronRight } from "lucide-react";
 import defaultImg from "assets/default_profile_image.jpg";
-import axios from "axios";
 import Header from "../Header/MainHader/Header";
+import { useAuth } from "../../contexts/AuthContext";
 import "./ProfileEditPage.css";
 
 function ProfileEditPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    axios
-      .get("/api/user/userInfo", { withCredentials: true })
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch((err) => {
-        console.error("유저 정보 불러오기 실패:", err);
-        setUser(null);
-      });
-  }, []);
+  const { user } = useAuth();
 
   // 학년 변환 함수 (4학년까지 포함)
   const getGradeText = (grade) => {

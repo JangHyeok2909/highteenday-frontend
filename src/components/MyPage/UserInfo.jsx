@@ -1,42 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import "./UserInfo.css";
 import defaultImg from "assets/default_profile_image.jpg";
+import { useAuth } from "../../contexts/AuthContext";
 
 
 export default function UserInfo() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState("");
-
-  useEffect(() => {
-    let cancelled = false;
-
-    (async () => {
-      try {
-        setLoading(true);
-        setErr("");
-        const res = await axios.get("/api/user/userInfo", {
-          withCredentials: true,
-          headers: { Accept: "application/json" },
-        });
-        if (!cancelled) {
-          setUser(res.data || null);
-        }
-      } catch (e) {
-        if (!cancelled) {
-          setErr("사용자 정보를 불러오지 못했습니다.");
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const { user, isLoading: loading } = useAuth();
+  const err = !loading && !user ? "사용자 정보를 불러오지 못했습니다." : "";
 
   const nickname = user?.nickname || "익명";
   const school = user?.schoolName || "학교 정보 없음";

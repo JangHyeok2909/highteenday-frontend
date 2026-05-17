@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,7 @@ import * as yup from "yup";
 import axios from "axios";
 import Header from "components/Header/MainHader/Header";
 import { nicknameField } from "utils/validationSchemas";
+import { useAuth } from "../../contexts/AuthContext";
 import "components/Default.css";
 import "./NicknameChangePage.css";
 
@@ -14,7 +15,8 @@ const schema = yup.object().shape({ nickname: nicknameField });
 
 function NicknameChangePage() {
   const navigate = useNavigate();
-  const [currentNickname, setCurrentNickname] = useState("");
+  const { user } = useAuth();
+  const currentNickname = user?.nickname || "";
   const [isAvailable, setIsAvailable] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
 
@@ -26,13 +28,6 @@ function NicknameChangePage() {
     clearErrors,
     formState: { errors, isValid },
   } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
-
-  useEffect(() => {
-    axios
-      .get("/api/user/userInfo", { withCredentials: true })
-      .then((res) => setCurrentNickname(res.data.nickname || ""))
-      .catch((err) => console.error("유저 정보 불러오기 실패:", err));
-  }, []);
 
   const handleNicknameBlur = async (e) => {
     const nickname = e.target.value;

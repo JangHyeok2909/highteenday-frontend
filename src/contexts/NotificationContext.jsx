@@ -54,6 +54,7 @@ export function NotificationProvider({ children }) {
 
   // ── Fetch notifications (initial + reset) ──
   const fetchNotifications = useCallback(async () => {
+    if (!isLogin) return;
     setIsLoading(true);
     setError(null);
     try {
@@ -70,7 +71,7 @@ export function NotificationProvider({ children }) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [isLogin]);
 
   // Fetch when panel opens
   const prevPanelOpen = useRef(false);
@@ -84,7 +85,7 @@ export function NotificationProvider({ children }) {
 
   // ── Load more ──
   const loadMore = useCallback(async () => {
-    if (isLoading || !hasMore) return;
+    if (isLoading || !hasMore || !isLogin) return;
     const nextPage = page + 1;
     setIsLoading(true);
     try {
@@ -100,7 +101,7 @@ export function NotificationProvider({ children }) {
     } finally {
       setIsLoading(false);
     }
-  }, [isLoading, hasMore, page]);
+  }, [isLoading, hasMore, page, isLogin]);
 
   // ── Mark as read ──
   const markAsRead = useCallback(async (id) => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../contexts/NotificationContext";
+import { useAuth } from "../../contexts/AuthContext";
 import NotificationItem from "./NotificationItem";
 import "./NotificationPanel.css";
 
@@ -24,6 +25,7 @@ function getNotificationPath(notification) {
 export default function NotificationPanel({ bellRef }) {
   const navigate = useNavigate();
   const panelRef = useRef(null);
+  const { isLogin } = useAuth();
   const {
     notifications,
     hasMore,
@@ -64,6 +66,23 @@ export default function NotificationPanel({ bellRef }) {
   const handleDelete = (id) => {
     deleteNotification(id);
   };
+
+  if (!isLogin) {
+    return (
+      <div className="notification-panel" ref={panelRef}>
+        <div className="noti-panel-header">
+          <h3 className="noti-panel-title">알림</h3>
+        </div>
+        <div className="noti-login-required">
+          <span className="noti-empty-icon">🔔</span>
+          <p>로그인이 필요한 서비스입니다.</p>
+          <button onClick={() => { setPanelOpen(false); navigate("/login"); }}>
+            로그인하러가기
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="notification-panel" ref={panelRef}>

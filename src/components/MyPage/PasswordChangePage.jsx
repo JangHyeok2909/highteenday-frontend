@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -8,6 +8,7 @@ import { Eye, EyeOff } from "lucide-react";
 import axios from "axios";
 import Header from "components/Header/MainHader/Header";
 import { passwordField, confirmPasswordField, filterHangul } from "utils/validationSchemas";
+import { useAuth } from "../../contexts/AuthContext";
 import "components/Default.css";
 import "./PasswordChangePage.css";
 
@@ -21,13 +22,16 @@ const schema = yup.object().shape({
 function PasswordChangePage() {
   const navigate = useNavigate();
 
-  const [provider, setProvider] = useState(null); // null = 로딩 중
+  const { user } = useAuth();
+  const provider = user?.provider ?? null;
   const [isCurrentPwVerified, setIsCurrentPwVerified] = useState(false);
 
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const isDefault = provider === "LOCAL";
 
   const {
     register,
@@ -38,15 +42,7 @@ function PasswordChangePage() {
     formState: { errors, isValid },
   } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
-  useEffect(() => {
-    axios
-      .get("/api/user/userInfo", { withCredentials: true })
-      .then((res) => setProvider(res.data.provider || "DEFAULT"))
-      .catch(() => setProvider("DEFAULT"));
-  }, []);
-
-  const isDefault = provider === "DEFAULT";
-  // DEFAULT 유저는 현재 비밀번호 서버 검증까지 통과해야 제출 가능
+  // LOCAL 유저는 현재 비밀번호 서버 검증까지 통과해야 제출 가능
   const isFormValid = isValid && (!isDefault || isCurrentPwVerified);
 
   const currentPwRegister = register("currentPw");
