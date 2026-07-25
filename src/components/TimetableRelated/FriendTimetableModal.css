@@ -1,0 +1,126 @@
+.friend-timetable-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  padding: 16px;
+}
+
+.friend-timetable-modal {
+  position: relative;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  width: 760px;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.friend-timetable-modal .ftm-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.friend-timetable-modal .ftm-close:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.friend-timetable-modal .ftm-header {
+  margin: 0 32px 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.friend-timetable-modal .ftm-title {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.friend-timetable-modal .ftm-subtitle {
+  font-size: 13px;
+  color: #6c757d;
+}
+
+.friend-timetable-modal .ftm-state {
+  padding: 40px 0;
+  text-align: center;
+  color: #6c757d;
+}
+
+.friend-timetable-modal .ftm-error {
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  color: #721c24;
+  font-size: 14px;
+}
+
+.friend-timetable-modal .ftm-import {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.friend-timetable-modal .ftm-import input[type="text"] {
+  padding: 8px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.friend-timetable-modal .ftm-import label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #495057;
+}
+
+.friend-timetable-modal .ftm-import-btn {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.friend-timetable-modal .ftm-import-btn:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .friend-timetable-modal {
+    padding: 16px;
+    padding-top: 44px;
+  }
+}
