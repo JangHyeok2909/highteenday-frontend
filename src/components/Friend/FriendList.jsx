@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
+import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 import "./FriendList.css";
 import "../Default.css";
@@ -21,6 +22,7 @@ const getInitials = (name = "") => {
 };
 
 const FriendList = () => {
+  const navigate = useNavigate();
   const [friends, setFriends] = useState([]);
   const [showFriendAdd, setShowFriendAdd] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -64,6 +66,20 @@ const FriendList = () => {
   }, [friends, searchTerm]);
 
   const toggleMenu = (id) => setOpenMenuId((prev) => (prev === id ? null : id));
+
+  const handleStartChat = async (friendId) => {
+    try {
+      const { data } = await axios.post(
+        "/api/chat/rooms",
+        { friendId },
+        { withCredentials: true }
+      );
+      navigate(`/chat/${data.roomId}`);
+    } catch (err) {
+      console.error("채팅방 생성 실패:", err);
+      alert(err?.response?.data?.message || "채팅방을 열 수 없습니다.");
+    }
+  };
 
   const blockFriend = async (id, email) => {
     try {
@@ -175,7 +191,11 @@ const FriendList = () => {
                   </div>
 
                   <div className="friend-actions">
-                    <button title="채팅" aria-label="채팅">
+                    <button
+                      title="채팅"
+                      aria-label="채팅"
+                      onClick={() => handleStartChat(friend.id)}
+                    >
                       💬
                     </button>
                     <button title="일정" aria-label="일정">

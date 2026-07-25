@@ -5,7 +5,9 @@ import App from './App';
 import axios from 'axios';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './contexts/AuthContext';
+import { WebSocketProvider } from './contexts/WebSocketContext';
 import { NotificationProvider } from './contexts/NotificationContext';
+import { ChatProvider } from './contexts/ChatContext';
 import { BrowserRouter } from 'react-router-dom';
 import { setupAxiosInterceptors } from './utils/setupAxios';
 import { HelmetProvider } from 'react-helmet-async';
@@ -20,9 +22,13 @@ root.render(
     <BrowserRouter>
       <React.StrictMode>
         <AuthProvider>
-          <NotificationProvider>
-            <App />
-          </NotificationProvider>
+          <WebSocketProvider>
+            <NotificationProvider>
+              <ChatProvider>
+                <App />
+              </ChatProvider>
+            </NotificationProvider>
+          </WebSocketProvider>
         </AuthProvider>
       </React.StrictMode>
     </BrowserRouter>

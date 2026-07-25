@@ -3,16 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/highteenLogo.jpg";
 import NotificationBellIcons from "../../Icons/NotificationBellIcon";
 import UsersOverlayIcon from "../../Icons/UsersOverlayIcon";
+import ChatIcon from "../../Icons/ChatIcon";
 import NotificationPanel from "../../Notification/NotificationPanel";
 import "./Header.css";
 import SidebarMenu from "../SideBar/SidebarMenu";
 import "components/Default.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useNotification } from "../../../contexts/NotificationContext";
+import { useChat } from "../../../contexts/ChatContext";
 
 function Header({ isMainPage }) {
   const { user, isLogin, logout } = useAuth();
   const { unreadCount, panelOpen, setPanelOpen } = useNotification();
+  const { totalUnreadCount } = useChat();
   const navigate = useNavigate();
   const bellRef = useRef(null);
 
@@ -63,6 +66,9 @@ function Header({ isMainPage }) {
         <div className="function">
           <span onClick={() => linkMoveHandler()} className="padding-minus">
             <UsersOverlayIcon size={32} color={"#3f9763"} />
+          </span>
+          <span onClick={() => { if (!isLogin) { navigate("/login"); return; } navigate("/chat"); }} className="padding-minus">
+            <ChatIcon size={32} color={"#3f9763"} count={isLogin ? totalUnreadCount : 0} />
           </span>
           <div className="notification-bell-wrap" ref={bellRef}>
             <span onClick={handleBellClick} style={{ cursor: "pointer" }}>

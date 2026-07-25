@@ -6,12 +6,14 @@ import Menubar from "../../Icons/Menubar";
 import ArrowLeftIcon from "../../Icons/Arrow_Left_Icon";
 import "../../Default.css"
 import { useAuth } from "../../../contexts/AuthContext";
+import { useChat } from "../../../contexts/ChatContext";
 
 function SidebarMenu({size, color}) {
 
     const [isOpen, setIsOpen] = useState(false);
     const [boards, setBoards] = useState([]);
     const { user, isLogin, logout } = useAuth();
+    const { totalUnreadCount } = useChat();
     const navigate = useNavigate();
 
     // board 이름 들고오는 부분
@@ -31,6 +33,11 @@ function SidebarMenu({size, color}) {
     }, []);
 
     const staticMenu = [
+      {
+        title: `채팅${totalUnreadCount > 0 ? ` (${totalUnreadCount})` : ""}`,
+        type: "single",
+        link: "/chat",
+      },
       {
         title: "급식 · 시간표",
         type: "group",
