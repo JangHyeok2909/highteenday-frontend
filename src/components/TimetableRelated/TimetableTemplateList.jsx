@@ -11,7 +11,7 @@ const SEMESTERS = [
   { value: 'SECOND', label: '2학기' },
 ];
 
-function TimetableTemplateList({ onSelectTemplate }) {
+function TimetableTemplateList({ onSelectTemplate, initialTemplateId = null }) {
   const [templates, setTemplates] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
 
@@ -43,8 +43,10 @@ function TimetableTemplateList({ onSelectTemplate }) {
         setTemplates(templates);
         
         if (templates.length > 0 && !templates.find(t => t.id === selectedId)) {
+          // 외부에서 지정한 템플릿(예: 친구 시간표 가져오기 직후)이 있으면 우선 선택한다.
+          const requestedTemplate = templates.find(t => t.id === initialTemplateId);
           const defaultTemplate = templates.find(t => t.default);
-          const templateToSelect = defaultTemplate || templates[0];
+          const templateToSelect = requestedTemplate || defaultTemplate || templates[0];
           setSelectedId(templateToSelect.id);
           onSelectTemplate(templateToSelect.id);
         }
@@ -55,7 +57,7 @@ function TimetableTemplateList({ onSelectTemplate }) {
       });
   };
 
-  useEffect(fetchTemplates, [onSelectTemplate, selectedId]);
+  useEffect(fetchTemplates, [onSelectTemplate, selectedId, initialTemplateId]);
 
   function handleCreate() {
     if (!newName.trim()) return alert('템플릿 이름을 입력하세요');
@@ -142,7 +144,7 @@ function TimetableTemplateList({ onSelectTemplate }) {
     if (!editName.trim()) return alert('템플릿 이름을 입력하세요.');
     
     axios
-      .put(
+      .patch(
         `${API_BASE}/timetableTemplates/${id}`,
         { 
           templateName: editName.trim(), 

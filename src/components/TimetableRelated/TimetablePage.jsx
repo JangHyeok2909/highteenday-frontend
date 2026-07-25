@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 
 import Header from "components/Header/MainHader/Header";
@@ -17,6 +18,10 @@ const API_BASE = "/api";
 
 export default function TimetablePage() {
   const { isLogin } = useAuth();
+
+  // 친구 시간표를 가져온 뒤 ?templateId=... 로 진입하면 해당 템플릿을 바로 상세 조회한다.
+  const [searchParams] = useSearchParams();
+  const requestedTemplateId = Number(searchParams.get("templateId")) || null;
 
   const [selectedTemplateId, setSelectedTemplateId] = useState(null);
   const [timetableData, setTimetableData] = useState([]);
@@ -64,7 +69,7 @@ export default function TimetablePage() {
 
     const endpoints = {
       create: (name) => ["POST", `/timetableTemplates/${selectedTemplateId}/subjects`, { subjectName: name }],
-      update: (id, name) => ["PUT", `/timetableTemplates/${selectedTemplateId}/subjects/${id}`, { subjectName: name }],
+      update: (id, name) => ["PATCH", `/timetableTemplates/${selectedTemplateId}/subjects/${id}`, { subjectName: name }],
       delete: (id) => ["DELETE", `/timetableTemplates/${selectedTemplateId}/subjects/${id}`],
     };
 
@@ -149,7 +154,10 @@ export default function TimetablePage() {
             <div style={{ display: "flex", gap: 16, padding: 16, minHeight: "70vh" }}>
               {/* 왼쪽: 템플릿 목록 */}
               <aside style={{ width: 300, background: "#f8f9fa", padding: 16, borderRadius: 8 }}>
-                <TimetableTemplateList onSelectTemplate={setSelectedTemplateId} />
+                <TimetableTemplateList
+                  onSelectTemplate={setSelectedTemplateId}
+                  initialTemplateId={requestedTemplateId}
+                />
               </aside>
 
               {/* 오른쪽: 시간표/과목 */}
