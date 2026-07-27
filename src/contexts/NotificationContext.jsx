@@ -52,8 +52,8 @@ export function NotificationProvider({ children }) {
     // 초기 안읽은 수 로드
     fetchUnreadCount();
 
-    // 실시간 알림 구독
-    const sub = subscribe(`/topic/notifications/${user.id}`, (notification) => {
+    // 실시간 알림 구독 — 세션별 개인 큐라 주소에 userId를 싣지 않는다
+    const sub = subscribe("/user/queue/notifications", (notification) => {
       setUnreadCount((c) => c + 1);
       setNotifications((prev) => [notification, ...prev]);
     });
