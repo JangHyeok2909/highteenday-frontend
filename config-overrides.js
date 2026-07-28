@@ -1,3 +1,6 @@
+// Windows는 경로 구분자가 "\" 이므로 두 가지 모두 매칭해야 한다
+const TOAST_UI = /node_modules[\\/]@toast-ui/;
+
 module.exports = function override(config) {
   config.module.rules = config.module.rules.map((rule) => {
     if (rule.loader && rule.loader.includes("source-map-loader")) {
@@ -5,7 +8,7 @@ module.exports = function override(config) {
         ...rule,
         exclude: [
           ...(rule.exclude ? [rule.exclude] : []),
-          /node_modules\/@toast-ui/,
+          TOAST_UI,
         ],
       };
     }
@@ -19,7 +22,7 @@ module.exports = function override(config) {
               ...r,
               exclude: [
                 ...(r.exclude ? [r.exclude] : []),
-                /node_modules\/@toast-ui/,
+                TOAST_UI,
               ],
             };
           }
