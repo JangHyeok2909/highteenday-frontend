@@ -1,0 +1,151 @@
+/* 닉네임/비밀번호/전화번호/학교 변경 페이지 공용 */
+
+.change-page {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.change-page__title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-4);
+}
+
+.change-page__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+}
+
+.change-page__current {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+.change-page__current strong {
+  color: var(--color-text);
+}
+
+.change-page__guide {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+.change-page__guide span {
+  color: var(--color-primary);
+  font-weight: var(--font-semibold);
+}
+
+.change-page__msg {
+  font-size: var(--text-xs);
+}
+.change-page__msg--error {
+  color: var(--color-danger);
+}
+.change-page__msg--success {
+  color: var(--color-success);
+}
+.change-page__msg--info {
+  color: var(--color-text-secondary);
+}
+
+.change-page__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.change-page__input-row {
+  display: flex;
+  gap: var(--space-2);
+}
+.change-page__input-row .ui-input {
+  flex: 1;
+}
+.change-page__input-row .ui-button {
+  flex-shrink: 0;
+}
+
+/* 비밀번호 눈 아이콘 */
+.change-page__pw-wrap {
+  position: relative;
+}
+.change-page__pw-wrap .ui-input {
+  padding-right: 44px;
+}
+
+.change-page__eye {
+  position: absolute;
+  top: 50%;
+  right: var(--space-2);
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+.change-page__eye:hover {
+  color: var(--color-text);
+}
+
+/* 학교 변경 페이지 */
+.change-page__school-badge {
+  padding: var(--space-3);
+  background-color: var(--color-primary-soft);
+  border: 1px solid var(--color-primary-soft-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--color-text-body);
+}
+.change-page__school-badge strong {
+  color: var(--color-primary-hover);
+}
+
+.change-page__select-row {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.change-page__select-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.change-page__select-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-body);
+}
+
+.change-page__select {
+  height: 44px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+.change-page__select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+/* 학교 변경 페이지에서 SchoolSearch 카드 여백 조정 */
+.change-page .school-search {
+  margin: 0;
+  max-width: none;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}

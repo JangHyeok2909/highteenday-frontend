@@ -1,24 +1,22 @@
-/* src/components/Header.css */
+.register-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-8) 0 var(--space-6);
+}
 
-#register-header .header {
-    width: 100%;
-    background-color: white;
-    padding: 24px;
-  }
-  
-  #register-header .header-title {
-    font-size: 2.5rem; /* 크게 표시 */
-    font-weight: bold;
-    text-align: left;
-    color: #1f2937; /* dark-gray */
-    margin: 0;
-  }
-  
-  #register-header .header-divider {
-    margin-top: 8px;
-    height: 4px;
-    width: 100%;
-    background-color: #d1d5db; /* light-gray */
-    border-radius: 9999px; /* 끝 둥글게 */
-  }
-  
+.register-header__brand {
+  font-size: var(--text-md);
+  font-weight: var(--font-bold);
+  color: var(--color-primary);
+}
+.register-header__brand:hover {
+  text-decoration: none;
+}
+
+.register-header__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+}

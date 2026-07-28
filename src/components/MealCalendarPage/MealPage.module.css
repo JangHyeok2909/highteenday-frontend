@@ -3,7 +3,7 @@
   max-width: 100%;
   font-family: 'Arial', sans-serif;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--gray-300);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -27,7 +27,7 @@
 .meal-preview {
   font-size: 12px;
   margin-top: 4px;
-  color: #333;
+  color: var(--gray-700);
   line-height: 1.4;
   white-space: normal;
   word-break: keep-all;

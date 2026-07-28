@@ -1,104 +1,74 @@
-#banner {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-#banner .banner-container {
+.main-banner__viewport {
   position: relative;
-  width: 100%;
-  height: clamp(160px, 22vw, 280px);
-  border-radius: 10px;
+  height: clamp(150px, 20vw, 240px);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  cursor: grab;
-  user-select: none;
+  box-shadow: var(--shadow-card);
 }
 
-#banner .banner-container:active {
-  cursor: grabbing;
-}
-
-/* 슬라이드 트랙 */
-#banner .banner-track {
+.main-banner__track {
   display: flex;
   height: 100%;
-  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.4s ease;
 }
 
-#banner .banner-slide {
+.main-banner__slide {
   flex: 0 0 100%;
   height: 100%;
 }
 
-#banner .banner-image {
+.main-banner__image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
-  pointer-events: none;
+  user-select: none;
 }
 
-/* 화살표 버튼 */
-#banner .banner-arrow {
+.main-banner__arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
-  border: none;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  color: #3f9763;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-card);
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  transition: background 0.2s, transform 0.2s;
-  z-index: 2;
-  line-height: 1;
-  padding: 0;
+}
+.main-banner__arrow:hover {
+  background-color: #fff;
+}
+.main-banner__arrow--left {
+  left: var(--space-3);
+}
+.main-banner__arrow--right {
+  right: var(--space-3);
 }
 
-#banner .banner-arrow:hover {
-  background: rgba(255, 255, 255, 1);
-  transform: translateY(-50%) scale(1.08);
-}
-
-#banner .banner-arrow.left {
-  left: 14px;
-}
-
-#banner .banner-arrow.right {
-  right: 14px;
-}
-
-/* 인디케이터 */
-#banner .banner-indicators {
+.main-banner__dots {
   position: absolute;
-  bottom: 14px;
+  bottom: var(--space-3);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 7px;
-  z-index: 2;
+  gap: var(--space-2);
 }
 
-#banner .dot {
+.main-banner__dot {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.6);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
 }
-
-#banner .dot:hover {
-  background: rgba(255, 255, 255, 0.9);
-}
-
-#banner .dot.active {
-  background: #3f9763;
-  transform: scale(1.25);
+.main-banner__dot--active {
+  background-color: var(--color-primary);
 }

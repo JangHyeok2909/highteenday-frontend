@@ -1,113 +1,125 @@
-#TimetablePage .subject-bar {
+.subject-bar {
   display: flex;
-  align-items: center;
-  padding: 12px;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  background: #fff;
-  animation: slideUp 0.2s ease-out;
-  gap: 8px;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  animation: subject-bar-slide-up 0.2s ease-out;
 }
 
-@keyframes slideUp {
-  from { 
-    transform: translateY(10px); 
-    opacity: 0; 
+.subject-bar__title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-body);
+}
+
+@keyframes subject-bar-slide-up {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
   }
-  to { 
-    transform: translateY(0); 
-    opacity: 1; 
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
 /* 할당된 과목을 보여주는 알약 모양 */
-#TimetablePage  .pill {
-  background: #e8f5e8;
-  border: 1px solid #28a745;
-  border-radius: 20px;
-  padding: 6px 12px;
+.subject-bar .pill {
+  align-self: flex-start;
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-full);
+  padding: var(--space-1) var(--space-3);
   display: flex;
   align-items: center;
-  font-size: 14px;
-  color: #155724;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  color: var(--color-primary-hover);
+  font-weight: var(--font-medium);
 }
 
 /* 과목 제거 버튼 (× 버튼) */
-#TimetablePage  .remove-btn {
+.subject-bar .remove-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 18px;
   height: 18px;
-  margin-left: 6px;
-  color: #dc3545;
+  margin-left: var(--space-2);
+  border: none;
+  background: transparent;
+  color: var(--color-danger);
   cursor: pointer;
-  border-radius: 50%;
-  font-size: 14px;
-  font-weight: bold;
-  transition: all 0.2s ease;
+  border-radius: var(--radius-full);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
-
-#TimetablePage .remove-btn:hover {
-  background: #dc3545;
-  color: white;
+.subject-bar .remove-btn:hover {
+  background: var(--color-danger);
+  color: #fff;
 }
 
 /* 과목 추가 버튼 (+ 버튼) */
-#TimetablePage .add-btn {
-  font-size: 14px;
-  border: 1px solid #007bff;
-  background: #007bff;
-  color: white;
+.subject-bar .add-btn {
+  align-self: flex-start;
+  font-size: var(--text-sm);
+  border: none;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
   cursor: pointer;
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  font-weight: 500;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-weight: var(--font-semibold);
+  transition: background-color 0.15s ease;
 }
-
-#TimetablePage .add-btn:hover {
-  background: #0056b3;
-  border-color: #0056b3;
+.subject-bar .add-btn:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+.subject-bar .add-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 /* 드롭다운 컨테이너 */
-#TimetablePage .dropdown {
+.subject-bar .dropdown {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-left: 8px;
+  gap: var(--space-2);
 }
 
-#TimetablePage .dropdown select {
-  padding: 6px 12px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 14px;
-  background: white;
+.subject-bar .dropdown select {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  background: var(--color-surface);
   min-width: 150px;
 }
-
-#TimetablePage .dropdown select:focus {
+.subject-bar .dropdown select:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--primary-100);
 }
 
 /* 취소 버튼 */
-#TimetablePage .cancel-btn {
-  border: 1px solid #6c757d;
+.subject-bar .cancel-btn {
+  border: 1px solid var(--color-border-strong);
   background: transparent;
-  color: #6c757d;
+  color: var(--color-text-secondary);
   cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 12px;
-  transition: all 0.2s ease;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
-
-#TimetablePage .cancel-btn:hover {
-  background: #6c757d;
-  color: white;
+.subject-bar .cancel-btn:hover {
+  background: var(--gray-100);
+  color: var(--color-text);
 }

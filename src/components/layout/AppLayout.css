@@ -1,0 +1,18 @@
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-layout__main {
+  flex: 1;
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-10);
+}
+
+@media (max-width: 768px) {
+  .app-layout__main {
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-8);
+  }
+}

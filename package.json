@@ -55,8 +55,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react": "^18.3.23",
-    "@types/react-dom": "^18.3.7",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "react-app-rewired": "^2.2.1",
     "typescript": "^4.9.5"
   }

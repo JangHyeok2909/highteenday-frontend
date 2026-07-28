@@ -1,8 +1,1 @@
-/* main-page */
-#MainPage {
-  min-height: 100vh;
-}
-
-#MainPage .content-container {
-  width: 100%;
-}
+/* main-page 고유 스타일은 현재 없음 — 레이아웃은 Body.css 참조 */

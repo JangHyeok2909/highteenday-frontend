@@ -1,119 +1,76 @@
-#accept-friend {
-  margin-top: 16px;
-}
-
-#accept-friend .acceptfriend-container {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 12px;
-  padding: 16px;
-}
-
-#accept-friend .acceptfriend-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  color: #15803d;
-}
-
-#accept-friend .acceptfriend-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: #15803d;
-  margin: 0;
-}
-
-#accept-friend .acceptfriend-count {
+.accept-friend__head {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-width: 22px;
-  height: 22px;
-  padding: 0 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-  background: #22c55e;
-  border-radius: 11px;
+  gap: var(--space-2);
+  font-size: var(--text-md);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+}
+.accept-friend__head svg {
+  color: var(--color-primary);
 }
 
-#accept-friend .acceptfriend-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.accept-friend__list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
-#accept-friend .acceptfriend-item {
+.accept-friend__item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  transition: box-shadow 0.15s;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+.accept-friend__item + .accept-friend__item {
+  border-top: 1px solid var(--gray-100);
 }
 
-#accept-friend .acceptfriend-item:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+.accept-friend__name {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
 }
 
-#accept-friend .acceptfriend-item-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: #111827;
-}
-
-#accept-friend .acceptfriend-item-actions {
+.accept-friend__actions {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
-#accept-friend .acceptfriend-icon-btn {
+.accept-friend__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  padding: 0;
+  width: 30px;
+  height: 30px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-full);
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
+  transition: opacity 0.15s ease;
 }
-
-#accept-friend .acceptfriend-icon-btn:disabled {
+.accept-friend__btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-#accept-friend .acceptfriend-icon-btn--accept {
-  background: #dcfce7;
-  color: #16a34a;
+.accept-friend__btn--accept {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+.accept-friend__btn--accept:hover:not(:disabled) {
+  background-color: var(--primary-100);
 }
 
-#accept-friend .acceptfriend-icon-btn--accept:hover:not(:disabled) {
-  background: #bbf7d0;
-  color: #15803d;
+.accept-friend__btn--reject {
+  background-color: var(--gray-100);
+  color: var(--color-text-secondary);
+}
+.accept-friend__btn--reject:hover:not(:disabled) {
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger);
 }
 
-#accept-friend .acceptfriend-icon-btn--reject {
-  background: #fef2f2;
-  color: #dc2626;
-}
-
-#accept-friend .acceptfriend-icon-btn--reject:hover:not(:disabled) {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-#accept-friend .acceptfriend-message {
-  font-size: 13px;
-  color: #16a34a;
-  margin: 10px 0 0;
+.accept-friend__message {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
 }

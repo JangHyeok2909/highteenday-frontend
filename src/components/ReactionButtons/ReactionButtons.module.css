@@ -1,34 +1,49 @@
-/* 댓글 스타일 - 아이콘+숫자 (게시글/댓글 동일) */
+/* 리액션 버튼 - 아이콘+숫자 (게시글/댓글 동일) */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 8px;
-  margin-right: 8px;
-  border: none;
-  background: transparent;
-  color: var(--muted, #7a7a7a);
-  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
   cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+.btn:hover {
+  border-color: var(--color-border-strong);
+  background-color: var(--gray-50);
 }
 
-.btnLike { }
-.btnDislike { }
+.btnLike {
+}
+.btnDislike {
+}
 
-.btnScrap { }
+.btnScrap {
+}
 .btnScrapActive,
 .btnScrap.btnScrapActive {
-  color: #2563eb;
+  color: var(--color-primary);
+  border-color: var(--color-primary-soft-border);
+  background-color: var(--color-primary-soft);
 }
 
 .btnActive.btnLike,
 .btnLike.btnActive {
-  color: var(--accent, #6faf5f);
+  color: var(--color-primary);
+  border-color: var(--color-primary-soft-border);
+  background-color: var(--color-primary-soft);
 }
 
 .btnActive.btnDislike,
 .btnDislike.btnActive {
-  color: #e15241;
+  color: var(--color-danger);
+  border-color: var(--color-danger-soft-border);
+  background-color: var(--color-danger-soft);
 }
 
 .count {

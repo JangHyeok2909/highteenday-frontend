@@ -1,92 +1,34 @@
-/* src/components/CreateAccount.css */
-#CreateAccount {
-  display: flex;
-  justify-content: center;
-  margin: 40px 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-#CreateAccount .form-container {
+.create-account {
   width: 100%;
-  max-width: 500px;
-  background-color: #ffffff;
-  padding: 30px 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 480px;
+  margin: 0 auto var(--space-10);
+  padding: var(--space-6);
 }
 
-#CreateAccount .account-form {
+.create-account__form {
   display: flex;
   flex-direction: column;
+  gap: var(--space-4);
 }
 
-#CreateAccount .account-form label {
-  font-weight: bold;
-  margin-top: 15px;
-  margin-bottom: 5px;
+.create-account__verify-btn {
+  align-self: flex-start;
+  margin-top: calc(-1 * var(--space-2));
 }
 
-#CreateAccount .account-form input,
-.account-form select {
-  padding: 10px 12px;
-  font-size: 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-#CreateAccount .account-form input:focus,
-.account-form select:focus {
-  border-color: #10b981;
-}
-
-#CreateAccount .account-form p {
-  color: #dc2626; /* 빨강색 에러 */
-  font-size: 14px;
-  margin-top: 4px;
-}
-
-#CreateAccount .account-form button {
-  margin-top: 10px;
-  padding: 10px 0;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.2s;
-}
-
-#CreateAccount .account-form button[type="submit"] {
-  background-color: #10b981;
-  color: #ffffff;
-}
-
-#CreateAccount .account-form button[type="submit"]:disabled {
-  background-color: #9ca3af;
-  cursor: not-allowed;
-}
-
-#CreateAccount .account-form button[type="submit"]:hover:not(:disabled) {
-  background-color: #059669;
-}
-
-#CreateAccount .account-form button[type="button"] {
-  background-color: #e5e7eb;
-  color: #374151;
-}
-
-#CreateAccount .account-form button[type="button"]:hover {
-  background-color: #d1d5db;
-}
-
-#CreateAccount .button-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-
-#CreateAccount .submit-button {
+.create-account__select {
   width: 100%;
-  font-size: 16px;
+  height: 44px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+.create-account__select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--primary-100);
 }

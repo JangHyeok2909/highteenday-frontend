@@ -1,143 +1,87 @@
-/* LoginButton - 참고 사진에 맞춘 스타일 */
-.login-content {
-  position: relative;
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-8) var(--space-6);
+}
+
+.login-card__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  text-align: center;
+}
+
+.login-card__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.login-card__form {
   display: flex;
   flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.login-card__links {
+  display: flex;
   align-items: center;
-  padding: 110px 0 60px 0;
-  background-color: #ffffff;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
 }
 
-.login-container {
-  position: relative;
-  width: 500px;
+.login-card__link {
+  border: none;
+  background: transparent;
   padding: 0;
-  background-color: transparent;
-  border-radius: 0;
-  box-shadow: none;
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-/* 로그인 폼 */
-.login-form {
-  position: relative;
-  margin-bottom: 30px;
-}
-
-.input-field {
-  position: relative;
-  width: 100%;
-  height: 60px;
-  padding: 0 25px;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 30px;
-  font-size: 16px;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-.input-field::placeholder {
-  color: #aaa;
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: #4caf50;
-}
-
-.login-button {
-  position: relative;
-  width: 100%;
-  height: 60px;
-  background-color: #a8e6a1;
-  color: #333;
-  border: none;
-  border-radius: 30px;
-  font-size: 18px;
-  font-weight: bold;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
   cursor: pointer;
-  margin-bottom: 25px;
-  transition: background-color 0.2s;
 }
-
-.login-button:hover {
-  background-color: #95d18c;
-}
-
-.remember-me {
-  position: relative;
-  text-align: center;
-  font-size: 14px;
-  color: #666;
-  cursor: pointer;
-  margin-bottom: 30px;
-}
-
-.remember-me input {
-  position: relative;
-  margin-right: 8px;
-}
-
-/* 하단 링크 */
-.auth-links {
-  position: relative;
-  text-align: center;
-  margin-bottom: 40px;
-  font-size: 14px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-}
-
-.auth-link {
-  position: relative;
-  color: #666;
-  text-decoration: none;
-  padding: 0 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.auth-link:hover {
-  color: #4caf50;
+.login-card__link:hover {
+  color: var(--color-primary);
   text-decoration: underline;
 }
-
-.divider {
-  position: relative;
-  color: #ccc;
-  margin: 0 10px;
+.login-card__link--primary {
+  color: var(--color-primary);
+  font-weight: var(--font-semibold);
 }
 
-/* 소셜 로그인 */
-.social-login {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+.login-card__divider {
+  color: var(--gray-300);
+  font-size: var(--text-xs);
 }
 
-.social-login a {
-  display: inline-block;
-  width: 240px;
-  height: 60px;
+.login-card__social {
+  margin-top: var(--space-6);
+  text-align: center;
 }
 
-.social-login-img {
+.login-card__social-label {
   position: relative;
-  width: 100%;
-  height: 100%;
+  margin-bottom: var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+.login-card__social-label::before,
+.login-card__social-label::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: calc(50% - 24px);
+  border-top: 1px solid var(--color-border);
+}
+.login-card__social-label::before {
+  left: 0;
+}
+.login-card__social-label::after {
+  right: 0;
+}
+
+.login-card__social-img {
+  height: 44px;
   cursor: pointer;
-  transition: opacity 0.2s;
-  object-fit: contain;
-  border-radius: 6px;
-  display: block;
-}
-
-.social-login-img:hover {
-  opacity: 0.8;
 }

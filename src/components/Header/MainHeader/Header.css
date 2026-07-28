@@ -1,0 +1,125 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.app-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: 1200px;
+  height: 64px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 5vw, 40px);
+}
+
+.app-header__left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.app-header__logo {
+  display: flex;
+  align-items: center;
+}
+.app-header__logo:hover {
+  text-decoration: none;
+}
+.app-header__logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.app-header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.app-header__icon-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.app-header__icon-button:hover {
+  background-color: var(--gray-100);
+  color: var(--color-primary);
+}
+
+.app-header__bell {
+  position: relative;
+}
+
+.app-header__bell-badge {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: var(--font-bold);
+  line-height: 16px;
+  text-align: center;
+}
+
+.app-header__user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: var(--space-2);
+}
+
+.app-header__nickname {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--color-text);
+}
+.app-header__nickname:hover {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.app-header__logout {
+  border: none;
+  background: transparent;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 0;
+}
+.app-header__logout:hover {
+  color: var(--color-danger);
+}
+
+/* 모바일: 유저 영역은 사이드바로 대체 */
+@media (max-width: 768px) {
+  .app-header__user {
+    display: none;
+  }
+  .app-header__inner {
+    height: 56px;
+  }
+  .app-header__logo img {
+    height: 34px;
+  }
+}

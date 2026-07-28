@@ -1,0 +1,25 @@
+.ui-skeleton {
+  display: block;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--gray-100) 25%,
+    var(--gray-200) 45%,
+    var(--gray-100) 65%
+  );
+  background-size: 200% 100%;
+  animation: ui-skeleton-wave 1.4s ease infinite;
+}
+
+.ui-skeleton--circle {
+  border-radius: var(--radius-full);
+}
+
+@keyframes ui-skeleton-wave {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
