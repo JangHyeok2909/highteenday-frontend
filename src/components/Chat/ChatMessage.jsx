@@ -2,7 +2,16 @@ import React from "react";
 import defaultProfile from "../../assets/default_profile_image.jpg";
 import "./ChatMessage.css";
 
-const ChatMessage = ({ message, isMine, showTime, unreadCount }) => {
+const ChatMessage = ({ message, isMine, showTime, showSender, unreadCount }) => {
+  // 입퇴장/방 이름 변경 같은 안내는 말풍선이 아니라 가운데 한 줄로 보여준다.
+  if (message.type === "SYSTEM") {
+    return (
+      <div className="chat-msg-system">
+        <span>{message.content}</span>
+      </div>
+    );
+  }
+
   const time = new Date(message.createdAt).toLocaleTimeString("ko-KR", {
     hour: "2-digit",
     minute: "2-digit",
@@ -16,16 +25,20 @@ const ChatMessage = ({ message, isMine, showTime, unreadCount }) => {
     <div className={`chat-msg ${isMine ? "mine" : "theirs"}`}>
       {!isMine && (
         <div className="chat-msg-avatar">
-          <img
-            src={message.senderProfileUrl || defaultProfile}
-            alt="프로필"
-            onError={(e) => { e.target.src = defaultProfile; }}
-          />
+          {showSender ? (
+            <img
+              src={message.senderProfileUrl || defaultProfile}
+              alt="프로필"
+              onError={(e) => { e.target.src = defaultProfile; }}
+            />
+          ) : (
+            <div className="chat-msg-avatar-spacer" />
+          )}
         </div>
       )}
 
       <div className="chat-msg-body">
-        {!isMine && (
+        {!isMine && showSender && (
           <span className="chat-msg-sender">{message.senderNickname}</span>
         )}
         <div className="chat-msg-content-row">

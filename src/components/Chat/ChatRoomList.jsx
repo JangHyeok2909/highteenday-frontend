@@ -1,20 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
+import { MessageSquarePlus } from "lucide-react";
 import Header from "components/Header/MainHader/Header";
 import { useChat } from "../../contexts/ChatContext";
-import defaultProfile from "../../assets/default_profile_image.jpg";
 import { formatRelativeTime } from "../../utils/dateFormat";
+import GroupAvatar from "./GroupAvatar";
+import CreateGroupModal from "./CreateGroupModal";
 import "../Default.css";
 import "./ChatRoomList.css";
 
 const ChatRoomList = () => {
   const navigate = useNavigate();
   const { chatRooms, fetchChatRooms } = useChat();
+  const [showCreate, setShowCreate] = useState(false);
 
   useEffect(() => {
     fetchChatRooms();
   }, [fetchChatRooms]);
+
+  const handleCreated = (room) => {
+    setShowCreate(false);
+    if (room?.roomId) navigate(`/chat/${room.roomId}`);
+  };
 
   return (
     <div id="chat-room-list" className="default-root-value">
@@ -25,44 +33,58 @@ const ChatRoomList = () => {
       </div>
 
       <div className="chat-container">
-        <h2 className="chat-title">채팅</h2>
+        <div className="chat-title-row">
+          <h2 className="chat-title">채팅</h2>
+          <button
+            type="button"
+            className="chat-create-btn"
+            onClick={() => setShowCreate(true)}
+            aria-label="단체 채팅방 만들기"
+          >
+            <MessageSquarePlus size={20} />
+          </button>
+        </div>
 
         {chatRooms.length > 0 ? (
           <ul className="chat-list">
-            {chatRooms.map((room) => (
-              <li
-                key={room.roomId}
-                className="chat-room-card"
-                onClick={() => navigate(`/chat/${room.roomId}`)}
-              >
-                <div className="chat-room-avatar">
-                  <img
-                    src={room.otherUserProfileUrl || defaultProfile}
-                    alt={`${room.otherUserNickname} 프로필`}
-                    onError={(e) => { e.target.src = defaultProfile; }}
-                  />
-                </div>
+            {chatRooms.map((room) => {
+              const isGroup = room.category && room.category !== "PRIVATE";
+              return (
+                <li
+                  key={room.roomId}
+                  className="chat-room-card"
+                  onClick={() => navigate(`/chat/${room.roomId}`)}
+                >
+                  <div className="chat-room-avatar">
+                    <GroupAvatar members={room.members || []} size={48} />
+                  </div>
 
-                <div className="chat-room-info">
-                  <div className="chat-room-top">
-                    <span className="chat-room-name">{room.otherUserNickname}</span>
-                    {room.lastMessageAt && (
-                      <span className="chat-room-time">
-                        {formatRelativeTime(room.lastMessageAt)}
+                  <div className="chat-room-info">
+                    <div className="chat-room-top">
+                      <span className="chat-room-name">
+                        {room.roomName}
+                        {isGroup && room.memberCount > 0 && (
+                          <span className="chat-room-member-count">{room.memberCount}</span>
+                        )}
                       </span>
-                    )}
+                      {room.lastMessageAt && (
+                        <span className="chat-room-time">
+                          {formatRelativeTime(room.lastMessageAt)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="chat-room-bottom">
+                      <span className="chat-room-last-msg">
+                        {room.lastMessage || "채팅을 시작해보세요"}
+                      </span>
+                      {room.unreadCount > 0 && (
+                        <span className="chat-room-badge">{room.unreadCount}</span>
+                      )}
+                    </div>
                   </div>
-                  <div className="chat-room-bottom">
-                    <span className="chat-room-last-msg">
-                      {room.lastMessage || "채팅을 시작해보세요"}
-                    </span>
-                    {room.unreadCount > 0 && (
-                      <span className="chat-room-badge">{room.unreadCount}</span>
-                    )}
-                  </div>
-                </div>
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
         ) : (
           <div className="chat-empty">
@@ -71,6 +93,13 @@ const ChatRoomList = () => {
           </div>
         )}
       </div>
+
+      {showCreate && (
+        <CreateGroupModal
+          onClose={() => setShowCreate(false)}
+          onCreated={handleCreated}
+        />
+      )}
     </div>
   );
 };

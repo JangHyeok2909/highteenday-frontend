@@ -106,3 +106,26 @@
   border-radius: 8px;
   margin-top: 8px;
 }
+
+/* 입퇴장/방 이름 변경 등 안내 메시지 */
+.chat-msg-system {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.chat-msg-system span {
+  font-size: 0.78rem;
+  color: #6b7280;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  padding: 5px 12px;
+  text-align: center;
+  max-width: 80%;
+}
+
+/* 단체방 연속 발언에서 아바타 자리만 비워둔다 */
+.chat-msg-avatar-spacer {
+  width: 100%;
+  height: 100%;
+}

@@ -5,6 +5,12 @@ import { useWebSocket } from "./WebSocketContext";
 
 const ChatContext = createContext(undefined);
 
+// 재전송 멱등성 키. 같은 값으로 두 번 올라가면 서버가 한 번만 저장한다.
+const newClientMsgId = () =>
+  (typeof crypto !== "undefined" && crypto.randomUUID)
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
 export function ChatProvider({ children }) {
   const { isLogin } = useAuth();
   const { connected, subscribe, publish } = useWebSocket();
@@ -20,29 +26,25 @@ export function ChatProvider({ children }) {
     try {
       const { data } = await axios.get("/api/chat/rooms", { withCredentials: true });
       setChatRooms(data);
-      const total = data.reduce((sum, room) => sum + (room.unreadCount || 0), 0);
-      setTotalUnreadCount(total);
+      setTotalUnreadCount(data.reduce((sum, room) => sum + (room.unreadCount || 0), 0));
     } catch {
       // silently ignore
     }
   }, [isLogin]);
 
-  // 모든 채팅방을 글로벌 구독하여 목록 실시간 업데이트
+  // 모든 채팅방을 글로벌 구독하여 목록을 실시간 갱신한다.
   useEffect(() => {
     if (!connected || chatRooms.length === 0) return;
 
     const currentRoomIds = chatRooms.map((r) => r.roomId);
 
-    // 더 이상 존재하지 않는 방의 구독 해제
     Object.keys(globalSubsRef.current).forEach((id) => {
-      const numId = Number(id);
-      if (!currentRoomIds.includes(numId)) {
+      if (!currentRoomIds.includes(Number(id))) {
         try { globalSubsRef.current[id].unsubscribe(); } catch { /* ignore */ }
         delete globalSubsRef.current[id];
       }
     });
 
-    // 새 방 구독
     currentRoomIds.forEach((roomId) => {
       if (globalSubsRef.current[roomId]) return;
 
@@ -51,14 +53,15 @@ export function ChatProvider({ children }) {
           const updated = prev.map((room) => {
             if (room.roomId !== roomId) return room;
             const isActive = activeRoomRef.current === roomId;
+            // SYSTEM 메시지는 안읽음으로 세지 않는다. 서버 집계와 기준을 맞춘 것.
+            const countsAsUnread = !isActive && msg.type !== "SYSTEM";
             return {
               ...room,
-              lastMessage: msg.content,
+              lastMessage: msg.type === "IMAGE" ? "사진" : msg.content,
               lastMessageAt: msg.createdAt,
-              unreadCount: isActive ? room.unreadCount : (room.unreadCount || 0) + 1,
+              unreadCount: countsAsUnread ? (room.unreadCount || 0) + 1 : room.unreadCount,
             };
           });
-          // 최신 메시지 방을 맨 위로 정렬
           updated.sort((a, b) => {
             const ta = a.lastMessageAt ? new Date(a.lastMessageAt).getTime() : 0;
             const tb = b.lastMessageAt ? new Date(b.lastMessageAt).getTime() : 0;
@@ -67,14 +70,12 @@ export function ChatProvider({ children }) {
           return updated;
         });
 
-        if (activeRoomRef.current !== roomId) {
+        if (activeRoomRef.current !== roomId && msg.type !== "SYSTEM") {
           setTotalUnreadCount((prev) => prev + 1);
         }
       });
 
-      if (sub) {
-        globalSubsRef.current[roomId] = sub;
-      }
+      if (sub) globalSubsRef.current[roomId] = sub;
     });
 
     return () => {
@@ -91,9 +92,7 @@ export function ChatProvider({ children }) {
       setTotalUnreadCount(0);
       return;
     }
-    if (connected) {
-      fetchChatRooms();
-    }
+    if (connected) fetchChatRooms();
   }, [isLogin, connected, fetchChatRooms]);
 
   const setActiveRoom = useCallback((roomId) => {
@@ -102,20 +101,13 @@ export function ChatProvider({ children }) {
 
   const subscribeChatRoom = useCallback((roomId, onMessage) => {
     if (subscriptionsRef.current[roomId]) {
-      subscriptionsRef.current[roomId].unsubscribe();
+      try { subscriptionsRef.current[roomId].unsubscribe(); } catch { /* 연결이 이미 끊김 */ }
       delete subscriptionsRef.current[roomId];
     }
-
-    // 글로벌 구독이 목록 업데이트를 처리하므로, 여기서는 onMessage 콜백만 등록
     activeRoomRef.current = roomId;
 
-    const subscription = subscribe(`/topic/chat/room/${roomId}`, (msg) => {
-      onMessage(msg);
-    });
-
-    if (subscription) {
-      subscriptionsRef.current[roomId] = subscription;
-    }
+    const subscription = subscribe(`/topic/chat/room/${roomId}`, (msg) => onMessage(msg));
+    if (subscription) subscriptionsRef.current[roomId] = subscription;
     return subscription;
   }, [subscribe]);
 
@@ -125,31 +117,82 @@ export function ChatProvider({ children }) {
       try { sub.unsubscribe(); } catch { /* already unsubscribed */ }
       delete subscriptionsRef.current[roomId];
     }
-    if (activeRoomRef.current === roomId) {
-      activeRoomRef.current = null;
-    }
+    if (activeRoomRef.current === roomId) activeRoomRef.current = null;
   }, []);
 
+  // 연결이 끊긴 상태에서 publish는 아무 일도 하지 않으므로 성공 여부를 그대로 넘긴다.
   const sendMessage = useCallback((roomId, content, imageUrl = null) => {
-    publish("/app/chat/send", { roomId, content, imageUrl });
+    return publish("/app/chat/send", {
+      roomId,
+      content,
+      imageUrl,
+      clientMsgId: newClientMsgId(),
+    });
   }, [publish]);
 
-  const markAsRead = useCallback(async (roomId) => {
+  // lastMsgId를 함께 보내 "어디까지 읽었는지"를 정확히 남긴다.
+  const markAsRead = useCallback(async (roomId, lastMsgId = null) => {
     try {
-      await axios.patch(`/api/chat/rooms/${roomId}/read`, null, { withCredentials: true });
+      const query = lastMsgId != null ? `?lastMsgId=${lastMsgId}` : "";
+      await axios.patch(`/api/chat/rooms/${roomId}/read${query}`, null, { withCredentials: true });
       setChatRooms((prev) => {
         const room = prev.find((r) => r.roomId === roomId);
         const cleared = room?.unreadCount || 0;
-        if (cleared > 0) {
-          setTotalUnreadCount((t) => Math.max(0, t - cleared));
-        }
-        return prev.map((r) =>
-          r.roomId === roomId ? { ...r, unreadCount: 0 } : r
-        );
+        if (cleared > 0) setTotalUnreadCount((t) => Math.max(0, t - cleared));
+        return prev.map((r) => (r.roomId === roomId ? { ...r, unreadCount: 0 } : r));
       });
     } catch {
       // silently ignore
     }
+  }, []);
+
+  // ---------------- 단체방 ----------------
+
+  const createGroupRoom = useCallback(async (name, memberIds) => {
+    const { data } = await axios.post(
+      "/api/chat/rooms/group",
+      { name, memberIds },
+      { withCredentials: true }
+    );
+    await fetchChatRooms();
+    return data;
+  }, [fetchChatRooms]);
+
+  const inviteMembers = useCallback(async (roomId, memberIds) => {
+    const { data } = await axios.post(
+      `/api/chat/rooms/${roomId}/members`,
+      { memberIds },
+      { withCredentials: true }
+    );
+    return data;
+  }, []);
+
+  const leaveRoom = useCallback(async (roomId) => {
+    await axios.delete(`/api/chat/rooms/${roomId}/members/me`, { withCredentials: true });
+    setChatRooms((prev) => prev.filter((r) => r.roomId !== roomId));
+  }, []);
+
+  const kickMember = useCallback(async (roomId, userId) => {
+    await axios.delete(`/api/chat/rooms/${roomId}/members/${userId}`, { withCredentials: true });
+  }, []);
+
+  const updateRoomName = useCallback(async (roomId, name) => {
+    const { data } = await axios.patch(
+      `/api/chat/rooms/${roomId}`,
+      { name },
+      { withCredentials: true }
+    );
+    setChatRooms((prev) =>
+      prev.map((r) => (r.roomId === roomId ? { ...r, roomName: data.roomName } : r))
+    );
+    return data;
+  }, []);
+
+  const fetchMembers = useCallback(async (roomId) => {
+    const { data } = await axios.get(`/api/chat/rooms/${roomId}/members`, {
+      withCredentials: true,
+    });
+    return data;
   }, []);
 
   return (
@@ -163,6 +206,12 @@ export function ChatProvider({ children }) {
         sendMessage,
         markAsRead,
         setActiveRoom,
+        createGroupRoom,
+        inviteMembers,
+        leaveRoom,
+        kickMember,
+        updateRoomName,
+        fetchMembers,
       }}
     >
       {children}
