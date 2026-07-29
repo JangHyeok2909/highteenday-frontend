@@ -1,14 +1,15 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
+import { useWebSocket } from "./WebSocketContext";
 
 const NotificationContext = createContext(undefined);
 
-const POLL_INTERVAL = 30000;
 const PAGE_SIZE = 20;
 
 export function NotificationProvider({ children }) {
-  const { isLogin } = useAuth();
+  const { isLogin, user } = useAuth();
+  const { connected, subscribe } = useWebSocket();
 
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifications, setNotifications] = useState([]);
@@ -19,8 +20,9 @@ export function NotificationProvider({ children }) {
   const [panelOpen, setPanelOpen] = useState(false);
 
   const hasMore = page + 1 < totalPages;
+  const subscriptionRef = useRef(null);
 
-  // ── Unread count polling ──
+  // ── 초기 안읽은 수 조회 ──
   const fetchUnreadCount = useCallback(async () => {
     if (!isLogin) return;
     try {
@@ -29,28 +31,41 @@ export function NotificationProvider({ children }) {
       });
       setUnreadCount(typeof data === "number" ? data : 0);
     } catch {
-      // silently ignore polling errors
+      // silently ignore
     }
   }, [isLogin]);
 
+  // ── WebSocket 구독 (실시간 알림 수신) ──
   useEffect(() => {
-    if (!isLogin) {
-      setUnreadCount(0);
-      setNotifications([]);
+    if (!isLogin || !connected || !user) {
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+        subscriptionRef.current = null;
+      }
+      if (!isLogin) {
+        setUnreadCount(0);
+        setNotifications([]);
+      }
       return;
     }
-    fetchUnreadCount();
-    const id = setInterval(fetchUnreadCount, POLL_INTERVAL);
-    return () => clearInterval(id);
-  }, [isLogin, fetchUnreadCount]);
 
-  // Refresh on window focus
-  useEffect(() => {
-    if (!isLogin) return;
-    const handler = () => fetchUnreadCount();
-    window.addEventListener("focus", handler);
-    return () => window.removeEventListener("focus", handler);
-  }, [isLogin, fetchUnreadCount]);
+    // 초기 안읽은 수 로드
+    fetchUnreadCount();
+
+    // 실시간 알림 구독 — 세션별 개인 큐라 주소에 userId를 싣지 않는다
+    const sub = subscribe("/user/queue/notifications", (notification) => {
+      setUnreadCount((c) => c + 1);
+      setNotifications((prev) => [notification, ...prev]);
+    });
+    subscriptionRef.current = sub;
+
+    return () => {
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+        subscriptionRef.current = null;
+      }
+    };
+  }, [isLogin, connected, user, subscribe, fetchUnreadCount]);
 
   // ── Fetch notifications (initial + reset) ──
   const fetchNotifications = useCallback(async () => {
@@ -105,7 +120,6 @@ export function NotificationProvider({ children }) {
 
   // ── Mark as read ──
   const markAsRead = useCallback(async (id) => {
-    // Optimistic
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
     );
@@ -117,7 +131,6 @@ export function NotificationProvider({ children }) {
       });
       return data;
     } catch (err) {
-      // Revert
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, isRead: false } : n))
       );
@@ -156,7 +169,6 @@ export function NotificationProvider({ children }) {
         withCredentials: true,
       });
     } catch (err) {
-      // Revert
       setNotifications((prev) => [...prev, ...readItems]);
       console.error(err);
     }
@@ -173,7 +185,6 @@ export function NotificationProvider({ children }) {
         withCredentials: true,
       });
     } catch (err) {
-      // Revert
       setNotifications((prev) => {
         const restored = [...prev];
         if (target) restored.push(target);

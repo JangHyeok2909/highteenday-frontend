@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom"; 
 
 export interface User {
+    id: number,
     name: string,
     nickname: string,
     email: string,
