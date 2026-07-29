@@ -6,6 +6,7 @@ import "./FriendList.css";
 import "../Default.css";
 import FriendAdd from "./FriendAdd";
 import AcceptFriend from "./AcceptFriend";
+import FriendTimetableModal from "../TimetableRelated/FriendTimetableModal";
 import Header from "components/Header/MainHader/Header";
 import axios from "axios";
 import defaultProfile from "../../assets/default_profile_image.jpg";
@@ -25,6 +26,7 @@ const FriendList = () => {
   const navigate = useNavigate();
   const [friends, setFriends] = useState([]);
   const [showFriendAdd, setShowFriendAdd] = useState(false);
+  const [timetableFriend, setTimetableFriend] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef(null);
@@ -198,7 +200,11 @@ const FriendList = () => {
                     >
                       💬
                     </button>
-                    <button title="일정" aria-label="일정">
+                    <button
+                      title="시간표"
+                      aria-label="시간표"
+                      onClick={() => setTimetableFriend(friend)}
+                    >
                       📅
                     </button>
 
@@ -283,6 +289,13 @@ const FriendList = () => {
               <FriendAdd onClose={() => setShowFriendAdd(false)} />
             </div>
           </div>
+        )}
+
+        {timetableFriend && (
+          <FriendTimetableModal
+            friend={timetableFriend}
+            onClose={() => setTimetableFriend(null)}
+          />
         )}
       </div>
     </div>
