@@ -6,6 +6,8 @@ import BoardOverview from "./components/MainPage/Body/BoardSection/BoardSection"
 import BoardPage from "./components/Board/BoardPage";
 import MainPage from "./components/MainPage/MainPage";
 import FriendList from "./components/Friend/FriendList";
+import ChatRoomList from "./components/Chat/ChatRoomList";
+import ChatRoom from "./components/Chat/ChatRoom";
 import MyCommentsPage from "./components/MyPage/activaties/MyCommentsPage";
 import PostSection from "./components/Post/PostSection";
 import AgreeTermsPage from "./components/RegisterRelated/AgreeTerms/AgreeTermsPage";
@@ -61,6 +63,9 @@ function App() {
       <Route path="/mypage/scraps" element={<MyPostLikeActivity type="scraps" />} />
       {/* friend */}
       <Route path="/friend" element={<FriendList />} />
+      {/* chat */}
+      <Route path="/chat" element={<ChatRoomList />} />
+      <Route path="/chat/:roomId" element={<ChatRoom />} />
       {/*timetable*/}
       <Route path="/timetable" element={<TimetablePage />} />
       {/*meal calender */}

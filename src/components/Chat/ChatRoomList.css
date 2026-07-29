@@ -1,0 +1,149 @@
+.chat-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.chat-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.chat-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.chat-create-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: #f3f4f6;
+  color: #4f46e5;
+  cursor: pointer;
+}
+
+.chat-create-btn:hover {
+  background: #eef2ff;
+}
+
+/* 단체방 인원수 배지 */
+.chat-room-member-count {
+  margin-left: 5px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+.chat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.chat-room-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.chat-room-card:hover {
+  background-color: #f8f9fa;
+}
+
+.chat-room-avatar {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.chat-room-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chat-room-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-room-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.chat-room-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+}
+
+.chat-room-time {
+  font-size: 0.75rem;
+  color: #999;
+  flex-shrink: 0;
+}
+
+.chat-room-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-room-last-msg {
+  font-size: 0.85rem;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  margin-right: 8px;
+}
+
+.chat-room-badge {
+  flex-shrink: 0;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background-color: #ff4757;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+}
+
+.chat-empty p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.chat-empty-sub {
+  font-size: 0.85rem;
+  margin-top: 8px !important;
+  color: #bbb;
+}
