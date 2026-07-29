@@ -34,7 +34,7 @@ const InviteMembersModal = ({ existingMemberIds = [], onClose, onSubmit }) => {
     const k = keyword.trim().toLowerCase();
     if (!k) return friends;
     return friends.filter((f) =>
-      `${f.name ?? ""}${f.nickname ?? ""}`.toLowerCase().includes(k)
+      (f.nickname ?? "").toLowerCase().includes(k)
     );
   }, [friends, keyword]);
 
@@ -96,11 +96,11 @@ const InviteMembersModal = ({ existingMemberIds = [], onClose, onSubmit }) => {
                 >
                   <img
                     src={f.profileUrl || defaultProfile}
-                    alt={`${f.name ?? "사용자"} 프로필`}
+                    alt={`${f.nickname ?? "사용자"} 프로필`}
                     onError={(e) => { e.target.src = defaultProfile; }}
                   />
                   <div className="cgm-friend-info">
-                    <span className="cgm-friend-name">{f.name || f.nickname}</span>
+                    <span className="cgm-friend-name">{f.nickname}</span>
                     {f.school && (
                       <span className="cgm-friend-sub">{f.school} {f.grade}</span>
                     )}

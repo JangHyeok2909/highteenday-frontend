@@ -14,14 +14,6 @@ import defaultProfile from "../../assets/default_profile_image.jpg";
 
 
 
-const getInitials = (name = "") => {
-  const t = name.trim();
-  if (!t) return "??";
-  const parts = t.split(/\s+/);
-  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
-  return [...t].slice(0, 2).join("").toUpperCase();
-};
-
 const FriendList = () => {
   const navigate = useNavigate();
   const [friends, setFriends] = useState([]);
@@ -62,9 +54,7 @@ const FriendList = () => {
   const filtered = useMemo(() => {
     const kw = searchTerm.trim().toLowerCase();
     if (!kw) return friends;
-    return friends.filter((f) =>
-      [f.name ?? "", f.school ?? "", f.grade ?? ""].join(" ").toLowerCase().includes(kw)
-    );
+    return friends.filter((f) => (f.nickname ?? "").toLowerCase().includes(kw));
   }, [friends, searchTerm]);
 
   const toggleMenu = (id) => setOpenMenuId((prev) => (prev === id ? null : id));
@@ -164,15 +154,21 @@ const FriendList = () => {
         <ul className="friend-list">
           {filtered.length > 0 ? (
             filtered.map((friend) => {
-              const initials = getInitials(friend.name || friend.nickname);
               const isOpen = openMenuId === friend.id;
               return (
                 <li key={friend.id} className="friend-card">
-                  <div className="friend-info">
+                  {/* 실명 대신 닉네임을 보여준다. 실명은 가입·본인확인용이지
+                      커뮤니티에서 서로를 부르는 이름이 아니다. */}
+                  <button
+                    type="button"
+                    className="friend-info"
+                    onClick={() => navigate(`/user/${friend.id}`)}
+                    aria-label={`${friend.nickname ?? "사용자"} 프로필 보기`}
+                  >
                     <div className="friend-avatar">
                       <img
                         src={friend.profileUrl || defaultProfile}
-                        alt={`${friend.name ?? "사용자"} 프로필`}
+                        alt={`${friend.nickname ?? "사용자"} 프로필`}
                         loading="lazy"
                         onError={(e) => { e.target.src = defaultProfile; }}
                       />
@@ -184,13 +180,10 @@ const FriendList = () => {
                           friend.isBlocked ? " blocked" : ""
                         }`}
                       >
-                        {friend.name}
-                      </span>
-                      <span className="friend-sub">
-                        {friend.school} {friend.grade}
+                        {friend.nickname}
                       </span>
                     </div>
-                  </div>
+                  </button>
 
                   <div className="friend-actions">
                     <button

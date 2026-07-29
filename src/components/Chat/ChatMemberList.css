@@ -84,12 +84,84 @@
   flex-shrink: 0;
 }
 
+/* 아바타와 이름 전체가 프로필 카드를 여는 버튼이다. 기본 버튼 스타일을 걷어내고
+   원래의 행 레이아웃을 그대로 유지한다. */
+.cml-profile-btn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cml-profile-btn:disabled {
+  cursor: default;
+}
+
 .cml-info {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.cml-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cml-relation {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.cml-relation.friend {
+  color: #4338ca;
+  background: #eef2ff;
+}
+
+.cml-relation.pending {
+  color: #6b7280;
+  background: #f3f4f6;
+}
+
+.cml-add {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  color: #3f9763;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cml-add:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.cml-error {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: #b91c1c;
 }
 
 .cml-name {

@@ -84,7 +84,7 @@ const AcceptFriend = ({ onUpdatedFriends }) => {
             const isLoading = loadingId === id;
             return (
               <li key={id} className="acceptfriend-item">
-                <span className="acceptfriend-item-name">{req.name}</span>
+                <span className="acceptfriend-item-name">{req.nickname}</span>
                 <div className="acceptfriend-item-actions">
                   <button
                     type="button"
