@@ -29,6 +29,18 @@
   object-fit: cover;
 }
 
+/* 아바타 전체가 프로필 카드를 여는 버튼이다. 기본 버튼 스타일만 걷어내고
+   크기는 감싸는 .chat-msg-avatar가 그대로 정한다. */
+.chat-msg-avatar-btn {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 .chat-msg-body {
   display: flex;
   flex-direction: column;
@@ -38,6 +50,11 @@
   font-size: 0.75rem;
   color: #888;
   margin-bottom: 4px;
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 
 .chat-msg-content-row {

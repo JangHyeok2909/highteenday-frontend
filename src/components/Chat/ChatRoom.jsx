@@ -9,6 +9,8 @@ import { useWebSocket } from "../../contexts/WebSocketContext";
 import ChatMessage from "./ChatMessage";
 import ChatMemberList from "./ChatMemberList";
 import InviteMembersModal from "./InviteMembersModal";
+import UserMiniProfile from "./UserMiniProfile";
+import FriendTimetableModal from "../TimetableRelated/FriendTimetableModal";
 import "../Default.css";
 import "./ChatRoom.css";
 
@@ -24,6 +26,7 @@ const ChatRoom = () => {
   const {
     subscribe, unsubscribe, sendMessage, markAsRead, setActiveRoom,
     fetchMembers, inviteMembers, leaveRoom, kickMember, fetchChatRooms,
+    startPrivateRoom,
   } = useChat();
   const ws = useWebSocket();
 
@@ -34,6 +37,9 @@ const ChatRoom = () => {
   const [members, setMembers] = useState([]);
   const [showMembers, setShowMembers] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
+  // 프로필 카드로 연 상대. members에서 찾은 값이라 별도 요청이 필요 없다.
+  const [profileMember, setProfileMember] = useState(null);
+  const [timetableMember, setTimetableMember] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [sendError, setSendError] = useState("");
   const messagesEndRef = useRef(null);
@@ -250,6 +256,34 @@ const ChatRoom = () => {
     }
   };
 
+  // 아바타를 눌렀을 때. 관계까지 포함한 정보가 members에 이미 있으므로 그대로 쓴다.
+  const openProfile = useCallback((userId) => {
+    if (!userId || userId === user?.id) return;
+    const member = members.find((m) => m.userId === userId);
+    if (member) setProfileMember(member);
+  }, [members, user?.id]);
+
+  // 요청을 보내거나 취소하면 목록의 관계도 같이 움직여야 배지가 어긋나지 않는다.
+  const applyRelationChange = useCallback((userId, relation) => {
+    setMembers((prev) =>
+      prev.map((m) => (m.userId === userId ? { ...m, relation } : m))
+    );
+    setProfileMember((prev) =>
+      prev && prev.userId === userId ? { ...prev, relation } : prev
+    );
+  }, []);
+
+  const handleStartPrivateChat = async (member) => {
+    try {
+      const room = await startPrivateRoom(member.userId);
+      setProfileMember(null);
+      setShowMembers(false);
+      navigate(`/chat/${room.roomId}`);
+    } catch (err) {
+      alert(err?.response?.data?.message || "채팅방을 열 수 없습니다.");
+    }
+  };
+
   const handleLeave = async () => {
     try {
       await leaveRoom(numericRoomId);
@@ -298,6 +332,7 @@ const ChatRoom = () => {
             showTime={showTime}
             showSender={showSender}
             unreadCount={unreadCount}
+            onAvatarClick={openProfile}
           />
         ))}
         <div ref={messagesEndRef} />
@@ -355,6 +390,25 @@ const ChatRoom = () => {
           onInvite={() => { setShowMembers(false); setShowInvite(true); }}
           onKick={handleKick}
           onLeave={handleLeave}
+          onSelectMember={setProfileMember}
+          onRelationChange={applyRelationChange}
+        />
+      )}
+
+      {profileMember && (
+        <UserMiniProfile
+          member={profileMember}
+          onClose={() => setProfileMember(null)}
+          onStartChat={handleStartPrivateChat}
+          onOpenTimetable={(m) => { setProfileMember(null); setTimetableMember(m); }}
+          onRelationChange={applyRelationChange}
+        />
+      )}
+
+      {timetableMember && (
+        <FriendTimetableModal
+          friend={{ id: timetableMember.userId, nickname: timetableMember.nickname }}
+          onClose={() => setTimetableMember(null)}
         />
       )}
 

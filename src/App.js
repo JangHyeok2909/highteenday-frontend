@@ -6,6 +6,7 @@ import BoardOverview from "./components/MainPage/Body/BoardSection/BoardSection"
 import BoardPage from "./components/Board/BoardPage";
 import MainPage from "./components/MainPage/MainPage";
 import FriendList from "./components/Friend/FriendList";
+import UserProfilePage from "./pages/UserProfilePage";
 import ChatRoomList from "./components/Chat/ChatRoomList";
 import ChatRoom from "./components/Chat/ChatRoom";
 import MyCommentsPage from "./components/MyPage/activaties/MyCommentsPage";
@@ -63,6 +64,8 @@ function App() {
       <Route path="/mypage/scraps" element={<MyPostLikeActivity type="scraps" />} />
       {/* friend */}
       <Route path="/friend" element={<FriendList />} />
+      {/* 남의 프로필. /profile/* 는 본인 정보 수정이 쓰고 있어서 /user 로 나눴다. */}
+      <Route path="/user/:userId" element={<UserProfilePage />} />
       {/* chat */}
       <Route path="/chat" element={<ChatRoomList />} />
       <Route path="/chat/:roomId" element={<ChatRoom />} />

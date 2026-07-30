@@ -195,6 +195,18 @@ export function ChatProvider({ children }) {
     return data;
   }, []);
 
+  // 1:1 방은 이미 있으면 그 방을 그대로 돌려준다(서버가 pairKey로 판단).
+  // 친구 목록에만 인라인으로 있던 것을 프로필 카드에서도 쓰려고 올렸다.
+  const startPrivateRoom = useCallback(async (friendId) => {
+    const { data } = await axios.post(
+      "/api/chat/rooms",
+      { friendId },
+      { withCredentials: true }
+    );
+    await fetchChatRooms();
+    return data;
+  }, [fetchChatRooms]);
+
   return (
     <ChatContext.Provider
       value={{
@@ -212,6 +224,7 @@ export function ChatProvider({ children }) {
         kickMember,
         updateRoomName,
         fetchMembers,
+        startPrivateRoom,
       }}
     >
       {children}

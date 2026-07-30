@@ -78,11 +78,19 @@
   background-color: #fff;
 }
 
+/* 아바타와 이름 전체가 프로필로 들어가는 버튼이다. 기본 버튼 스타일만 걷어내고
+   원래의 행 레이아웃은 그대로 둔다. */
 #friend-list .friend-info {
   display: flex;
   align-items: center;
   gap: 12px;
   flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
 }
 
 #friend-list .friend-avatar {

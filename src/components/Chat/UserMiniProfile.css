@@ -1,0 +1,119 @@
+/* 참여자 목록 패널(z-index 900) 위에서 열리므로 그보다 높게 잡는다. */
+.ump-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.ump-sheet {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  padding: 28px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.ump-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 4px;
+}
+
+.ump-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f3f4f6;
+}
+
+.ump-nickname {
+  font-size: 17px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.ump-error {
+  margin: 0;
+  font-size: 13px;
+  color: #b91c1c;
+  text-align: center;
+}
+
+.ump-hint {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.ump-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ump-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #3f9763;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ump-action:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.ump-action.secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.ump-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .ump-backdrop {
+    align-items: center;
+  }
+
+  .ump-sheet {
+    border-radius: 16px;
+  }
+}
