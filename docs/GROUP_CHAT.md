@@ -1,3 +1,5 @@
+> 서버 측 설계는 highteenday-backend/docs/domains/chat.md, 프론트 구조는 [architecture.md](architecture.md)를 참고.
+
 # 단체 채팅방 — 프론트엔드
 
 기존 1:1 채팅 UI에 단체 채팅방을 추가했습니다.
