@@ -11,8 +11,9 @@ import { ChatProvider } from './contexts/ChatContext';
 import { BrowserRouter } from 'react-router-dom';
 import { setupAxiosInterceptors } from './utils/setupAxios';
 import { HelmetProvider } from 'react-helmet-async';
+import { API_BASE_URL } from './config/env';
 
-axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL || '';
+axios.defaults.baseURL = API_BASE_URL;
 setupAxiosInterceptors();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

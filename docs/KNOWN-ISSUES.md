@@ -78,11 +78,11 @@
 - 문제 2: provider의 `value`가 매 렌더마다 새 객체 리터럴로 만들어진다 (`WebSocketContext.jsx`는 `useMemo`를 쓰는 것과 대조적). ChatProvider가 리렌더될 때마다 `useChat()` 소비자 전체가 리렌더된다.
 - 확인 방법: `npm run build` 경고 확인, `ChatContext.jsx`의 `<ChatContext.Provider value={{...}}>` 확인.
 
-### FKI-09. .env가 .gitignore에 있는데 git이 추적 중 + 내용 결함
-- 위치: 저장소 루트 `.env` — `.gitignore`에 `.env`가 명시되어 있으나 이미 커밋된 파일이라 `git ls-files`에 나타난다 (추적 중인 파일에는 ignore가 소급 적용되지 않음).
-- 결과: "gitignore에 있으니 비밀값을 넣어도 된다"는 착각을 유발한다. 지금 넣으면 그대로 커밋된다.
-- 부수 결함: `.env`에 `PORT=3000`이 두 줄 중복이고, `REACT_APP_API_BASE_URL=/api`는 dev에서 `.env.development`(빈 값), build에서 `.env.production`에 항상 덮여 **어떤 모드에서도 사용되지 않는 죽은 값**이다 (CRA env 우선순위 기준).
-- 확인 방법: `git ls-files | grep .env`, `cat .env`.
+### ~~FKI-09. .env가 .gitignore에 있는데 git이 추적 중 + 내용 결함~~ (해결됨)
+- **2026-07-30 해결.** 루트 `.env`·`.env.development`·`.env.production`을 `git rm` 하고 환경별 설정을 `env/.env.{local,dev,prod}`로 옮겼다. 중복 `PORT=3000`과 죽은 값 `REACT_APP_API_BASE_URL=/api`도 함께 사라졌다.
+- 현재 규칙: `.gitignore`가 루트 `.env*`를 전부 무시하고, `env/.env.{local,dev,prod}`만 부정 패턴으로 추적한다. 개인 오버라이드 `env/.env.*.local`은 무시된다.
+- 주의: `env/.env.*`는 **추적되는 공용 파일**이므로 여전히 비밀값을 넣으면 안 된다. 비밀값은 셸 환경변수나 `env/.env.<환경>.local`로 주입한다 (둘 다 공용 파일보다 우선한다).
+- 확인 방법: `git ls-files | grep env`, `git check-ignore -v env/.env.dev.local`.
 
 ### FKI-10. ErrorBoundary 부재 + console.log 잔존
 - ErrorBoundary: src 전체에서 `ErrorBoundary`·`componentDidCatch` 0건 (grep 실측). 렌더 중 예외가 나면 React 19 기본 동작대로 루트 전체가 언마운트되어 흰 화면이 된다.

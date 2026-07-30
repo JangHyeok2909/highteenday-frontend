@@ -26,8 +26,8 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Build
-        run: CI=false npm run build
+      - name: Build (prod)
+        run: CI=false npm run build:prod
 
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4

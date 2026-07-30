@@ -33,9 +33,15 @@
     "yup": "^1.7.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
+    "start": "npm run start:local",
+    "start:local": "node scripts/with-env.js local start",
+    "start:dev": "node scripts/with-env.js dev start",
+    "start:prod": "node scripts/with-env.js prod start",
+    "build": "npm run build:prod",
+    "build:local": "node scripts/with-env.js local build",
+    "build:dev": "node scripts/with-env.js dev build",
+    "build:prod": "node scripts/with-env.js prod build",
+    "test": "node scripts/with-env.js local test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

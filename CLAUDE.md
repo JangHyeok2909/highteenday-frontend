@@ -7,12 +7,33 @@
 
 ---
 
+## Run / Environments
+
+Three environments, selected by script name. Values live in `env/.env.<local|dev|prod>`
+only; `scripts/with-env.js` loads the chosen file before starting CRA.
+
+```bash
+npm run start:local   # = npm start. dev server + local backend (localhost:8080, via proxy)
+npm run start:dev     # dev server + dev API
+npm run start:prod    # dev server + prod API (debugging only; blocked by prod CORS)
+
+npm run build:local
+npm run build:dev
+npm run build:prod    # = npm run build. what CI deploys
+```
+
+- Read env values **only** through `src/config/env.js` — never `process.env` in components.
+- Adding an environment variable: add it to all three `env/.env.*` files, then export it from `src/config/env.js`.
+- `env/.env.*` files are committed. Put secrets in `env/.env.<env>.local` (gitignored) or shell env vars — both override the committed file.
+
+---
+
 ## Tech Stack
 
 - **React 19** (CRA / react-scripts 5), **React Router v7**
 - **Styling:** Plain CSS files per component (no CSS modules). Tailwind utility classes are available but rarely used.
 - **Forms:** react-hook-form + yup
-- **HTTP:** axios (proxy: `http://localhost:8080` in dev, production API: `https://api.highteenday.org`)
+- **HTTP:** axios — baseURL comes from `src/config/env.js` (local: proxy via `http://localhost:8080`, prod: `https://api.highteenday.org`)
 - **Editor:** @toast-ui/react-editor
 - **Animation:** framer-motion
 - **Icons:** lucide-react
@@ -24,6 +45,7 @@
 ```
 src/
   App.js                        # All routes defined here
+  config/env.js                 # Environment values (API base URL, WS URL, OAuth origin)
   contexts/AuthContext.tsx       # Global auth state
   utils/dateFormat.js
   components/

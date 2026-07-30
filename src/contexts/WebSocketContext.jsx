@@ -3,12 +3,9 @@ import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
+import { WS_URL } from "../config/env";
 
 const WebSocketContext = createContext(undefined);
-
-const WS_URL = process.env.NODE_ENV === "development"
-  ? "http://localhost:8080/ws"
-  : "/ws";
 
 // 토큰 갱신을 재시도마다(5초) 하면 refresh 토큰 회전이 과하게 돈다. 실패가 이어지는 동안엔
 // 이 간격으로만 갱신한다.
